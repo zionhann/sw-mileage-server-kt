@@ -31,6 +31,12 @@ jobs:
     - name: Configure the properties
       run: |
         echo "${{ secrets.APP_CONFIG }}" > ./src/main/resources/application.yml
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql database: 'sw-mileage' 
+        mysql user: ${{ secrets.MYSQL_USERNAME }}
+        mysql password: ${{ secrets.MYSQL_PASSWORD }}
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
