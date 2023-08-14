@@ -15,6 +15,9 @@ on:
 
 permissions:
   contents: read
+  issues: read
+  checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -31,14 +34,14 @@ jobs:
     - name: Configure the properties
       run: |
         echo "${{ secrets.APP_CONFIG }}" > ./src/main/resources/application.yml
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql database: 'sw-mileage' 
-        mysql user: ${{ secrets.MYSQL_USERNAME }}
-        mysql password: ${{ secrets.MYSQL_PASSWORD }}
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
         gradle-version: 8.2.1
         arguments: build
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2.9.0
+      if: always()
+      with:
+        files: |
+          build/test-results/**/*.xml
