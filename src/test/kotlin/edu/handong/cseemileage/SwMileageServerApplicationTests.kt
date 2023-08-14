@@ -9,5 +9,4 @@ class SwMileageServerApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
