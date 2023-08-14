@@ -13,11 +13,6 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
 
-env:
-  MYSQL_URL: ap-northeast-2
-  MYSQL_USERNAME: spring-practice
-  MYSQL_PASSWORD: ncookie-github-actions-s3-bucket
-
 permissions:
   contents: read
 
