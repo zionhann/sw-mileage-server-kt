@@ -14,11 +14,6 @@ import javax.persistence.Table
 @Entity
 @Table(name = "_sw_mileage_category")
 class Category(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, length = 11)
-    var id: Int? = null,
-
     @NotNull
     @Column(name = "cname", nullable = false, length = 20)
     var cname: String? = null,
@@ -28,13 +23,19 @@ class Category(
 
     @NotNull
     @Column(name = "maxpoint", nullable = false, length = 11)
-    var maxPoint: Int? = null,
+    var maxPoint: Int? = null
+) {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, length = 11)
+    var id: Int? = null
 
     @UpdateTimestamp
     @Column(columnDefinition = "timestamp", name = "moddate")
-    var modDate: LocalDateTime? = null,
+    var modDate: LocalDateTime? = null
 
     @CreationTimestamp
     @Column(columnDefinition = "timestamp", name = "regdate")
     var regDate: LocalDateTime? = null
-)
+}
