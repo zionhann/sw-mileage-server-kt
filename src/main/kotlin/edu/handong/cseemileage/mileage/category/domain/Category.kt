@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.mileage.category.domain
 
+import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import org.jetbrains.annotations.NotNull
@@ -38,4 +39,12 @@ class Category(
     @CreationTimestamp
     @Column(columnDefinition = "timestamp", name = "regdate")
     var regDate: LocalDateTime? = null
+
+    fun update(form: CategoryForm): Int {
+        this.cname = form.title
+        this.description1 = form.description
+        this.maxPoint = form.maxPoints
+
+        return id!!
+    }
 }

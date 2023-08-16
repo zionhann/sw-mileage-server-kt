@@ -1,3 +1,3 @@
 package edu.handong.cseemileage.exception
 
-class ExceptionResponse(val status: String?, val message: String?, val info: String?)
+class ExceptionResponse(val status: Int?, val error: String?, val message: String?, val trace: String?)
