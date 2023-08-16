@@ -17,9 +17,23 @@ class BindExceptionHandler {
         return ResponseEntity.badRequest()
             .body(
                 ExceptionResponse(
-                    status = HttpStatus.BAD_REQUEST.reasonPhrase,
+                    status = HttpStatus.BAD_REQUEST.value(),
+                    error = HttpStatus.BAD_REQUEST.reasonPhrase,
                     message = res?.defaultMessage,
-                    info = e.message
+                    trace = e.message
+                )
+            )
+    }
+
+    @ExceptionHandler(MileageException::class)
+    fun handleRuntimeException(e: MileageException): ResponseEntity<ExceptionResponse> {
+        return ResponseEntity.internalServerError()
+            .body(
+                ExceptionResponse(
+                    status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    error = HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase,
+                    message = e.info,
+                    trace = e.stackTraceToString()
                 )
             )
     }

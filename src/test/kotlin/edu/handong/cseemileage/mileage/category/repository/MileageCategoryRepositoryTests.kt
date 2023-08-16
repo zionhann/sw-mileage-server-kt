@@ -39,4 +39,19 @@ class MileageCategoryRepositoryTests @Autowired constructor(
         // Then
         assertThat(found.isPresent).isTrue
     }
+
+    @DisplayName("repository: 마일리지 카테고리 삭제")
+    @Test
+    fun mileageCategoryRepositoryTests_45() {
+        // Given
+        val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
+        val saved = categoryRepository.save(category)
+
+        // When
+        categoryRepository.delete(saved)
+        val found = categoryRepository.findById(saved.id!!)
+
+        // Then
+        assertThat(found).isEmpty
+    }
 }
