@@ -1,4 +1,4 @@
-package edu.handong.cseemileage.mileage.subitem.service
+package edu.handong.cseemileage.mileage.item.service
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @SpringBootTest
-class MileageSubitemServiceTests @Autowired constructor(
-    val subitemService: SubitemService
+class MileageItemServiceTests @Autowired constructor(
+    val itemService: ItemService
 ) {
     @DisplayName("service: 마일리지 서브아이템 save")
     @Test
@@ -28,12 +28,12 @@ class MileageSubitemServiceTests @Autowired constructor(
     @DisplayName("service: repository 의존성 주입")
     @Test
     fun getRepository() {
-        assertThat(subitemService.repository).isNotNull
+        assertThat(itemService.repository).isNotNull
     }
 
     @DisplayName("service: category repository 의존성 주입")
     @Test
     fun getCategoryRepsoitory() {
-        assertThat(subitemService.categoryRepsoitory).isNotNull
+        assertThat(itemService.categoryRepository).isNotNull
     }
 }

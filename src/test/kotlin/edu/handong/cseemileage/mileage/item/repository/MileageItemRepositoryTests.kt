@@ -1,8 +1,8 @@
-package edu.handong.cseemileage.mileage.subitem.repository
+package edu.handong.cseemileage.mileage.item.repository
 
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
-import edu.handong.cseemileage.mileage.subitem.domain.Subitem
+import edu.handong.cseemileage.mileage.item.domain.Item
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class MileageSubitemRepositoryTests @Autowired constructor(
-    private val subitemRepository: SubitemRepository,
+class MileageItemRepositoryTests @Autowired constructor(
+    private val itemRepository: ItemRepository,
     private val categoryRepository: CategoryRepository
 ) {
     @DisplayName("repository: 마일리지 항목 persist")
@@ -22,15 +22,15 @@ class MileageSubitemRepositoryTests @Autowired constructor(
         // given
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
-        val subitem = Subitem(savedCategory, "전공 상담 세부 항목", 20f, 0, 20f, "description1", "description2", "2020-01", "R")
+        val item = Item(savedCategory, "전공 상담 세부 항목", 0, "description1", "description2", "2020-01", "R")
 
         // when
-        subitemRepository.save(subitem)
-        val savedSubitem = subitemRepository.findById(subitem.id!!)
+        itemRepository.save(item)
+        val savedSubitem = itemRepository.findById(item.id!!)
 
         // then
         Assertions.assertThat(savedSubitem).isNotNull
-        Assertions.assertThat(savedSubitem.get()).isEqualTo(subitem)
+        Assertions.assertThat(savedSubitem.get()).isEqualTo(item)
     }
 
     @DisplayName("repository: 마일리지 항목 전체 조회")
@@ -39,13 +39,15 @@ class MileageSubitemRepositoryTests @Autowired constructor(
         // given
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
-        val subitem1 = Subitem(savedCategory, "전공 상담 세부 항목1", 20f, 0, 20f, "description1", "description2", "2020-01", "R")
-        val subitem2 = Subitem(savedCategory, "전공 상담 세부 항목2", 20f, 0, 20f, "description1", "description2", "2020-01", "R")
+        val item1 =
+            Item(savedCategory, "전공 상담 세부 항목1", 0, "description1", "description2", "2020-01", "R")
+        val item2 =
+            Item(savedCategory, "전공 상담 세부 항목2", 0, "description1", "description2", "2020-01", "R")
 
         // when
-        subitemRepository.save(subitem1)
-        subitemRepository.save(subitem2)
-        val subitems = subitemRepository.findAll()
+        itemRepository.save(item1)
+        itemRepository.save(item2)
+        val subitems = itemRepository.findAll()
 
         // then
         Assertions.assertThat(subitems).isNotNull
@@ -57,12 +59,12 @@ class MileageSubitemRepositoryTests @Autowired constructor(
         // given
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
-        val subitem = Subitem(savedCategory, "전공 상담 세부 항목", 20f, 0, 20f, "description1", "description2", "2020-01", "R")
+        val item = Item(savedCategory, "전공 상담 세부 항목", 0, "description1", "description2", "2020-01", "R")
 
         // when
-        subitemRepository.save(subitem)
-        subitemRepository.deleteById(subitem.id!!)
-        val subitemOptional = subitemRepository.findById(subitem.id!!)
+        itemRepository.save(item)
+        itemRepository.deleteById(item.id!!)
+        val subitemOptional = itemRepository.findById(item.id!!)
 
         // then
         Assertions.assertThat(subitemOptional.isEmpty).isTrue

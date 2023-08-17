@@ -1,4 +1,4 @@
-package edu.handong.cseemileage.mileage.subitem.domain
+package edu.handong.cseemileage.mileage.item.domain
 
 import edu.handong.cseemileage.mileage.category.domain.Category
 import org.hibernate.annotations.ColumnDefault
@@ -26,27 +26,19 @@ import javax.persistence.Table
  * */
 @Entity
 @Table(name = "_sw_mileage_subitem")
-class Subitem(
+class Item(
     @field: NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     var category: Category? = null,
 
     @field: NotNull
-    @Column(name = "subitem_name", nullable = false, length = 30)
-    var subitemName: String? = null,
+    @Column(name = "name", nullable = false, length = 30)
+    var name: String? = null,
 
     @ColumnDefault("0")
-    @Column(name = "weight", nullable = false)
-    var weight: Float? = null,
-
-    @ColumnDefault("0")
-    @Column(columnDefinition = "tinyint(1)", nullable = false, name = "isPortfolio")
+    @Column(columnDefinition = "tinyint(1)", nullable = false, name = "is_portfolio")
     var isPortfolio: Int? = null,
-
-    @ColumnDefault("0")
-    @Column(name = "maxpoint", nullable = false)
-    var maxPoint: Float? = null,
 
     @Column(name = "description1", length = 300)
     var description1: String? = null,
@@ -67,10 +59,10 @@ class Subitem(
     var id: Int? = null
 
     @UpdateTimestamp
-    @Column(columnDefinition = "timestamp", name = "moddate")
+    @Column(columnDefinition = "timestamp", name = "mod_date")
     var modDate: LocalDateTime? = null
 
     @CreationTimestamp
-    @Column(columnDefinition = "timestamp", name = "regdate")
+    @Column(columnDefinition = "timestamp", name = "reg_date")
     var regDate: LocalDateTime? = null
 }

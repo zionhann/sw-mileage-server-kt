@@ -16,15 +16,15 @@ import javax.persistence.Table
 @Table(name = "_sw_mileage_category")
 class Category(
     @NotNull
-    @Column(name = "cname", nullable = false, length = 20)
-    var cname: String? = null,
+    @Column(name = "name", nullable = false, length = 20)
+    var name: String? = null,
 
-    @Column(name = "description1", length = 300)
-    var description1: String? = null,
+    @Column(name = "description", length = 300)
+    var description: String? = null,
 
     @NotNull
-    @Column(name = "maxpoint", nullable = false, length = 11)
-    var maxPoint: Int? = null
+    @Column(name = "max_points", nullable = false, length = 11)
+    var maxPoints: Int? = 0
 ) {
 
     @Id
@@ -33,17 +33,17 @@ class Category(
     var id: Int? = null
 
     @UpdateTimestamp
-    @Column(columnDefinition = "timestamp", name = "moddate")
+    @Column(columnDefinition = "timestamp", name = "mod_date")
     var modDate: LocalDateTime? = null
 
     @CreationTimestamp
-    @Column(columnDefinition = "timestamp", name = "regdate")
+    @Column(columnDefinition = "timestamp", name = "reg_date")
     var regDate: LocalDateTime? = null
 
     fun update(form: CategoryForm): Int {
-        this.cname = form.title
-        this.description1 = form.description
-        this.maxPoint = form.maxPoints
+        this.name = form.title
+        this.description = form.description
+        this.maxPoints = form.maxPoints
 
         return id!!
     }

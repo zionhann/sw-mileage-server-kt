@@ -10,7 +10,7 @@ class CategoryQueryService(val repository: CategoryRepository) {
     fun getCategories(): List<CategoryDto.Info> {
         return repository
             .findAll()
-            .map { CategoryDto.Info(it.id!!, it.cname!!, it.maxPoint!!) }
+            .map { CategoryDto.Info(it.id!!, it.name!!, it.maxPoints!!) }
     }
 
     fun getCategoryById(id: Int): CategoryDto.Info {
@@ -18,7 +18,7 @@ class CategoryQueryService(val repository: CategoryRepository) {
             .findById(id)
             .orElseThrow { throw CategoryNotFoundException() }
             .let {
-                return CategoryDto.Info(it.id!!, it.cname!!, it.maxPoint!!)
+                return CategoryDto.Info(it.id!!, it.name!!, it.maxPoints!!)
             }
     }
 }
