@@ -1,11 +1,9 @@
-package edu.handong.cseemileage.mileage.subitem.dto
+package edu.handong.cseemileage.mileage.item.dto
 
-data class SubitemForm(
+data class ItemForm(
     val categoryId: Int,
-    val subitemName: String,
-    val weight: Float,
+    val itemName: String,
     val isPortfolio: Int,
-    val maxPoint: Float,
     val description1: String,
     val description2: String,
     val semester: String,

@@ -1,11 +1,11 @@
-package edu.handong.cseemileage.mileage.subitem.controller
+package edu.handong.cseemileage.mileage.item.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
-import edu.handong.cseemileage.mileage.subitem.dto.SubitemDto
-import edu.handong.cseemileage.mileage.subitem.dto.SubitemForm
-import edu.handong.cseemileage.mileage.subitem.repository.SubitemRepository
+import edu.handong.cseemileage.mileage.item.dto.ItemDto
+import edu.handong.cseemileage.mileage.item.dto.ItemForm
+import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -25,11 +25,11 @@ import javax.annotation.PostConstruct
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class MileageSubitemIntegrationTests @Autowired constructor(
+class MileageItemIntegrationTests @Autowired constructor(
     val mapper: ObjectMapper,
-    val subitemRepository: SubitemRepository,
+    val itemRepository: ItemRepository,
     val categoryRepository: CategoryRepository,
-    val subitemController: MileageSubitemController
+    val subitemController: MileageItemController
 ) {
 
     @Autowired
@@ -54,7 +54,7 @@ class MileageSubitemIntegrationTests @Autowired constructor(
     fun createSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SubitemForm(categoryId, "전공 항목1", 5f, 0, 20f, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -67,15 +67,13 @@ class MileageSubitemIntegrationTests @Autowired constructor(
             .andDo { print() }
             .andReturn()
 
-        val id = subitemRepository.findTopByOrderByIdDesc()?.id ?: 0
+        val id = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
 
         // Then
         assertThat(mvcResult.response.status).isEqualTo(HttpStatus.OK.value())
-        subitemRepository.findById(id).ifPresent {
-            assertThat(it.subitemName).isEqualTo("전공 항목1")
-            assertThat(it.weight).isEqualTo(5f)
+        itemRepository.findById(id).ifPresent {
+            assertThat(it.name).isEqualTo("전공 항목1")
             assertThat(it.isPortfolio).isEqualTo(0)
-            assertThat(it.maxPoint).isEqualTo(20f)
             assertThat(it.description1).isEqualTo("설명1")
             assertThat(it.description2).isEqualTo("설명2")
             assertThat(it.semester).isEqualTo("2023-02")
@@ -88,8 +86,8 @@ class MileageSubitemIntegrationTests @Autowired constructor(
     fun getSubitems() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form1 = SubitemForm(categoryId, "전공 항목1", 5f, 0, 20f, "설명1", "설명2", "2023-02", "R")
-        val form2 = SubitemForm(categoryId, "전공 항목2", 5f, 0, 20f, "설명1", "설명2", "2023-02", "R")
+        val form1 = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
+        val form2 = ItemForm(categoryId, "전공 항목2", 0, "설명1", "설명2", "2023-02", "R")
 
         val req1 = mapper.writeValueAsString(form1)
         val req2 = mapper.writeValueAsString(form2)
@@ -118,11 +116,11 @@ class MileageSubitemIntegrationTests @Autowired constructor(
 
         val res = mapper.readValue(
             mvcResult.response.contentAsString,
-            SubitemDto::class.java
+            ItemDto::class.java
         )
 
         // Then
-        assertThat(res.subitems).hasSize(2)
+        assertThat(res.items).hasSize(2)
     }
 
     @DisplayName("integration: 마일리지 항목 수정")
@@ -130,9 +128,9 @@ class MileageSubitemIntegrationTests @Autowired constructor(
     fun modifySubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SubitemForm(categoryId, "전공 항목1", 5f, 0, 20f, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
         val req = mapper.writeValueAsString(form)
-        val modifyForm = form.copy(subitemName = "수정된 전공 항목 이름")
+        val modifyForm = form.copy(itemName = "수정된 전공 항목 이름")
         val req2 = mapper.writeValueAsString(modifyForm)
 
         mockMvc
@@ -143,7 +141,7 @@ class MileageSubitemIntegrationTests @Autowired constructor(
             .andExpect { status { isOk() } }
             .andReturn()
 
-        val topId = subitemRepository.findTopByOrderByIdDesc()?.id ?: 0
+        val topId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
 
         // When
         mockMvc
@@ -153,8 +151,8 @@ class MileageSubitemIntegrationTests @Autowired constructor(
             }
 
         // Then
-        subitemRepository.findById(topId).ifPresent {
-            assertThat(it.subitemName).isEqualTo("수정된 전공 항목 이름")
+        itemRepository.findById(topId).ifPresent {
+            assertThat(it.name).isEqualTo("수정된 전공 항목 이름")
         }
     }
 
@@ -163,7 +161,7 @@ class MileageSubitemIntegrationTests @Autowired constructor(
     fun deleteSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SubitemForm(categoryId, "전공 항목1", 5f, 0, 20f, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
         val req = mapper.writeValueAsString(form)
 
         mockMvc
@@ -175,7 +173,7 @@ class MileageSubitemIntegrationTests @Autowired constructor(
             .andDo { print() }
             .andReturn()
 
-        val id = subitemRepository.findTopByOrderByIdDesc()?.id ?: 0
+        val id = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
 
         // When
         mockMvc
@@ -185,18 +183,18 @@ class MileageSubitemIntegrationTests @Autowired constructor(
             .andReturn()
 
         // Then
-        assertThat(subitemRepository.findById(id).isEmpty).isTrue
+        assertThat(itemRepository.findById(id).isEmpty).isTrue
     }
 
     @DisplayName("integration: service 의존성 주입")
     @Test
     fun getSubitemService() {
-        assertThat(subitemController.subitemService).isNotNull
+        assertThat(subitemController.itemService).isNotNull
     }
 
     @DisplayName("integration: query service 의존성 주입")
     @Test
     fun getSubitemQueryService() {
-        assertThat(subitemController.subitemQueryService).isNotNull
+        assertThat(subitemController.itemQueryService).isNotNull
     }
 }
