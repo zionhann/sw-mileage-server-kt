@@ -19,11 +19,9 @@ class SemesterQueryService(
     fun getSemestersV1(semester: String): List<SemesterDto.InfoV1> {
         val semesterItems = repository.findAllByName(semester)
         return semesterItems.map {
-            val item = itemRepository.findById(it.item.id)
-            val category = categoryRepository.findById(it.category.id)
             SemesterDto.InfoV1(
-                modelMapper.map(item, ItemDto.InfoV2::class.java),
-                modelMapper.map(category, CategoryDto.InfoV1::class.java),
+                modelMapper.map(it.item, ItemDto.InfoV2::class.java),
+                modelMapper.map(it.category, CategoryDto.InfoV1::class.java),
                 it.name,
                 it.weight
             )
