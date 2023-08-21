@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import javax.validation.Valid
@@ -37,7 +38,24 @@ class MileageCategoryController @Autowired constructor(
     @GetMapping
     fun getCategories(): ResponseEntity<CategoryDto> {
         val categories = categoryQueryService.getCategories()
-        return ResponseEntity.ok(CategoryDto(categories))
+        return ResponseEntity.ok(CategoryDto(categories = categories))
+    }
+
+    @GetMapping("/global")
+    fun getCategoriesWithItems(): ResponseEntity<CategoryDto> {
+        val categories = categoryQueryService.getCategoriesWithItems()
+        return ResponseEntity.ok(CategoryDto(categoriesWithItems = categories))
+    }
+
+    /**
+     * 학기별 카테고리, 항목, 학기 정보 조회
+     * */
+    @GetMapping("/v2")
+    fun getItems(
+        @RequestParam("semester") semester: String
+    ): ResponseEntity<CategoryDto> {
+        val list = categoryQueryService.getCategoryWithItemAndSemester(semester)
+        return ResponseEntity.ok(CategoryDto(categoriesWithItemsAndSemesters = list))
     }
 
     @PatchMapping("/{id}")

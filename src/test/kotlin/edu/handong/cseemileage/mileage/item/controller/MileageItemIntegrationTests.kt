@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import javax.annotation.PostConstruct
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class MileageItemIntegrationTests @Autowired constructor(
@@ -54,7 +56,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun createSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -76,7 +78,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             assertThat(it.isPortfolio).isEqualTo(0)
             assertThat(it.description1).isEqualTo("설명1")
             assertThat(it.description2).isEqualTo("설명2")
-            assertThat(it.semester).isEqualTo("2023-02")
             assertThat(it.stuType).isEqualTo("R")
         }
     }
@@ -86,8 +87,8 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun getSubitems() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form1 = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
-        val form2 = ItemForm(categoryId, "전공 항목2", 0, "설명1", "설명2", "2023-02", "R")
+        val form1 = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
+        val form2 = ItemForm(categoryId, "전공 항목2", 0, "설명1", "설명2", "R")
 
         val req1 = mapper.writeValueAsString(form1)
         val req2 = mapper.writeValueAsString(form2)
@@ -128,7 +129,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun modifySubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
         val req = mapper.writeValueAsString(form)
         val modifyForm = form.copy(itemName = "수정된 전공 항목 이름")
         val req2 = mapper.writeValueAsString(modifyForm)
@@ -161,7 +162,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun deleteSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "2023-02", "R")
+        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
         val req = mapper.writeValueAsString(form)
 
         mockMvc

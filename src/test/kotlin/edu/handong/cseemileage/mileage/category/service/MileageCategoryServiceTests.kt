@@ -51,7 +51,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         assertThat(list).isNotEmpty
         list.find { it.id == savedId }.let {
             assertThat(it).isNotNull
-            assertThat(it?.title).isEqualTo("전공 상담")
+            assertThat(it?.name).isEqualTo("전공 상담")
         }
     }
 
@@ -69,7 +69,7 @@ class MileageCategoryServiceTests @Autowired constructor(
 
         // Then
         assertThat(res.id).isEqualTo(id)
-        assertThat(res.title).isEqualTo("봉사 마일리지")
+        assertThat(res.name).isEqualTo("봉사 마일리지")
         assertThat(res.maxPoints).isEqualTo(10)
     }
 

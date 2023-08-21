@@ -1,6 +1,8 @@
 package edu.handong.cseemileage.mileage.semester.domain
 
+import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.item.domain.Item
+import edu.handong.cseemileage.mileage.semester.dto.SemesterForm
 import org.hibernate.annotations.ColumnDefault
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -20,6 +22,10 @@ class Semester(
     @JoinColumn(name = "subitem_id", nullable = false)
     var item: Item,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    var category: Category,
+
     @ColumnDefault("0")
     @Column(name = "weight", nullable = false)
     var weight: Float = 0f,
@@ -36,4 +42,18 @@ class Semester(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 11)
     var id: Int? = null
+
+    companion object {
+        fun createSemester(form: SemesterForm, item: Item, category: Category): Semester {
+            val semester = Semester(
+                item,
+                category,
+                form.weight,
+                form.maxPoints,
+                form.name
+            )
+            item.addSemesterItem(semester)
+            return semester
+        }
+    }
 }

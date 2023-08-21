@@ -16,12 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class MileageCategoryIntegrationTests @Autowired constructor(
@@ -185,7 +187,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
 
         // Then
         assertThat(id).isEqualTo(initialId)
-        assertThat(found.title).isEqualTo("봉사 마일리지")
+        assertThat(found.name).isEqualTo("봉사 마일리지")
         assertThat(found.maxPoints).isEqualTo(10)
     }
 
