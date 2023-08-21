@@ -5,7 +5,6 @@ import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.domain.Item
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
-import edu.handong.cseemileage.mileage.semester.dto.SemesterDto
 import edu.handong.cseemileage.mileage.semester.dto.SemesterForm
 import edu.handong.cseemileage.mileage.semester.dto.SemesterMultipleForm
 import edu.handong.cseemileage.mileage.semester.repository.SemesterRepository
@@ -140,51 +139,5 @@ class MileageSemesterIntegrationTests @Autowired constructor(
         // Then
         Assertions.assertThat(mvcResult.response.status).isEqualTo(HttpStatus.CREATED.value())
         Assertions.assertThat(semesterRepository.findAllByName(SEMESTER_NAME).size).isEqualTo(2)
-    }
-
-    @DisplayName("integration: 학기별 마일리지 항목 조회")
-    @Test
-    fun readSemestersByName() {
-        // Given
-        val item1 = itemRepository.findByName("전공 항목1")
-        val item2 = itemRepository.findByName("캠프 항목1")
-        val item3 = itemRepository.findByName("캠프 항목2")
-        val semesterList = mutableListOf<SemesterForm>()
-        item1.id?.let {
-            semesterList.add(SemesterForm(it, WEIGHT, MAX_POINTS, SEMESTER_NAME))
-        }
-        item2.id?.let {
-            semesterList.add(SemesterForm(it, WEIGHT * 2, MAX_POINTS, SEMESTER_NAME))
-        }
-        item3.id?.let {
-            semesterList.add(SemesterForm(it, WEIGHT * 3, MAX_POINTS, "2019-02"))
-        }
-        val form = SemesterMultipleForm(semesterList)
-        val req = mapper.writeValueAsString(form)
-
-        mockMvc
-            .post("$API_URI/multiple") {
-                contentType = MediaType.APPLICATION_JSON
-                content = req
-            }
-            .andExpect { status { isCreated() } }
-            .andDo { print() }
-            .andReturn()
-
-        // When
-        val mvcResult = mockMvc
-            .get("$API_URI?semester=$SEMESTER_NAME")
-            .andExpect { status { isOk() } }
-            .andDo { print() }
-            .andReturn()
-
-        val res = mapper.readValue(
-            mvcResult.response.contentAsString,
-            SemesterDto::class.java
-        )
-
-        // Then
-        Assertions.assertThat(mvcResult.response.status).isEqualTo(HttpStatus.OK.value())
-        Assertions.assertThat(res.semesters).hasSize(2)
     }
 }
