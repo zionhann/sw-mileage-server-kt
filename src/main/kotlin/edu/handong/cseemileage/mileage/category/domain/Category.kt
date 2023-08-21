@@ -1,6 +1,7 @@
 package edu.handong.cseemileage.mileage.category.domain
 
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
+import edu.handong.cseemileage.mileage.item.domain.Item
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import org.jetbrains.annotations.NotNull
@@ -10,6 +11,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -24,7 +26,10 @@ class Category(
 
     @NotNull
     @Column(name = "max_points", nullable = false, length = 11)
-    var maxPoints: Int? = 0
+    var maxPoints: Int? = 0,
+
+    @OneToMany(mappedBy = "category")
+    var items: MutableList<Item> = mutableListOf()
 ) {
 
     @Id
@@ -46,5 +51,12 @@ class Category(
         this.maxPoints = form.maxPoints
 
         return id!!
+    }
+
+    /**
+     * 양방향 매핑 - 연관관계 편의 메서드
+     * */
+    fun addItem(item: Item) {
+        items.add(item)
     }
 }

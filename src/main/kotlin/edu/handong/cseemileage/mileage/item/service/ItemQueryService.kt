@@ -6,26 +6,27 @@ import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundExcept
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class ItemQueryService(
     val repository: ItemRepository,
-    val categoryRepository: CategoryRepository
+    val categoryRepository: CategoryRepository,
+    val modelMapper: ModelMapper
 ) {
-    fun getItems(): List<ItemDto.Info> {
+    fun getItems(): List<ItemDto.InfoV1> {
         val items = repository.findAll()
         return items.map {
             val category = categoryRepository.findById(it.category?.id ?: 0)
                 .orElseThrow { throw CategoryNotFoundException(ExceptionMessage.CATEGORY_NOT_FOUND) }
-            ItemDto.Info(
+            ItemDto.InfoV1(
                 it.id,
-                CategoryDto.Info(category.id!!, category.name!!, category.maxPoints!!),
+                modelMapper.map(category, CategoryDto.InfoV1::class.java),
                 it.name,
                 it.isPortfolio,
                 it.description1,
                 it.description2,
-                it.semester,
                 it.stuType
             )
         }

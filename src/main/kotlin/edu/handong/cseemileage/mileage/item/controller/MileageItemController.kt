@@ -33,7 +33,7 @@ class MileageItemController @Autowired constructor(
     @GetMapping
     fun getItems(): ResponseEntity<ItemDto> {
         val items = itemQueryService.getItems()
-        return ResponseEntity.ok(ItemDto(items))
+        return ResponseEntity.ok(ItemDto(items = items))
     }
 
     @PatchMapping("/{subitemId}")

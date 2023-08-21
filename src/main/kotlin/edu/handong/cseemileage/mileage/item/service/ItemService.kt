@@ -18,15 +18,7 @@ class ItemService(
     fun saveItem(form: ItemForm) {
         val category = categoryRepository.findById(form.categoryId)
             .orElseThrow { throw RuntimeException("Category not found") }
-        val item = Item(
-            category,
-            form.itemName,
-            form.isPortfolio,
-            form.description1,
-            form.description2,
-            form.semester,
-            form.stuType
-        )
+        val item = Item.createItem(form, category)
         repository.save(item)
     }
 
@@ -40,7 +32,6 @@ class ItemService(
                 isPortfolio = form.isPortfolio
                 description1 = form.description1
                 description2 = form.description2
-                semester = form.semester
                 stuType = form.stuType
             }
     }

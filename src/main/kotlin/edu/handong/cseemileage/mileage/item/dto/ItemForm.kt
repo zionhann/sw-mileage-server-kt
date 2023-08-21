@@ -6,6 +6,5 @@ data class ItemForm(
     val isPortfolio: Int,
     val description1: String,
     val description2: String,
-    val semester: String,
     val stuType: String
 )
