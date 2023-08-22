@@ -26,8 +26,9 @@ class SemesterService(
         return Semester.createSemester(form, item, item.category)
     }
 
-    fun saveSemester(form: SemesterForm) {
-        repository.save(createOneSemester(form))
+    fun saveSemester(form: SemesterForm): Int {
+        val saved = repository.save(createOneSemester(form))
+        return saved.id!!
     }
 
     fun createSemesterMultiple(form: SemesterMultipleForm): MutableList<Semester> {

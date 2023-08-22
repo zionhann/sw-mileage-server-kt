@@ -26,7 +26,7 @@ class MileageItemController @Autowired constructor(
     fun createItem(
         @RequestBody @Valid
         form: ItemForm
-    ) {
+    ): Int {
         return itemService.saveItem(form)
     }
 
