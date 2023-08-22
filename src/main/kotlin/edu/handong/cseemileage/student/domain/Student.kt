@@ -48,10 +48,10 @@ class Student(
 
     @ColumnDefault("0")
     @Column(name = "login_count", nullable = false, columnDefinition = "smallint(6)")
-    var loginCount: Int? = null
+    var loginCount: Int = 1
 
     @Column(name = "last_login_date", columnDefinition = "timestamp", nullable = false)
-    var lastLoginDate: LocalDateTime? = null
+    var lastLoginDate: LocalDateTime = LocalDateTime.now()
 
     @UpdateTimestamp
     @Column(name = "mod_date", columnDefinition = "timestamp")

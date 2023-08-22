@@ -1,4 +1,4 @@
-package edu.handong.cseemileage.mileage.record
+package edu.handong.cseemileage.mileage.record.domain
 
 import edu.handong.cseemileage.mileage.semester.domain.Semester
 import edu.handong.cseemileage.student.domain.Student
@@ -28,10 +28,12 @@ class Record(
     var student: Student,
 
     @Column(name = "description1", length = 300)
-    var description1: String?,
+    var description1: String? = null,
 
     @Column(name = "description2", length = 300)
-    var description2: String?
+    var description2: String? = null,
+
+    var counts: Int = 1
 ) {
 
     @Id

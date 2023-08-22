@@ -15,11 +15,13 @@ class ItemService(
     val repository: ItemRepository,
     val categoryRepository: CategoryRepository
 ) {
-    fun saveItem(form: ItemForm) {
+    fun saveItem(form: ItemForm): Int {
         val category = categoryRepository.findById(form.categoryId)
             .orElseThrow { throw RuntimeException("Category not found") }
         val item = Item.createItem(form, category)
-        repository.save(item)
+        val saved = repository.save(item)
+
+        return saved.id!!
     }
 
     fun modifyItem(itemId: Int, form: ItemForm) {
