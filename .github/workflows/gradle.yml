@@ -45,6 +45,6 @@ jobs:
       with:
         files: |
           build/test-results/**/*.xml
-    - name: Run CURL command
+    - name: Deploy to WALAB/sw_mileage
       run: |
         curl -X POST https://f073-218-150-69-241.ngrok-free.app/job/MileageSystem/build --user yujin:1151457c2aeb13316c179ea2ce64e6439f
