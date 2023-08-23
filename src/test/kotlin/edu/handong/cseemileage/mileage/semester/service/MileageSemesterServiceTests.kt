@@ -68,7 +68,7 @@ class MileageSemesterServiceTests @Autowired constructor(
 
     @DisplayName("integration: bulk insert 성능 테스트 - 학기별 마일리지 항목 생성(multiple)")
     @Test
-    @Profile("dev")
+    @Profile("dev") // CI환경에서만 실행
     fun createSemesterMultipleBulkInsert() {
         // Given
         val item1 = itemRepository.findAllByName("전공 항목1").get(0)
