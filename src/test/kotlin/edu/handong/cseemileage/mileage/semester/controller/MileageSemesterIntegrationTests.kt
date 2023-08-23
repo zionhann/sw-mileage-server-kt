@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
@@ -52,6 +53,7 @@ class MileageSemesterIntegrationTests @Autowired constructor(
     }
 
     @PostConstruct
+    @Profile("dev") // CI 환경에서만 실행
     fun init() {
         mockMvc = MockMvcBuilders
             .standaloneSetup(semesterController)

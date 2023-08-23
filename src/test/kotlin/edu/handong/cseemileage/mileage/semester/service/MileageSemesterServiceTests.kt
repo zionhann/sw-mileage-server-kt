@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
@@ -35,6 +36,7 @@ class MileageSemesterServiceTests @Autowired constructor(
     }
 
     @PostConstruct
+    @Profile("dev") // CI 환경에서만 실행
     fun init() {
         var category = Category("전공 마일리지", "-", 20)
         categoryRepository.save(category)
