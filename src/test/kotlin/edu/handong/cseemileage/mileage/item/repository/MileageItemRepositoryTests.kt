@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class MileageItemRepositoryTests @Autowired constructor(
     private val itemRepository: ItemRepository,
     private val categoryRepository: CategoryRepository
