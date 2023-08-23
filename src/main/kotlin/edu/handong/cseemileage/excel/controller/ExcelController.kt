@@ -45,6 +45,7 @@ class ExcelController @Autowired constructor(
         const val EXCEL_TYPE_SEMESTER_IN = "semesterIn"
     }
 
+    @Deprecated(message = "엑셀 구현 중 참고용 기본 코드로만 사용할 예정")
     @GetMapping("/test")
     fun downloadExcel(response: HttpServletResponse) {
         val workbook: Workbook = HSSFWorkbook()
@@ -75,7 +76,7 @@ class ExcelController @Autowired constructor(
      *
      * @param excelType 엑셀 파일의 종류: category, item, semester, global, semesterIn
      * */
-    @GetMapping("/{excelType}")
+    @GetMapping("/download/{excelType}")
     fun downloadCategory(
         response: HttpServletResponse,
         @PathVariable("excelType") excelType: String,
@@ -84,27 +85,26 @@ class ExcelController @Autowired constructor(
         response.contentType = "application/octet-stream"
         response.setHeader("Content-Disposition", "attachment;filename=$excelType$semester.xls")
 
-        var downloadStrategy: DownloadStrategy? = null
-        if (excelType == EXCEL_TYPE_CATEGORY_ONLY) {
-            downloadStrategy = CategoryOnly(categoryRepository)
-        } else if (excelType == EXCEL_TYPE_ITEM_ONLY) {
-            downloadStrategy = ItemOnly(itemRepository)
-        } else if (excelType == EXCEL_TYPE_SEMESTER_ONLY) {
-            downloadStrategy = SemesterOnly(semesterRepository)
-        } else if (excelType == EXCEL_TYPE_GLOBAL) {
-            downloadStrategy = Global(itemRepository)
-        } else if (excelType == EXCEL_TYPE_SEMESTER_IN) {
-            downloadStrategy = SemesterIn(semesterRepository)
+        var downloadStrategy: DownloadStrategy? = when (excelType) {
+            EXCEL_TYPE_CATEGORY_ONLY -> CategoryOnly(categoryRepository)
+            EXCEL_TYPE_ITEM_ONLY -> ItemOnly(itemRepository)
+            EXCEL_TYPE_SEMESTER_ONLY -> SemesterOnly(semesterRepository)
+            EXCEL_TYPE_GLOBAL -> Global(itemRepository)
+            EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterRepository)
+            else -> null
+        }
+        if (downloadStrategy != null) {
             downloadStrategy.semester = semester
         }
 
-        val excelUtils = downloadStrategy?.let {
+        downloadStrategy?.let {
             val excelUtils = ExcelUtils(it)
             val stream: ByteArrayInputStream = excelUtils.createListToExcel()
             IOUtils.copy(stream, response.outputStream)
         }
     }
 
+    @Deprecated(message = "엑셀 구현 중 참고용 기본 코드로만 사용할 예정")
     @PostMapping("/test")
     fun uploadExcel(
         @RequestParam("file") file: MultipartFile
