@@ -22,4 +22,8 @@ class SemesterOnly(
     override fun getList(): List<*>? {
         return semesterRepository.findAll()
     }
+
+    override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
+        return super.getBasicValue(obj, fieldName)
+    }
 }

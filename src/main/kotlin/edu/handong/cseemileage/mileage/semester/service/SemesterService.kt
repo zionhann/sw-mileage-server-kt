@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.mileage.semester.service
 
+import edu.handong.cseemileage.mileage.item.exception.ItemNotFoundException
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.semester.domain.Semester
 import edu.handong.cseemileage.mileage.semester.dto.SemesterForm
@@ -21,7 +22,7 @@ class SemesterService(
 
     fun createOneSemester(form: SemesterForm): Semester {
         val item = itemRepository.findById(form.itemId)
-            .orElseThrow { throw RuntimeException("Item not found") }
+            .orElseThrow { ItemNotFoundException() }
         println(item.category.name)
         return Semester.createSemester(form, item, item.category)
     }

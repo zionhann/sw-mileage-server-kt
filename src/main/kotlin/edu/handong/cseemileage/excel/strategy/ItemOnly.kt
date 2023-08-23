@@ -22,4 +22,8 @@ class ItemOnly(
     override fun getList(): List<*>? {
         return itemRepository.findAll()
     }
+
+    override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
+        return super.getBasicValue(obj, fieldName)
+    }
 }

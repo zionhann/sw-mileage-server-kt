@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.excel.strategy
 
+import edu.handong.cseemileage.excel.ExcelUtils
 import edu.handong.cseemileage.excel.ExcelUtils.Companion.addCategoryColumns
 import edu.handong.cseemileage.excel.ExcelUtils.Companion.addItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
@@ -23,5 +24,12 @@ class Global(
 
     override fun getList(): List<*>? {
         return itemRepository.findAllWithCategory()
+    }
+
+    override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
+        if (excelDtoType == ExcelUtils.EXCEL_DTO_CATEGORY) {
+            return super.getCategoryValue(obj, fieldName)
+        }
+        return super.getBasicValue(obj, fieldName)
     }
 }

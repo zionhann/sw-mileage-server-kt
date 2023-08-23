@@ -35,6 +35,7 @@ class MileageCategoryController @Autowired constructor(
         ).body(mapOf("id" to savedId))
     }
 
+    @Deprecated(message = "글로벌 카테고리, 항목 join 조회 사용 예정")
     @GetMapping
     fun getCategories(): ResponseEntity<CategoryDto> {
         val categories = categoryQueryService.getCategories()

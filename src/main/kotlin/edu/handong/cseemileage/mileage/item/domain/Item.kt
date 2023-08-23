@@ -44,7 +44,7 @@ class Item(
     var isPortfolio: Int,
 
     @Column(name = "description1", length = 300)
-    var description1: String,
+    var description1: String? = null,
 
     @Column(name = "description2", length = 300)
     var description2: String,
