@@ -13,7 +13,6 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.lang.reflect.Field
 
 class ExcelUtils(
     private val downloadStrategy: DownloadStrategy
@@ -98,7 +97,11 @@ class ExcelUtils(
                 for (columnIndex in excelDtoList.indices) {
                     cell = dataRow.createCell(columnIndex)
                     val value: Any? = o?.let {
-                        getValue(it, excelDtoList[columnIndex].columnId, excelDtoList[columnIndex].type)
+                        downloadStrategy.getValue(
+                            it,
+                            excelDtoList[columnIndex].columnId,
+                            excelDtoList[columnIndex].type
+                        )
                     }
                     cell.setCellValue((value ?: "").toString())
                 }
@@ -115,41 +118,5 @@ class ExcelUtils(
         workbook.write(outputStream)
         outputStream.flush()
         return ByteArrayInputStream(outputStream.toByteArray())
-    }
-
-    fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
-        if (obj.javaClass.simpleName != excelDtoType) {
-            if (obj.javaClass.simpleName == EXCEL_DTO_ITEM && excelDtoType == EXCEL_DTO_CATEGORY) {
-                val categoryField: Field = obj.javaClass.getDeclaredField("category")
-                categoryField.isAccessible = true
-                val categoryObj = categoryField.get(obj)
-                val field: Field = categoryObj.javaClass.getDeclaredField(fieldName)
-                field.isAccessible = true
-                return field.get(categoryObj)
-            }
-            if (obj.javaClass.simpleName == EXCEL_DTO_SEMESTER) {
-                if (excelDtoType == EXCEL_DTO_ITEM) {
-                    val itemField: Field = obj.javaClass.getDeclaredField("item")
-                    itemField.isAccessible = true
-                    val itemObj = itemField.get(obj)
-                    val field: Field = itemObj.javaClass.getDeclaredField(fieldName)
-                    field.isAccessible = true
-                    return field.get(itemObj)
-                } else if (excelDtoType == EXCEL_DTO_CATEGORY) {
-                    val itemField: Field = obj.javaClass.getDeclaredField("item")
-                    itemField.isAccessible = true
-                    val itemObj = itemField.get(obj)
-                    val categoryField: Field = itemObj.javaClass.getDeclaredField("category")
-                    categoryField.isAccessible = true
-                    val categoryObj = categoryField.get(itemObj)
-                    val field: Field = categoryObj.javaClass.getDeclaredField(fieldName)
-                    field.isAccessible = true
-                    return field.get(categoryObj)
-                }
-            }
-        }
-        val field: Field = obj.javaClass.getDeclaredField(fieldName)
-        field.isAccessible = true
-        return field.get(obj)
     }
 }
