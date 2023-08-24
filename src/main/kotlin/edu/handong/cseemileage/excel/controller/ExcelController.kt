@@ -10,7 +10,7 @@ import edu.handong.cseemileage.excel.strategy.SemesterIn
 import edu.handong.cseemileage.excel.strategy.SemesterOnly
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
-import edu.handong.cseemileage.mileage.semester.repository.SemesterRepository
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -35,7 +35,7 @@ class ExcelController @Autowired constructor(
     val excelService: ExcelService,
     val categoryRepository: CategoryRepository,
     val itemRepository: ItemRepository,
-    val semesterRepository: SemesterRepository
+    val semesterItemRepository: SemesterItemRepository
 ) {
     companion object {
         const val EXCEL_TYPE_CATEGORY_ONLY = "category"
@@ -88,9 +88,9 @@ class ExcelController @Autowired constructor(
         var downloadStrategy: DownloadStrategy? = when (excelType) {
             EXCEL_TYPE_CATEGORY_ONLY -> CategoryOnly(categoryRepository)
             EXCEL_TYPE_ITEM_ONLY -> ItemOnly(itemRepository)
-            EXCEL_TYPE_SEMESTER_ONLY -> SemesterOnly(semesterRepository)
+            EXCEL_TYPE_SEMESTER_ONLY -> SemesterOnly(semesterItemRepository)
             EXCEL_TYPE_GLOBAL -> Global(itemRepository)
-            EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterRepository)
+            EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterItemRepository)
             else -> null
         }
         if (downloadStrategy != null) {

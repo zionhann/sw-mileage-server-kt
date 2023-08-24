@@ -1,26 +1,26 @@
 package edu.handong.cseemileage.excel.strategy
 
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterColumns
+import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
-import edu.handong.cseemileage.mileage.semester.repository.SemesterRepository
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 
 class SemesterOnly(
-    val semesterRepository: SemesterRepository
+    val semesterItemRepository: SemesterItemRepository
 ) : DownloadStrategy {
     override var semester: String = ""
     override var description: String = "전체 학기 항목 조회"
     override fun getExcelDtoList(): List<ExcelDto> {
         val list: MutableList<ExcelDto> = ArrayList()
-        addSemesterColumns(list)
+        addSemesterItemColumns(list)
         return list
     }
 
     override fun getCount(): Long {
-        return semesterRepository.count()
+        return semesterItemRepository.count()
     }
 
     override fun getList(): List<*>? {
-        return semesterRepository.findAll()
+        return semesterItemRepository.findAll()
     }
 
     override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {

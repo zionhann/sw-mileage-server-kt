@@ -1,13 +1,11 @@
 package edu.handong.cseemileage.mileage.item.domain
 
+import edu.handong.cseemileage.BaseEntity
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
-import edu.handong.cseemileage.mileage.semester.domain.Semester
+import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import org.hibernate.annotations.ColumnDefault
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
 import org.jetbrains.annotations.NotNull
-import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -19,16 +17,8 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
-/**
- * @NotNull 붙이는 기준(& 조건)
- * - nullable = false
- * - default 값이 없는 경우
- *
- * 제외 조건
- * - PK
- * */
 @Entity
-@Table(name = "_sw_mileage_subitem")
+@Table(name = "_sw_mileage_item")
 class Item(
     @field: NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +26,7 @@ class Item(
     var category: Category,
 
     @field: NotNull
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", length = 30)
     var name: String,
 
     @ColumnDefault("0")
@@ -53,20 +43,36 @@ class Item(
     var stuType: String,
 
     @OneToMany(mappedBy = "item")
-    var semesterItems: MutableList<Semester> = mutableListOf()
-) {
+    var semesterItems: MutableList<SemesterItem> = mutableListOf()
+) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 11)
     var id: Int? = null
 
-    @UpdateTimestamp
-    @Column(columnDefinition = "timestamp", name = "mod_date")
-    var modDate: LocalDateTime? = null
+    // new fields
+    @ColumnDefault("'Y'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "is_visible")
+    var isVisible: String = "Y"
 
-    @CreationTimestamp
-    @Column(columnDefinition = "timestamp", name = "reg_date")
-    var regDate: LocalDateTime? = null
+    @ColumnDefault("'N'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "is_student_visible")
+    var isStudentVisible: String = "N"
+
+    @ColumnDefault("'N'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "is_student_input")
+    var isStudentInput: String = "N"
+
+    @ColumnDefault("'N'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "is_multi")
+    var isMulti: String = "N"
+
+    @ColumnDefault("'N'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "has_file_description")
+    var hasFileDescription: String = "N"
+
+    @Column(name = "file_description", length = 300)
+    var fileDescription: String? = null
 
     companion object {
         fun createItem(form: ItemForm, category: Category): Item {
@@ -83,10 +89,7 @@ class Item(
         }
     }
 
-    /**
-     * 양방향 매핑 - 연관관계 편의 메소드
-     * */
-    fun addSemesterItem(semester: Semester) {
-        semesterItems.add(semester)
+    fun addSemesterItem(semesterItem: SemesterItem) {
+        semesterItems.add(semesterItem)
     }
 }

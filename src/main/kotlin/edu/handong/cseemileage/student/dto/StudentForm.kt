@@ -5,7 +5,6 @@ class StudentForm(
     val name: String?,
     val year: Int?,
     val semesterCount: Int?,
-    val email: String?,
     val department: String?,
     val major1: String?,
     val major2: String?

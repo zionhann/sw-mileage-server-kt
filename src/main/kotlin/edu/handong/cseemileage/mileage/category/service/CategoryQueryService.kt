@@ -4,15 +4,15 @@ import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundException
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
-import edu.handong.cseemileage.mileage.semester.dto.SemesterDto
-import edu.handong.cseemileage.mileage.semester.repository.SemesterRepository
+import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class CategoryQueryService(
     val repository: CategoryRepository,
-    val semesterRepository: SemesterRepository,
+    val semesterItemRepository: SemesterItemRepository,
     val modelMapper: ModelMapper
 ) {
     fun getCategories(): List<CategoryDto.InfoV1> {
@@ -49,7 +49,7 @@ class CategoryQueryService(
      * */
     fun getCategoryWithItemAndSemester(semesterName: String): List<CategoryDto.InfoV3> {
         // 해당 학기 정보 전체 조회
-        val semesterList = semesterRepository.findAllByName(semesterName)
+        val semesterList = semesterItemRepository.findAllBySemesterName(semesterName)
 
         // 해당 학기에 사용된 카테고리 조회(중복 제거)
         val categories = semesterList.map { it.category }
@@ -60,11 +60,11 @@ class CategoryQueryService(
             val itemInfos = category.items.map { item ->
                 val semesterInfos = item.semesterItems.filter { semesterItem ->
                     // 해당 학기에 사용된 항목만 필터링
-                    semesterItem.name == semesterName
+                    semesterItem.semesterName == semesterName
                 }.map { semesterItem ->
-                    SemesterDto.InfoV3(
-                        semesterItem.name,
-                        semesterItem.weight
+                    SemesterItemDto.InfoV3(
+                        semesterItem.semesterName,
+                        semesterItem.pointValue
                     )
                 }
                 ItemDto.InfoV3(
