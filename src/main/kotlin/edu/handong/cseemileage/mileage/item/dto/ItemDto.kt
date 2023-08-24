@@ -2,7 +2,7 @@ package edu.handong.cseemileage.mileage.item.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
-import edu.handong.cseemileage.mileage.semester.dto.SemesterDto
+import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class ItemDto(
@@ -50,7 +50,7 @@ class ItemDto(
         val description1: String?,
         val description2: String?,
         val stuType: String?,
-        val semesters: List<SemesterDto.InfoV3>
+        val semesters: List<SemesterItemDto.InfoV3>
     ) {
         constructor() : this(0, "", 0, "", "", "", listOf())
     }

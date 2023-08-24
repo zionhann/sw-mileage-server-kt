@@ -14,7 +14,7 @@ class ExceptionMessage {
         const val RECORD_INVALID_COUNTS = "마일리지 등록 개수가 음수입니다. 0 이상의 값을 넣어주세요."
         const val RECORD_NOT_FOUND = "해당하는 마일리지 기록을 찾을 수 없습니다."
 
-        const val SEMESTER_NOT_FOUND = "해당 학기가 존재하지 않습니다."
+        const val SEMESTER_ITEM_NOT_FOUND = "해당 학기가 존재하지 않습니다."
 
         const val STUDENT_NOT_FOUND = "해당 학생이 존재하지 않습니다."
     }

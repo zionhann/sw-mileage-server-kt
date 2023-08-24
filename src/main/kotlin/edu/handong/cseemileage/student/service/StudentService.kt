@@ -16,13 +16,11 @@ class StudentService(
         val entity = Student(
             name = form.name,
             sid = form.sid,
-            email = form.email,
             school = form.department,
             major1 = form.major1,
             major2 = form.major2,
             gradeLevel = form.year,
-            semesterCount = form.semesterCount,
-            mobile = ""
+            semesterCount = form.semesterCount
         )
         val saved = studentRepository.save(entity)
 

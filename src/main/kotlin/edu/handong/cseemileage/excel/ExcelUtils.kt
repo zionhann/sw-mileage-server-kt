@@ -25,13 +25,17 @@ class ExcelUtils(
          */
         const val EXCEL_DTO_CATEGORY = "Category"
         const val EXCEL_DTO_ITEM = "Item"
-        const val EXCEL_DTO_SEMESTER = "Semester"
+        const val EXCEL_DTO_SEMESTER = "SemesterItem"
 
         fun addCategoryColumns(list: MutableList<ExcelDto>) {
             list.add(ExcelDto("id", "카테고리 ID", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("orderIdx", "순서", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("name", "카테고리 이름", EXCEL_DTO_CATEGORY))
-            list.add(ExcelDto("description", "카테고리 설명", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("description1", "카테고리 설명1", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("description2", "카테고리 설명2", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("maxPoints", "카테고리 최대 마일리지", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("isMulti", "다중 하위 항목 여부", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("itemType", "하위 항목 유형", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("modDate", "카테고리 마지막 수정일", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("regDate", "카테고리 등록일", EXCEL_DTO_CATEGORY))
         }
@@ -43,15 +47,24 @@ class ExcelUtils(
             list.add(ExcelDto("description1", "세부 항목 설명1", EXCEL_DTO_ITEM))
             list.add(ExcelDto("description2", "세부 항목 설명2", EXCEL_DTO_ITEM))
             list.add(ExcelDto("stuType", "학생 유형", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("isVisible", "보이기 여부", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("isStudentVisible", "학생 보이기 여부", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("isStudentInput", "학생 입력 여부", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("isMulti", "다중 학기별 항목 여부", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("hasFileDescription", "파일 설명 여부", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("fileDescription", "파일 설명", EXCEL_DTO_ITEM))
             list.add(ExcelDto("modDate", "세부 항목 마지막 수정일", EXCEL_DTO_ITEM))
             list.add(ExcelDto("regDate", "세부 항목 등록일", EXCEL_DTO_ITEM))
         }
 
-        fun addSemesterColumns(list: MutableList<ExcelDto>) {
+        fun addSemesterItemColumns(list: MutableList<ExcelDto>) {
             list.add(ExcelDto("id", "학기 정보 ID", EXCEL_DTO_SEMESTER))
-            list.add(ExcelDto("name", "학기", EXCEL_DTO_SEMESTER))
-            list.add(ExcelDto("weight", "가중치", EXCEL_DTO_SEMESTER))
-            list.add(ExcelDto("maxPoints", "학기별 항목 최대 마일리지", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("semesterName", "학기", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("count", "가중치", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("itemMaxPoints", "학기별 항목 최대 마일리지", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("categoryMaxPoints", "학기별 카테고리 최대 마일리지", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("modDate", "학기별 항목 마지막 수정일", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("regDate", "학기별 항목 등록일", EXCEL_DTO_ITEM))
         }
     }
 

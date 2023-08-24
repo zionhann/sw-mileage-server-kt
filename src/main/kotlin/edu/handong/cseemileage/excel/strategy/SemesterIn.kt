@@ -3,12 +3,12 @@ package edu.handong.cseemileage.excel.strategy
 import edu.handong.cseemileage.excel.ExcelUtils
 import edu.handong.cseemileage.excel.ExcelUtils.Companion.addCategoryColumns
 import edu.handong.cseemileage.excel.ExcelUtils.Companion.addItemColumns
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterColumns
+import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
-import edu.handong.cseemileage.mileage.semester.repository.SemesterRepository
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 
 class SemesterIn(
-    val semesterRepository: SemesterRepository
+    val semesterItemRepository: SemesterItemRepository
 ) : DownloadStrategy {
     override var semester: String = ""
     override var description: String = "학기별 항목 조회"
@@ -16,16 +16,17 @@ class SemesterIn(
         val list: MutableList<ExcelDto> = ArrayList()
         addCategoryColumns(list)
         addItemColumns(list)
-        addSemesterColumns(list)
+        addSemesterItemColumns(list)
         return list
     }
 
     override fun getCount(): Long {
-        return semesterRepository.countByName(semester)
+        return semesterItemRepository.countBySemesterName(semester)
     }
 
     override fun getList(): List<*>? {
-        return semesterRepository.findAllWithItemAndCategory(semester)
+//        return semesterItemRepository.findAllWithItemAndCategory(semester)
+        return null
     }
 
     override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {

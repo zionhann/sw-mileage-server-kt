@@ -1,11 +1,10 @@
 package edu.handong.cseemileage.mileage.category.domain
 
+import edu.handong.cseemileage.BaseEntity
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.item.domain.Item
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
+import org.hibernate.annotations.ColumnDefault
 import org.jetbrains.annotations.NotNull
-import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -17,12 +16,11 @@ import javax.persistence.Table
 @Entity
 @Table(name = "_sw_mileage_category")
 class Category(
-    @NotNull
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(name = "name", length = 30)
     var name: String? = null,
 
-    @Column(name = "description", length = 300)
-    var description: String? = null,
+    @Column(name = "description1", length = 300)
+    var description1: String? = null,
 
     @NotNull
     @Column(name = "max_points", nullable = false, length = 11)
@@ -30,24 +28,32 @@ class Category(
 
     @OneToMany(mappedBy = "category")
     var items: MutableList<Item> = mutableListOf()
-) {
+) : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 11)
     var id: Int? = null
 
-    @UpdateTimestamp
-    @Column(columnDefinition = "timestamp", name = "mod_date")
-    var modDate: LocalDateTime? = null
+    // 새로 추가된 필드
+    @ColumnDefault("0")
+    @Column(name = "order_idx", nullable = false, length = 11)
+    var orderIdx: Int = 0
 
-    @CreationTimestamp
-    @Column(columnDefinition = "timestamp", name = "reg_date")
-    var regDate: LocalDateTime? = null
+    @Column(name = "description2", length = 300)
+    var description2: String? = null
+
+    @ColumnDefault("'R'")
+    @Column(name = "item_type", nullable = false, columnDefinition = "char(1)")
+    var itemType: String = "R"
+
+    @ColumnDefault("'0'")
+    @Column(name = "is_multi", nullable = false, columnDefinition = "char(1)")
+    var isMulti: String = "0"
 
     fun update(form: CategoryForm): Int {
         this.name = form.title
-        this.description = form.description
+        this.description1 = form.description
         this.maxPoints = form.maxPoints
 
         return id!!
