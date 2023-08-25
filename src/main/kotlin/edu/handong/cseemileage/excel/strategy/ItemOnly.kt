@@ -1,7 +1,7 @@
 package edu.handong.cseemileage.excel.strategy
 
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addItemColumns
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 
 class ItemOnly(

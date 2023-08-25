@@ -1,10 +1,11 @@
 package edu.handong.cseemileage.excel.strategy
 
-import edu.handong.cseemileage.excel.ExcelUtils
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addCategoryColumns
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addItemColumns
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.EXCEL_DTO_CATEGORY
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.EXCEL_DTO_ITEM
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addCategoryColumns
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addItemColumns
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 
 class SemesterIn(
@@ -25,14 +26,14 @@ class SemesterIn(
     }
 
     override fun getList(): List<*>? {
-//        return semesterItemRepository.findAllWithItemAndCategory(semester)
+        return semesterItemRepository.findAllWithItemAndCategory(semester)
         return null
     }
 
     override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
-        if (excelDtoType == ExcelUtils.EXCEL_DTO_ITEM) {
+        if (excelDtoType == EXCEL_DTO_ITEM) {
             return super.getItemValue(obj, fieldName)
-        } else if (excelDtoType == ExcelUtils.EXCEL_DTO_CATEGORY) {
+        } else if (excelDtoType == EXCEL_DTO_CATEGORY) {
             val itemObj = getItemObj(obj)
             val categoryObj = getCategoryObj(itemObj)
             return super.getBasicValue(categoryObj, fieldName)

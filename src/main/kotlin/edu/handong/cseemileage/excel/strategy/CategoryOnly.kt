@@ -1,7 +1,7 @@
 package edu.handong.cseemileage.excel.strategy
 
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addCategoryColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addCategoryColumns
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import org.springframework.stereotype.Component
 
