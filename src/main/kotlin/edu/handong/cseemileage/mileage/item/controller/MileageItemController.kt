@@ -4,7 +4,6 @@ import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
 import edu.handong.cseemileage.mileage.item.service.ItemQueryService
 import edu.handong.cseemileage.mileage.item.service.ItemService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,11 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/items")
-class MileageItemController @Autowired constructor(
+class MileageItemController(
     val itemService: ItemService,
     val itemQueryService: ItemQueryService
 ) {
@@ -26,8 +26,11 @@ class MileageItemController @Autowired constructor(
     fun createItem(
         @RequestBody @Valid
         form: ItemForm
-    ): Int {
-        return itemService.saveItem(form)
+    ): ResponseEntity<Map<String, Int>> {
+        val savedId = itemService.saveItem(form)
+        return ResponseEntity.created(
+            URI.create("/api/mileage/items/$savedId")
+        ).body(mapOf("id" to savedId))
     }
 
     @GetMapping
@@ -36,21 +39,22 @@ class MileageItemController @Autowired constructor(
         return ResponseEntity.ok(ItemDto(items = items))
     }
 
-    @PatchMapping("/{subitemId}")
+    @PatchMapping("/{itemId}")
     fun modifyItem(
-        @PathVariable("subitemId")
-        itemId: Int,
+        @PathVariable itemId: Int,
         @RequestBody @Valid
         form: ItemForm
-    ) {
-        return itemService.modifyItem(itemId, form)
+    ): ResponseEntity<Map<String, Int>> {
+        val modifiedId = itemService.modifyItem(itemId, form)
+        return ResponseEntity.ok(mapOf("id" to modifiedId))
     }
 
-    @DeleteMapping("/{subitemId}")
+    @DeleteMapping("/{itemId}")
     fun deleteItem(
-        @PathVariable("subitemId")
+        @PathVariable
         itemId: Int
-    ) {
-        return itemService.deleteItem(itemId)
+    ): ResponseEntity<Map<String, Int>> {
+        val removedId = itemService.deleteItem(itemId)
+        return ResponseEntity.ok(mapOf("id" to removedId))
     }
 }

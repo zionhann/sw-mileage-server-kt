@@ -1,6 +1,5 @@
 package edu.handong.cseemileage.mileage.item.service
 
-import edu.handong.cseemileage.exception.ExceptionMessage
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundException
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
@@ -18,8 +17,9 @@ class ItemQueryService(
     fun getItems(): List<ItemDto.InfoV1> {
         val items = repository.findAll()
         return items.map {
-            val category = categoryRepository.findById(it.category?.id ?: 0)
-                .orElseThrow { throw CategoryNotFoundException(ExceptionMessage.CATEGORY_NOT_FOUND) }
+            val category = categoryRepository
+                .findById(it.category.id!!)
+                .orElseThrow { throw CategoryNotFoundException() }
             ItemDto.InfoV1(
                 it.id,
                 modelMapper.map(category, CategoryDto.InfoV1::class.java),

@@ -11,19 +11,17 @@ import javax.transaction.Transactional
 class StudentService(
     val studentRepository: StudentRepository
 ) {
-
     fun register(form: StudentForm): Int {
         val entity = Student(
             name = form.name,
             sid = form.sid,
-            school = form.department,
+            department = form.department,
             major1 = form.major1,
             major2 = form.major2,
-            gradeLevel = form.year,
+            year = form.year,
             semesterCount = form.semesterCount
         )
         val saved = studentRepository.save(entity)
-
         return saved.id!!
     }
 }

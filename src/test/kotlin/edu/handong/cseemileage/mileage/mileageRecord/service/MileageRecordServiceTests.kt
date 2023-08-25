@@ -44,20 +44,26 @@ class MileageRecordServiceTests @Autowired constructor(
             ItemForm(
                 categoryId = savedCategory,
                 itemName = "캡스톤 수강",
-                isPortfolio = 0,
                 description1 = "",
                 description2 = "",
-                stuType = ""
+                stuType = "",
+                ItemForm.Flag(
+                    isVisible = true,
+                    isPortfolio = false,
+                    isMultiple = false,
+                    isStudentVisible = false,
+                    isStudentEditable = false
+                )
             )
         )
 
         semesterId = semesterItemService.saveSemesterItem(
             SemesterItemForm(
                 itemId = savedItem,
-                name = "2023-2",
-                weight = 1.0f,
+                points = 1.0f,
                 maxPoints = 0f
-            )
+            ),
+            "2023-02"
         )
 
         studentService.register(
@@ -90,7 +96,7 @@ class MileageRecordServiceTests @Autowired constructor(
     fun mileageRecordServiceTests_11() {
         // Given
         val form = MileageRecordForm(
-            semesterId = semesterId!!,
+            semesterItemId = semesterId!!,
             studentId = "21800123",
             counts = 1,
             description1 = "",
@@ -102,7 +108,7 @@ class MileageRecordServiceTests @Autowired constructor(
         val found = mileageRecordQueryService.getRecordById(id)
 
         // Then
-        assertThat(found.semester).isEqualTo("2023-2")
+        assertThat(found.semester).isEqualTo("2023-02")
         assertThat(found.category).isEqualTo("전공 마일리지")
         assertThat(found.subcategory).isEqualTo("캡스톤 수강")
         assertThat(found.studentId).isEqualTo("21800123")
@@ -115,12 +121,12 @@ class MileageRecordServiceTests @Autowired constructor(
     fun mileageRecordServiceTests_104() {
         // Given
         val record1 = MileageRecordForm(
-            semesterId = semesterId!!,
+            semesterItemId = semesterId!!,
             studentId = "21800123",
             counts = 1
         )
         val record2 = MileageRecordForm(
-            semesterId = semesterId!!,
+            semesterItemId = semesterId!!,
             studentId = "21800456",
             counts = 2
         )

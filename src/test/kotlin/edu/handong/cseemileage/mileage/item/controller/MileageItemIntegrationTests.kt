@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.mileage.item.controller
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
@@ -51,7 +51,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             .standaloneSetup(subitemController)
             .build()
 
-        var category = Category("전공 마일리지", "-", 20)
+        val category = Category("전공 마일리지", "-", 20)
         categoryRepository.save(category)
     }
 
@@ -60,7 +60,20 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun createSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
+        val form = ItemForm(
+            categoryId,
+            "전공 항목1",
+            "설명1",
+            "설명2",
+            "R",
+            ItemForm.Flag(
+                isVisible = true,
+                isPortfolio = false,
+                isMultiple = false,
+                isStudentVisible = false,
+                isStudentEditable = false
+            )
+        )
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -69,17 +82,18 @@ class MileageItemIntegrationTests @Autowired constructor(
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }
-            .andExpect { status { isOk() } }
+            .andExpect { status { isCreated() } }
             .andDo { print() }
             .andReturn()
 
-        val id = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
-
+        val res = mapper.readValue(
+            mvcResult.response.contentAsString,
+            object : TypeReference<Map<String, Int>>() {}
+        )
         // Then
-        assertThat(mvcResult.response.status).isEqualTo(HttpStatus.OK.value())
-        itemRepository.findById(id).ifPresent {
+        itemRepository.findById(res["id"]!!).ifPresent {
             assertThat(it.name).isEqualTo("전공 항목1")
-            assertThat(it.isPortfolio).isEqualTo(0)
+            assertThat(it.isPortfolio).isEqualTo(false)
             assertThat(it.description1).isEqualTo("설명1")
             assertThat(it.description2).isEqualTo("설명2")
             assertThat(it.stuType).isEqualTo("R")
@@ -91,8 +105,34 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun getSubitems() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form1 = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
-        val form2 = ItemForm(categoryId, "전공 항목2", 0, "설명1", "설명2", "R")
+        val form1 = ItemForm(
+            categoryId,
+            "전공 항목1",
+            "설명1",
+            "설명2",
+            "R",
+            ItemForm.Flag(
+                isVisible = true,
+                isPortfolio = false,
+                isMultiple = false,
+                isStudentVisible = false,
+                isStudentEditable = false
+            )
+        )
+        val form2 = ItemForm(
+            categoryId,
+            "전공 항목2",
+            "설명1",
+            "설명2",
+            "R",
+            ItemForm.Flag(
+                isVisible = true,
+                isPortfolio = false,
+                isMultiple = false,
+                isStudentVisible = false,
+                isStudentEditable = false
+            )
+        )
 
         val req1 = mapper.writeValueAsString(form1)
         val req2 = mapper.writeValueAsString(form2)
@@ -102,14 +142,14 @@ class MileageItemIntegrationTests @Autowired constructor(
                 contentType = MediaType.APPLICATION_JSON
                 content = req1
             }
-            .andExpect { status { isOk() } }
+            .andExpect { status { isCreated() } }
             .andReturn()
         mockMvc
             .post("/api/mileage/items") {
                 contentType = MediaType.APPLICATION_JSON
                 content = req2
             }
-            .andExpect { status { isOk() } }
+            .andExpect { status { isCreated() } }
             .andReturn()
 
         // When
@@ -133,7 +173,20 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun modifySubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
+        val form = ItemForm(
+            categoryId,
+            "전공 항목1",
+            "설명1",
+            "설명2",
+            "R",
+            ItemForm.Flag(
+                isVisible = true,
+                isPortfolio = false,
+                isMultiple = false,
+                isStudentVisible = false,
+                isStudentEditable = false
+            )
+        )
         val req = mapper.writeValueAsString(form)
         val modifyForm = form.copy(itemName = "수정된 전공 항목 이름")
         val req2 = mapper.writeValueAsString(modifyForm)
@@ -143,7 +196,7 @@ class MileageItemIntegrationTests @Autowired constructor(
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }
-            .andExpect { status { isOk() } }
+            .andExpect { status { isCreated() } }
             .andReturn()
 
         val topId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
@@ -166,7 +219,20 @@ class MileageItemIntegrationTests @Autowired constructor(
     fun deleteSubitem() {
         // Given
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(categoryId, "전공 항목1", 0, "설명1", "설명2", "R")
+        val form = ItemForm(
+            categoryId,
+            "전공 항목1",
+            "설명1",
+            "설명2",
+            "R",
+            ItemForm.Flag(
+                isVisible = true,
+                isPortfolio = false,
+                isMultiple = false,
+                isStudentVisible = false,
+                isStudentEditable = false
+            )
+        )
         val req = mapper.writeValueAsString(form)
 
         mockMvc
@@ -174,7 +240,7 @@ class MileageItemIntegrationTests @Autowired constructor(
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }
-            .andExpect { status { isOk() } }
+            .andExpect { status { isCreated() } }
             .andDo { print() }
             .andReturn()
 
@@ -188,7 +254,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             .andReturn()
 
         // Then
-        assertThat(itemRepository.findById(id).isEmpty).isTrue
+        assertThat(itemRepository.findById(id)).isEmpty
     }
 
     @DisplayName("integration: service 의존성 주입")

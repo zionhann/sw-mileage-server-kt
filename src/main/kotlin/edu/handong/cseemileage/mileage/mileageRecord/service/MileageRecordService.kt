@@ -18,17 +18,18 @@ class MileageRecordService(
     val mileageRecordRepository: MileageRecordRepository
 ) {
     fun add(form: MileageRecordForm): Int {
-        val semester = semesterItemRepository
-            .findById(form.semesterId)
+        val semesterItem = semesterItemRepository
+            .findById(form.semesterItemId)
             .orElseThrow(::SemesterItemNotFoundException)
         val student = studentRepository
             .findBySid(form.studentId)
             .orElseThrow(::StudentNotFoundException)
         val entity = MileageRecord(
-            semesterItem = semester,
+            semesterItem = semesterItem,
             student = student,
             description1 = form.description1,
-            description2 = form.description2
+            description2 = form.description2,
+            counts = form.counts
         )
         val saved = mileageRecordRepository.save(entity)
 

@@ -9,8 +9,6 @@ class ItemDto(
     var items: List<InfoV1>? = null
 ) {
 
-    constructor() : this(listOf())
-
     /**
      * Item과 Category 조회
      * */
@@ -18,27 +16,23 @@ class ItemDto(
         val id: Int?,
         val category: CategoryDto.InfoV1?,
         val itemName: String?,
-        val isPortfolio: Int?,
+        val isPortfolio: Boolean?,
         val description1: String?,
         val description2: String?,
         val stuType: String?
-    ) {
-        constructor() : this(0, CategoryDto.InfoV1(), "", 0, "", "", "")
-    }
+    )
 
     /**
      * Item 단독 조회
      * */
     class InfoV2(
-        val id: Int?,
-        val itemName: String?,
-        val isPortfolio: Int?,
-        val description1: String?,
-        val description2: String?,
-        val stuType: String?
-    ) {
-        constructor() : this(0, "", 0, "", "", "")
-    }
+        val id: Int? = 0,
+        val itemName: String? = "",
+        val isPortfolio: Boolean? = false,
+        val description1: String? = "",
+        val description2: String? = "",
+        val stuType: String? = ""
+    )
 
     /**
      * Item과 Semester 조회
@@ -46,12 +40,10 @@ class ItemDto(
     class InfoV3(
         val id: Int?,
         val itemName: String?,
-        val isPortfolio: Int?,
+        val isPortfolio: Boolean?,
         val description1: String?,
         val description2: String?,
         val stuType: String?,
         val semesters: List<SemesterItemDto.InfoV3>
-    ) {
-        constructor() : this(0, "", 0, "", "", "", listOf())
-    }
+    )
 }
