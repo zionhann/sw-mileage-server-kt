@@ -1,7 +1,7 @@
 package edu.handong.cseemileage.excel.strategy
 
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addSemesterItemColumns
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 
 class SemesterOnly(

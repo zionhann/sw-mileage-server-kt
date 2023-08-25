@@ -1,9 +1,8 @@
 package edu.handong.cseemileage.excel.strategy
-
-import edu.handong.cseemileage.excel.ExcelUtils
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addCategoryColumns
-import edu.handong.cseemileage.excel.ExcelUtils.Companion.addItemColumns
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.EXCEL_DTO_CATEGORY
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addCategoryColumns
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy.Companion.addItemColumns
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 
 class Global(
@@ -27,7 +26,7 @@ class Global(
     }
 
     override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {
-        if (excelDtoType == ExcelUtils.EXCEL_DTO_CATEGORY) {
+        if (excelDtoType == EXCEL_DTO_CATEGORY) {
             return super.getCategoryValue(obj, fieldName)
         }
         return super.getBasicValue(obj, fieldName)
