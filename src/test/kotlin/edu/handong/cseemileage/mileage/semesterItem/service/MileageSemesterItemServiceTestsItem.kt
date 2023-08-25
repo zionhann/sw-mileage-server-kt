@@ -41,7 +41,7 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         var category = Category("전공 마일리지", "-", 20)
         categoryRepository.save(category)
 
-        var subitem = Item(category, "전공 항목1", 0, "설명1", "설명2", "R")
+        var subitem = Item(category, "전공 항목1", false, "설명1", "설명2", "R")
         itemRepository.save(subitem)
     }
 
@@ -54,10 +54,10 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
     fun saveSemester() {
         // Given
         val itemId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SemesterItemForm(itemId, WEIGHT, MAX_POINTS, SEMESTER_NAME)
+        val form = SemesterItemForm(itemId, WEIGHT, MAX_POINTS)
 
         // When
-        semesterItemService.saveSemesterItem(form)
+        semesterItemService.saveSemesterItem(form, SEMESTER_NAME)
         val id = semesterItemRepository.findTopByOrderByIdDesc()?.id ?: 0
 
         // Then
@@ -79,8 +79,7 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
                     SemesterItemForm(
                         it,
                         WEIGHT,
-                        MAX_POINTS,
-                        SEMESTER_NAME
+                        MAX_POINTS
                     )
                 )
         }
@@ -88,10 +87,10 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
 
         // When
         val elapsed1: Long = measureTimeMillis {
-            semesterItemService.saveSemesterItemMultipleBulkInsert(form)
+            semesterItemService.saveSemesterItemMultipleBulkInsert(form, SEMESTER_NAME)
         }
         val elapsed2: Long = measureTimeMillis {
-            semesterItemService.saveSemesterItemMultiple(form)
+            semesterItemService.saveSemesterItemMultiple(form, SEMESTER_NAME)
         }
         println("Bulk insert 경과 시간: $elapsed1 ms")
         println("None Bulk insert 경과 시간: $elapsed2 ms")

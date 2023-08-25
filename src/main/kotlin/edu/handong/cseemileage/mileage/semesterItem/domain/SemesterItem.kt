@@ -51,13 +51,18 @@ class SemesterItem(
     var categoryMaxPoints: Float = 0f
 
     companion object {
-        fun createSemesterItem(form: SemesterItemForm, item: Item, category: Category): SemesterItem {
+        fun createSemesterItem(
+            form: SemesterItemForm,
+            item: Item,
+            category: Category,
+            semesterName: String
+        ): SemesterItem {
             val semesterItem = SemesterItem(
                 item,
                 category,
-                form.weight,
+                form.points,
                 form.maxPoints,
-                form.name
+                semesterName
             )
             item.addSemesterItem(semesterItem)
             return semesterItem

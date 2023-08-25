@@ -41,7 +41,7 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         private const val SEMESTER_NAME = "2023-02"
         private const val POINT_VALUE = 3f
         private const val ITEM_MAX_POINTS = 15f
-        private const val API_URI = "/api/mileage/semesterItems"
+        private const val API_URI = "/api/mileage/semesters"
     }
 
     @Autowired
@@ -64,15 +64,15 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         var category2 = Category("캠프 마일리지", "-", 20)
         categoryRepository.save(category2)
 
-        var subitem1 = Item(category1, "전공 항목1", 0, "설명1", "설명2", "R")
+        var subitem1 = Item(category1, "전공 항목1", false, "설명1", "설명2", "R")
         itemRepository.save(subitem1)
 
         // subitem1과 category가 다름
-        var subitem2 = Item(category2, "캠프 항목1", 0, "설명1", "설명2", "R")
+        var subitem2 = Item(category2, "캠프 항목1", false, "설명1", "설명2", "R")
         itemRepository.save(subitem2)
 
         // subitem2와 semester가 다름
-        var subitem3 = Item(category2, "캠프 항목2", 0, "설명1", "설명2", "R")
+        var subitem3 = Item(category2, "캠프 항목2", false, "설명1", "설명2", "R")
         itemRepository.save(subitem3)
     }
 
@@ -84,12 +84,12 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
     fun createSemester() {
         // Given
         val itemId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SemesterItemForm(itemId, POINT_VALUE, ITEM_MAX_POINTS, SEMESTER_NAME)
+        val form = SemesterItemForm(itemId, POINT_VALUE, ITEM_MAX_POINTS)
         val req = mapper.writeValueAsString(form)
 
         // When
         val mvcResult = mockMvc
-            .post(API_URI) {
+            .post("$API_URI/{SEMESTER_NAME}/items", SEMESTER_NAME) {
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }
@@ -121,17 +121,17 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         val item2 = itemRepository.findByName("캠프 항목1")
         val semesterList = mutableListOf<SemesterItemForm>()
         item1.id?.let {
-            semesterList.add(SemesterItemForm(it, POINT_VALUE, ITEM_MAX_POINTS, SEMESTER_NAME))
+            semesterList.add(SemesterItemForm(it, POINT_VALUE, ITEM_MAX_POINTS))
         }
         item2.id?.let {
-            semesterList.add(SemesterItemForm(it, POINT_VALUE * 2, ITEM_MAX_POINTS, SEMESTER_NAME))
+            semesterList.add(SemesterItemForm(it, POINT_VALUE * 2, ITEM_MAX_POINTS))
         }
         val form = SemesterItemMultipleForm(semesterList)
         val req = mapper.writeValueAsString(form)
 
         // When
         val mvcResult = mockMvc
-            .post("$API_URI/multiple") {
+            .post("$API_URI/{SEMESTER_NAME}/multiple", SEMESTER_NAME) {
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }

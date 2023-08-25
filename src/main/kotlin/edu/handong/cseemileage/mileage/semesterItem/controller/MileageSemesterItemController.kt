@@ -5,20 +5,19 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemQueryService
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/mileage/semesterItems")
-class MileageSemesterItemController @Autowired constructor(
+@RequestMapping("/api/mileage/semesters")
+class MileageSemesterItemController(
     val semesterItemService: SemesterItemService,
     val semesterItemQueryService: SemesterItemQueryService
 ) {
@@ -27,40 +26,42 @@ class MileageSemesterItemController @Autowired constructor(
         private const val API_URI = "/api/mileage/semesters"
     }
 
-    @PostMapping
+    @PostMapping("/{semesterName}/items")
     fun createSemester(
         @RequestBody @Valid
-        form: SemesterItemForm
-    ): ResponseEntity<String> {
-        semesterItemService.saveSemesterItem(form)
+        form: SemesterItemForm,
+        @PathVariable semesterName: String
+    ): ResponseEntity<Map<String, Int>> {
+        val savedId = semesterItemService.saveSemesterItem(form, semesterName)
         return ResponseEntity.created(
-            URI.create(API_URI)
-        ).body("학기별 항목 생성 완료")
+            URI.create("$API_URI/$semesterName/items/$savedId")
+        ).body(mapOf("id" to savedId))
     }
 
     /**
      * 학기 별 항목 생성 insert 최적화
      * */
-    @PostMapping("/multiple")
+    @PostMapping("/{semesterName}/multiple")
     fun createSemesterMultiple(
         @RequestBody @Valid
-        form: SemesterItemMultipleForm
+        form: SemesterItemMultipleForm,
+        @PathVariable semesterName: String
     ): ResponseEntity<String> {
-        semesterItemService.saveSemesterItemMultipleBulkInsert(form)
+        semesterItemService.saveSemesterItemMultipleBulkInsert(form, semesterName)
         return ResponseEntity.created(
-            URI.create("$API_URI/multiple")
+            URI.create("$API_URI/$semesterName/items/multiple")
         ).body("학기별 항목 생성(multiple) 완료")
     }
 
     /**
      * item / category 형식 반환
      * */
-    @GetMapping
+    @GetMapping("/{semesterName}/items")
     fun getSemestersByName(
-        @RequestParam(required = false) semester: String
+        @PathVariable semesterName: String
     ): ResponseEntity<SemesterItemDto> {
         // Todo: filter 사용(학기, 항목명 등)
-        val semesterItems = semesterItemQueryService.getSemesterItemsV1(semester)
+        val semesterItems = semesterItemQueryService.getSemesterItemsV1(semesterName)
         return ResponseEntity.ok(SemesterItemDto(semesterItems = semesterItems))
     }
 }

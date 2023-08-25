@@ -4,7 +4,6 @@ import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.service.CategoryQueryService
 import edu.handong.cseemileage.mileage.category.service.CategoryService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,10 +19,11 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/categories")
-class MileageCategoryController @Autowired constructor(
+class MileageCategoryController(
     val categoryService: CategoryService,
     val categoryQueryService: CategoryQueryService
 ) {
+
     @PostMapping
     fun createCategory(
         @RequestBody @Valid

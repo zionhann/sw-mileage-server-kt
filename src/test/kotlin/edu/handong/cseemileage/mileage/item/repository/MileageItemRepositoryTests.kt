@@ -26,7 +26,7 @@ class MileageItemRepositoryTests @Autowired constructor(
         // given
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
-        val item = Item(savedCategory, "전공 상담 세부 항목", 0, "description1", "description2", "R")
+        val item = Item(savedCategory, "전공 상담 세부 항목", false, "description1", "description2", "R")
 
         // when
         itemRepository.save(item)
@@ -44,9 +44,9 @@ class MileageItemRepositoryTests @Autowired constructor(
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
         val item1 =
-            Item(savedCategory, "전공 상담 세부 항목1", 0, "description1", "description2", "R")
+            Item(savedCategory, "전공 상담 세부 항목1", false, "description1", "description2", "R")
         val item2 =
-            Item(savedCategory, "전공 상담 세부 항목2", 0, "description1", "description2", "R")
+            Item(savedCategory, "전공 상담 세부 항목2", false, "description1", "description2", "R")
 
         // when
         itemRepository.save(item1)
@@ -63,7 +63,7 @@ class MileageItemRepositoryTests @Autowired constructor(
         // given
         val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
         val savedCategory = categoryRepository.save(category)
-        val item = Item(savedCategory, "전공 상담 세부 항목", 0, "description1", "description2", "R")
+        val item = Item(savedCategory, "전공 상담 세부 항목", false, "description1", "description2", "R")
 
         // when
         itemRepository.save(item)
@@ -71,6 +71,6 @@ class MileageItemRepositoryTests @Autowired constructor(
         val subitemOptional = itemRepository.findById(item.id!!)
 
         // then
-        Assertions.assertThat(subitemOptional.isEmpty).isTrue
+        Assertions.assertThat(subitemOptional).isEmpty
     }
 }

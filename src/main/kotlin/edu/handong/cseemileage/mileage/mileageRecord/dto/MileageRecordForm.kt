@@ -7,7 +7,7 @@ import javax.validation.constraints.Positive
 class MileageRecordForm(
 
     @field:Positive(message = ExceptionMessage.RECORD_SEMESTER_IS_EMPTY)
-    val semesterId: Int,
+    val semesterItemId: Int,
 
     @field:NotBlank(message = ExceptionMessage.RECORD_STUDENT_ID_IS_EMPTY)
     val studentId: String,

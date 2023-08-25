@@ -21,7 +21,7 @@ class Student(
     var sid: String?,
 
     @Column(name = "school", length = 40)
-    var school: String?,
+    var department: String?,
 
     @Column(name = "major_1", length = 60)
     var major1: String?,
@@ -31,7 +31,7 @@ class Student(
 
     @ColumnDefault("0")
     @Column(name = "grade_level", columnDefinition = "tinyint(2)")
-    var gradeLevel: Int?,
+    var year: Int?,
 
     @ColumnDefault("0")
     @Column(name = "semester_count", columnDefinition = "tinyint(2)")
