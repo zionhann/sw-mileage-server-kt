@@ -13,25 +13,33 @@ class ItemDto(
      * Item과 Category 조회
      * */
     class InfoV1(
-        val id: Int?,
-        val category: CategoryDto.InfoV1?,
-        val itemName: String?,
-        val isPortfolio: Boolean?,
-        val description1: String?,
-        val description2: String?,
-        val stuType: String?
+        val id: Int = 0,
+        val category: CategoryDto.InfoV1 = CategoryDto.InfoV1(),
+        val name: String = "",
+        val isPortfolio: Boolean = false,
+        val description1: String? = null,
+        val description2: String? = null,
+        val stuType: String? = null,
+        val isVisible: Boolean = true,
+        val isStudentVisible: Boolean = true,
+        val isStudentInput: Boolean = true,
+        val isMulti: Boolean = true
     )
 
     /**
      * Item 단독 조회
      * */
     class InfoV2(
-        val id: Int? = 0,
-        val itemName: String? = "",
-        val isPortfolio: Boolean? = false,
-        val description1: String? = "",
-        val description2: String? = "",
-        val stuType: String? = ""
+        val id: Int = 0,
+        val name: String = "",
+        val isPortfolio: Boolean = false,
+        val description1: String? = null,
+        val description2: String? = null,
+        val stuType: String? = null,
+        val isVisible: Boolean = true,
+        val isStudentVisible: Boolean = true,
+        val isStudentInput: Boolean = true,
+        val isMulti: Boolean = true
     )
 
     /**
@@ -39,11 +47,15 @@ class ItemDto(
      * */
     class InfoV3(
         val id: Int?,
-        val itemName: String?,
-        val isPortfolio: Boolean?,
-        val description1: String?,
-        val description2: String?,
-        val stuType: String?,
-        val semesters: List<SemesterItemDto.InfoV3>
+        val name: String = "",
+        val isPortfolio: Boolean = false,
+        val description1: String? = null,
+        val description2: String? = null,
+        val stuType: String? = null,
+        val isVisible: Boolean = true,
+        val isStudentVisible: Boolean = true,
+        val isStudentInput: Boolean = true,
+        val isMulti: Boolean = true,
+        val semesterItems: List<SemesterItemDto.InfoV3>
     )
 }

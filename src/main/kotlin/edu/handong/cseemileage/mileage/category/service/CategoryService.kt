@@ -11,7 +11,16 @@ import javax.transaction.Transactional
 @Transactional
 class CategoryService(val repository: CategoryRepository) {
     fun saveCategory(form: CategoryForm): Int {
-        val category = Category(form.title, form.description, form.maxPoints)
+        val category = Category(
+            form.title!!
+        ).apply {
+            description1 = form.description1
+            description2 = form.description2
+            orderIdx = form.orderIdx ?: 0
+            itemType = form.itemType ?: "R"
+            isMulti = form.isMulti ?: false
+        }
+
         val result = repository.save(category)
 
         return result.id!!

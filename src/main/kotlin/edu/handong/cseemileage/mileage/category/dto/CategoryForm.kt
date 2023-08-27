@@ -2,16 +2,19 @@ package edu.handong.cseemileage.mileage.category.dto
 
 import edu.handong.cseemileage.exception.ExceptionMessage
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.PositiveOrZero
 
 class CategoryForm(
+    // nullable = false, default (X)
     @field:NotBlank(message = ExceptionMessage.CATEGORY_TITLE_IS_EMPTY)
     val title: String?,
 
-    val description: String?,
+    // nullable = false, default (O)
+    val orderIdx: Int?,
+    val itemType: String?,
+    val isMulti: Boolean?,
 
-    @field:PositiveOrZero(message = ExceptionMessage.CATEGORY_INVALID_POINTS)
-    @field:NotNull(message = ExceptionMessage.CATEGORY_POINTS_IS_EMPTY)
-    val maxPoints: Int?
+    // nullable = true
+    val description1: String?,
+    val description2: String?
+
 )

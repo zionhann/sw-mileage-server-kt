@@ -16,7 +16,11 @@ class CategoryDto(
     class InfoV1(
         val id: Int = 0,
         val name: String = "",
-        val maxPoints: Int = 0
+        val description1: String? = null,
+        val description2: String? = null,
+        val orderIdx: Int = 0,
+        val itemType: String = "",
+        val isMulti: Boolean = false
     )
 
     /**

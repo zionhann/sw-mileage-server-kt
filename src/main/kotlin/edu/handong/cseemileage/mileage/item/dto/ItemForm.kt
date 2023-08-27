@@ -4,27 +4,26 @@ import com.sun.istack.NotNull
 import javax.validation.constraints.Positive
 
 data class ItemForm(
+    // nullable = false, default (X)
     @field:Positive
+    @field:NotNull
     val categoryId: Int?,
     @field:NotNull
     val itemName: String?,
+
+    // nullable = true
     val description1: String?,
     val description2: String?,
-    @field:NotNull
     val stuType: String?,
-    @field:NotNull
-    val flags: Flag
+
+    // nullable = false, default (O)
+    val flags: Flag?
 ) {
     class Flag(
-        @field:NotNull
         val isVisible: Boolean?,
-        @field:NotNull
         val isStudentVisible: Boolean?,
-        @field:NotNull
         val isStudentEditable: Boolean?,
-        @field:NotNull
         val isMultiple: Boolean?,
-        @field:NotNull
         val isPortfolio: Boolean?
     )
 }

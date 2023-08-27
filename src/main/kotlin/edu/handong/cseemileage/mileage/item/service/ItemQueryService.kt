@@ -5,6 +5,7 @@ import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundExcept
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
+import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
@@ -21,13 +22,17 @@ class ItemQueryService(
                 .findById(it.category.id!!)
                 .orElseThrow { throw CategoryNotFoundException() }
             ItemDto.InfoV1(
-                it.id,
-                modelMapper.map(category, CategoryDto.InfoV1::class.java),
-                it.name,
-                it.isPortfolio,
-                it.description1,
-                it.description2,
-                it.stuType
+                id = it.id,
+                category = modelMapper.map(category, CategoryDto.InfoV1::class.java),
+                name = it.name,
+                isPortfolio = it.isPortfolio,
+                description1 = it.description1,
+                description2 = it.description2,
+                stuType = it.stuType,
+                isMulti = stringToBoolean(it.isMulti),
+                isStudentInput = stringToBoolean(it.isStudentInput),
+                isStudentVisible = stringToBoolean(it.isStudentVisible),
+                isVisible = stringToBoolean(it.isVisible)
             )
         }
     }

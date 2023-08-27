@@ -5,6 +5,18 @@ import edu.handong.cseemileage.exception.ExceptionMessage
 import edu.handong.cseemileage.exception.ExceptionResponse
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.DESCRIPTION1
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.DESCRIPTION2
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.IS_MULTI
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.ITEM_TYPE
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.NAME
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.ORDER_IDX
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_DESCRIPTION1
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_DESCRIPTION2
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_IS_MULTI
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_ITEM_TYPE
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_NAME
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_ORDER_IDX
 import edu.handong.cseemileage.mileage.category.service.CategoryQueryService
 import edu.handong.cseemileage.mileage.category.service.CategoryService
 import org.assertj.core.api.Assertions.assertThat
@@ -40,7 +52,14 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @Test
     fun mileageCategoryIntegrationTests_31() {
         // Given
-        val form = CategoryForm("전공 마일리지", "-", 0)
+        val form = CategoryForm(
+            title = NAME,
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
+        )
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -53,11 +72,11 @@ class MileageCategoryIntegrationTests @Autowired constructor(
             .andDo { print() }
     }
 
+    @Deprecated("maxPoints 필드 삭제 - 글로벌 카테고리 변경")
     @DisplayName("service: 마일리지 값이 음수인 경우")
-    @Test
     fun mileageCategoryIntegrationTests_54() {
         // Given
-        val form = CategoryForm("전공 마일리지", "-", -1)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
@@ -78,11 +97,11 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         assertThat(res.message).isEqualTo(ExceptionMessage.CATEGORY_INVALID_POINTS)
     }
 
+    @Deprecated("maxPoints 필드 삭제 - 글로벌 카테고리 변경")
     @DisplayName("service: 마일리지 값이 없는 경우")
-    @Test
     fun mileageCategoryIntegrationTests_82() {
         // Given
-        val form = CategoryForm("전공 마일리지", "-", null)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
@@ -107,7 +126,14 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @Test
     fun mileageCategoryIntegrationTests_107() {
         // Given
-        val form = CategoryForm(null, "-", 0)
+        val form = CategoryForm(
+            title = null,
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
+        )
 
         // When
         val mvcResults = mockMvc
@@ -133,14 +159,20 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     fun mileageCategoryIntegrationTests_132() {
         // Given
         val form1 = CategoryForm(
-            title = "전공 마일리지",
-            description = "-",
-            maxPoints = 0
+            title = NAME,
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
         )
         val form2 = CategoryForm(
-            title = "동아리 마일리지",
-            description = "-",
-            maxPoints = 0
+            title = "category2",
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
         )
         categoryService.saveCategory(form1)
         categoryService.saveCategory(form2)
@@ -164,10 +196,24 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @Test
     fun mileageCategoryIntegrationTests_157() {
         // Given
-        val form = CategoryForm("전공 마일리지", "-", 0)
+        val form = CategoryForm(
+            title = NAME,
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
+        )
         val initialId = categoryService.saveCategory(form)
 
-        val updateForm = CategoryForm("봉사 마일리지", "-", 10)
+        val updateForm = CategoryForm(
+            title = UPDATE_NAME,
+            orderIdx = UPDATE_ORDER_IDX,
+            itemType = UPDATE_ITEM_TYPE,
+            isMulti = UPDATE_IS_MULTI,
+            description1 = UPDATE_DESCRIPTION1,
+            description2 = UPDATE_DESCRIPTION2
+        )
         val req = mapper.writeValueAsString(updateForm)
 
         // When
@@ -189,15 +235,26 @@ class MileageCategoryIntegrationTests @Autowired constructor(
 
         // Then
         assertThat(id).isEqualTo(initialId)
-        assertThat(found.name).isEqualTo("봉사 마일리지")
-        assertThat(found.maxPoints).isEqualTo(10)
+        assertThat(found.name).isEqualTo(UPDATE_NAME)
+        assertThat(found.orderIdx).isEqualTo(UPDATE_ORDER_IDX)
+        assertThat(found.itemType).isEqualTo(UPDATE_ITEM_TYPE)
+        assertThat(found.isMulti).isEqualTo(UPDATE_IS_MULTI)
+        assertThat(found.description1).isEqualTo(UPDATE_DESCRIPTION1)
+        assertThat(found.description2).isEqualTo(UPDATE_DESCRIPTION2)
     }
 
     @DisplayName("integration: 마일리지 카테고리 삭제")
     @Test
     fun mileageCategoryIntegrationTests_192() {
         // Given
-        val form = CategoryForm("전공 마일리지", "-", 0)
+        val form = CategoryForm(
+            title = NAME,
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
+        )
         val initialId = categoryService.saveCategory(form)
 
         // When

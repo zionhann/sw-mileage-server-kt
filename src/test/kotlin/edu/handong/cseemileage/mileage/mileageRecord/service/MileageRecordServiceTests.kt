@@ -35,8 +35,11 @@ class MileageRecordServiceTests @Autowired constructor(
         val savedCategory = categoryService.saveCategory(
             CategoryForm(
                 title = "전공 마일리지",
-                description = "전공 마일리지",
-                maxPoints = 0
+                description1 = null,
+                description2 = null,
+                orderIdx = null,
+                itemType = null,
+                isMulti = null
             )
         )
 
