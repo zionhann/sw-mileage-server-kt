@@ -58,21 +58,21 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
             .standaloneSetup(semesterController)
             .build()
 
-        var category1 = Category("전공 마일리지", "-", 20)
+        var category1 = Category("전공 마일리지")
         categoryRepository.save(category1)
 
-        var category2 = Category("캠프 마일리지", "-", 20)
+        var category2 = Category("캠프 마일리지")
         categoryRepository.save(category2)
 
-        var subitem1 = Item(category1, "전공 항목1", false, "설명1", "설명2", "R")
+        var subitem1 = Item(category1, "전공 항목1")
         itemRepository.save(subitem1)
 
         // subitem1과 category가 다름
-        var subitem2 = Item(category2, "캠프 항목1", false, "설명1", "설명2", "R")
+        var subitem2 = Item(category2, "캠프 항목1")
         itemRepository.save(subitem2)
 
         // subitem2와 semester가 다름
-        var subitem3 = Item(category2, "캠프 항목2", false, "설명1", "설명2", "R")
+        var subitem3 = Item(category2, "캠프 항목2")
         itemRepository.save(subitem3)
     }
 

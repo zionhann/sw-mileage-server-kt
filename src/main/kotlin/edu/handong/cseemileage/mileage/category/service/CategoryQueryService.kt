@@ -6,6 +6,7 @@ import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
+import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
@@ -68,13 +69,17 @@ class CategoryQueryService(
                     )
                 }
                 ItemDto.InfoV3(
-                    item.id,
-                    item.name,
-                    item.isPortfolio,
-                    item.description1,
-                    item.description2,
-                    item.stuType,
-                    semesterInfos
+                    id = item.id,
+                    name = item.name,
+                    isPortfolio = item.isPortfolio,
+                    description1 = item.description1,
+                    description2 = item.description2,
+                    stuType = item.stuType,
+                    isVisible = stringToBoolean(item.isVisible),
+                    isMulti = stringToBoolean(item.isMulti),
+                    isStudentInput = stringToBoolean(item.isStudentInput),
+                    isStudentVisible = stringToBoolean(item.isStudentVisible),
+                    semesterItems = semesterInfos
                 )
             }
             CategoryDto.InfoV3(

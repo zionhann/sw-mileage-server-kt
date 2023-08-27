@@ -6,5 +6,9 @@ class Utils {
         fun booleanToString(value: Boolean): String {
             return if (value) "Y" else "N"
         }
+
+        fun stringToBoolean(value: String): Boolean {
+            return value == "Y"
+        }
     }
 }

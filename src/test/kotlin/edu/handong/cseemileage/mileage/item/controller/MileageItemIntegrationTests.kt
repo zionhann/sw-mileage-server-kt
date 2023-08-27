@@ -4,9 +4,29 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.DESCRIPTION1
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.DESCRIPTION2
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.IS_MULTI
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.IS_PORTFOLIO
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.IS_STUDENT_INPUT
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.IS_STUDENT_VISIBLE
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.IS_VISIBLE
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.NAME
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.STU_TYPE
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_DESCRIPTION1
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_DESCRIPTION2
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_IS_MULTI
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_IS_PORTFOLIO
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_IS_STUDENT_INPUT
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_IS_STUDENT_VISIBLE
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_IS_VISIBLE
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_NAME
+import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_STU_TYPE
+import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -51,7 +71,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             .standaloneSetup(subitemController)
             .build()
 
-        val category = Category("전공 마일리지", "-", 20)
+        val category = Category(MileageCategoryRepositoryTests.NAME)
         categoryRepository.save(category)
     }
 
@@ -59,21 +79,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun createSubitem() {
         // Given
-        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(
-            categoryId,
-            "전공 항목1",
-            "설명1",
-            "설명2",
-            "R",
-            ItemForm.Flag(
-                isVisible = true,
-                isPortfolio = false,
-                isMultiple = false,
-                isStudentVisible = false,
-                isStudentEditable = false
-            )
-        )
+        val form = createDefaultItemForm()
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -91,48 +97,15 @@ class MileageItemIntegrationTests @Autowired constructor(
             object : TypeReference<Map<String, Int>>() {}
         )
         // Then
-        itemRepository.findById(res["id"]!!).ifPresent {
-            assertThat(it.name).isEqualTo("전공 항목1")
-            assertThat(it.isPortfolio).isEqualTo(false)
-            assertThat(it.description1).isEqualTo("설명1")
-            assertThat(it.description2).isEqualTo("설명2")
-            assertThat(it.stuType).isEqualTo("R")
-        }
+        assertWithDefaultValue(res)
     }
 
     @DisplayName("integration: 마일리지 항목 전체 조회")
     @Test
     fun getSubitems() {
         // Given
-        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form1 = ItemForm(
-            categoryId,
-            "전공 항목1",
-            "설명1",
-            "설명2",
-            "R",
-            ItemForm.Flag(
-                isVisible = true,
-                isPortfolio = false,
-                isMultiple = false,
-                isStudentVisible = false,
-                isStudentEditable = false
-            )
-        )
-        val form2 = ItemForm(
-            categoryId,
-            "전공 항목2",
-            "설명1",
-            "설명2",
-            "R",
-            ItemForm.Flag(
-                isVisible = true,
-                isPortfolio = false,
-                isMultiple = false,
-                isStudentVisible = false,
-                isStudentEditable = false
-            )
-        )
+        val form1 = createDefaultItemForm()
+        val form2 = createDefaultItemForm()
 
         val req1 = mapper.writeValueAsString(form1)
         val req2 = mapper.writeValueAsString(form2)
@@ -172,23 +145,9 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun modifySubitem() {
         // Given
-        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(
-            categoryId,
-            "전공 항목1",
-            "설명1",
-            "설명2",
-            "R",
-            ItemForm.Flag(
-                isVisible = true,
-                isPortfolio = false,
-                isMultiple = false,
-                isStudentVisible = false,
-                isStudentEditable = false
-            )
-        )
+        val form = createDefaultItemForm()
         val req = mapper.writeValueAsString(form)
-        val modifyForm = form.copy(itemName = "수정된 전공 항목 이름")
+        val modifyForm = createUpdateItemForm()
         val req2 = mapper.writeValueAsString(modifyForm)
 
         mockMvc
@@ -199,40 +158,24 @@ class MileageItemIntegrationTests @Autowired constructor(
             .andExpect { status { isCreated() } }
             .andReturn()
 
-        val topId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
+        val id = itemRepository.findByName(NAME)?.id
 
         // When
         mockMvc
-            .patch("/api/mileage/items/$topId") {
+            .patch("/api/mileage/items/$id") {
                 contentType = MediaType.APPLICATION_JSON
                 content = req2
             }
 
         // Then
-        itemRepository.findById(topId).ifPresent {
-            assertThat(it.name).isEqualTo("수정된 전공 항목 이름")
-        }
+        assertWithUpdateValue(id)
     }
 
     @DisplayName("integration: 마일리지 항목 삭제")
     @Test
     fun deleteSubitem() {
         // Given
-        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = ItemForm(
-            categoryId,
-            "전공 항목1",
-            "설명1",
-            "설명2",
-            "R",
-            ItemForm.Flag(
-                isVisible = true,
-                isPortfolio = false,
-                isMultiple = false,
-                isStudentVisible = false,
-                isStudentEditable = false
-            )
-        )
+        val form = createDefaultItemForm()
         val req = mapper.writeValueAsString(form)
 
         mockMvc
@@ -267,5 +210,69 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun getSubitemQueryService() {
         assertThat(subitemController.itemQueryService).isNotNull
+    }
+
+    fun createDefaultItemForm(): ItemForm {
+        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id!!
+        return ItemForm(
+            categoryId = categoryId,
+            itemName = NAME,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2,
+            stuType = STU_TYPE,
+            ItemForm.Flag(
+                isVisible = stringToBoolean(IS_VISIBLE),
+                isPortfolio = IS_PORTFOLIO,
+                isMultiple = stringToBoolean(IS_MULTI),
+                isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
+                isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
+            )
+        )
+    }
+
+    fun createUpdateItemForm(): ItemForm {
+        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id!!
+        return ItemForm(
+            categoryId = categoryId,
+            itemName = UPDATE_NAME,
+            description1 = UPDATE_DESCRIPTION1,
+            description2 = UPDATE_DESCRIPTION2,
+            stuType = UPDATE_STU_TYPE,
+            ItemForm.Flag(
+                isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
+                isPortfolio = UPDATE_IS_PORTFOLIO,
+                isMultiple = stringToBoolean(UPDATE_IS_MULTI),
+                isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
+                isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
+            )
+        )
+    }
+
+    fun assertWithDefaultValue(res: Map<String, Int>) {
+        itemRepository.findById(res["id"]!!).ifPresent {
+            assertThat(it.name).isEqualTo(NAME)
+            assertThat(it.isPortfolio).isEqualTo(IS_PORTFOLIO)
+            assertThat(it.description1).isEqualTo(DESCRIPTION1)
+            assertThat(it.description2).isEqualTo(DESCRIPTION2)
+            assertThat(it.stuType).isEqualTo(STU_TYPE)
+            assertThat(it.isVisible).isEqualTo(IS_VISIBLE)
+            assertThat(it.isMulti).isEqualTo(IS_MULTI)
+            assertThat(it.isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
+            assertThat(it.isStudentInput).isEqualTo(IS_STUDENT_INPUT)
+        }
+    }
+
+    fun assertWithUpdateValue(id: Int?) {
+        itemRepository.findById(id!!).ifPresent {
+            assertThat(it.name).isEqualTo(UPDATE_NAME)
+            assertThat(it.isPortfolio).isEqualTo(UPDATE_IS_PORTFOLIO)
+            assertThat(it.description1).isEqualTo(UPDATE_DESCRIPTION1)
+            assertThat(it.description2).isEqualTo(UPDATE_DESCRIPTION2)
+            assertThat(it.stuType).isEqualTo(UPDATE_STU_TYPE)
+            assertThat(it.isVisible).isEqualTo(UPDATE_IS_VISIBLE)
+            assertThat(it.isMulti).isEqualTo(UPDATE_IS_MULTI)
+            assertThat(it.isStudentVisible).isEqualTo(UPDATE_IS_STUDENT_VISIBLE)
+            assertThat(it.isStudentInput).isEqualTo(UPDATE_IS_STUDENT_INPUT)
+        }
     }
 }

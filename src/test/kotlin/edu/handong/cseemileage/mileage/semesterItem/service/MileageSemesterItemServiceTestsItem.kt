@@ -38,10 +38,10 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
     @PostConstruct
     @Profile("dev")
     fun init() {
-        var category = Category("전공 마일리지", "-", 20)
+        var category = Category("전공 마일리지")
         categoryRepository.save(category)
 
-        var subitem = Item(category, "전공 항목1", false, "설명1", "설명2", "R")
+        var subitem = Item(category, "전공 항목1")
         itemRepository.save(subitem)
     }
 

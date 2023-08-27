@@ -2,6 +2,8 @@ package edu.handong.cseemileage.mileage.item.repository
 
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
+import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.NAME
 import edu.handong.cseemileage.mileage.item.domain.Item
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -20,57 +22,173 @@ class MileageItemRepositoryTests @Autowired constructor(
     private val itemRepository: ItemRepository,
     private val categoryRepository: CategoryRepository
 ) {
+
+    companion object {
+        const val NAME = "전공 상담"
+        const val DESCRIPTION1 = "description1"
+        const val DESCRIPTION2 = "description2"
+        const val STU_TYPE = "R"
+        const val IS_VISIBLE = "N"
+        const val IS_PORTFOLIO = true
+        const val IS_STUDENT_VISIBLE = "Y"
+        const val IS_STUDENT_INPUT = "Y"
+        const val IS_MULTI = "Y"
+
+        const val UPDATE_NAME = "전공 상담 수정"
+        const val UPDATE_DESCRIPTION1 = "description1 수정"
+        const val UPDATE_DESCRIPTION2 = "description2 수정"
+        const val UPDATE_STU_TYPE = "T"
+        const val UPDATE_IS_VISIBLE = "Y"
+        const val UPDATE_IS_PORTFOLIO = false
+        const val UPDATE_IS_STUDENT_VISIBLE = "N"
+        const val UPDATE_IS_STUDENT_INPUT = "N"
+        const val UPDATE_IS_MULTI = "N"
+
+        const val DEFAULT_IS_VISIBLE = "Y"
+        const val DEFAULT_IS_PORTFOLIO = false
+        const val DEFAULT_IS_STUDENT_VISIBLE = "N"
+        const val DEFAULT_IS_STUDENT_INPUT = "N"
+        const val DEFAULT_IS_MULTI = "N"
+    }
+
     @DisplayName("repository: 마일리지 항목 persist")
     @Test
-    fun saveSubitem() {
+    fun saveSubitem1() {
         // given
-        val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
+        val category = Category(MileageCategoryRepositoryTests.NAME)
         val savedCategory = categoryRepository.save(category)
-        val item = Item(savedCategory, "전공 상담 세부 항목", false, "description1", "description2", "R")
+        val item = Item(
+            category = savedCategory,
+            name = NAME
+        ).apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            stuType = STU_TYPE
+            isVisible = IS_VISIBLE
+            isPortfolio = IS_PORTFOLIO
+            isStudentVisible = IS_STUDENT_VISIBLE
+            isStudentInput = IS_STUDENT_INPUT
+            isMulti = IS_MULTI
+        }
 
         // when
         itemRepository.save(item)
-        val savedSubitem = itemRepository.findById(item.id!!)
+        val savedItem = itemRepository.findById(item.id!!)
 
         // then
-        Assertions.assertThat(savedSubitem).isNotNull
-        Assertions.assertThat(savedSubitem.get()).isEqualTo(item)
+        Assertions.assertThat(savedItem).isNotNull
+        Assertions.assertThat(savedItem.get()).isEqualTo(item)
+        Assertions.assertThat(savedItem.get().category).isEqualTo(savedCategory)
+        Assertions.assertThat(savedItem.get().name).isEqualTo(NAME)
+        Assertions.assertThat(savedItem.get().description1).isEqualTo(DESCRIPTION1)
+        Assertions.assertThat(savedItem.get().description2).isEqualTo(DESCRIPTION2)
+        Assertions.assertThat(savedItem.get().stuType).isEqualTo(STU_TYPE)
+        Assertions.assertThat(savedItem.get().isVisible).isEqualTo(IS_VISIBLE)
+        Assertions.assertThat(savedItem.get().isPortfolio).isEqualTo(IS_PORTFOLIO)
+        Assertions.assertThat(savedItem.get().isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
+        Assertions.assertThat(savedItem.get().isStudentInput).isEqualTo(IS_STUDENT_INPUT)
+        Assertions.assertThat(savedItem.get().isMulti).isEqualTo(IS_MULTI)
+    }
+
+    @DisplayName("모든 값을 지정하지 않아도 @ColumnDefault 값이 들어가야 한다")
+    @Test
+    fun saveSubitem2() {
+        // given
+        val category = Category(MileageCategoryRepositoryTests.NAME)
+        val savedCategory = categoryRepository.save(category)
+        val item = Item(
+            category = savedCategory,
+            name = NAME
+        )
+
+        // when
+        itemRepository.save(item)
+        val savedItem = itemRepository.findById(item.id!!)
+
+        // then
+        Assertions.assertThat(savedItem).isNotNull
+        Assertions.assertThat(savedItem.get()).isEqualTo(item)
+        Assertions.assertThat(savedItem.get().category).isEqualTo(savedCategory)
+        Assertions.assertThat(savedItem.get().name).isEqualTo(NAME)
+        Assertions.assertThat(savedItem.get().description1).isNull()
+        Assertions.assertThat(savedItem.get().description2).isNull()
+        Assertions.assertThat(savedItem.get().stuType).isNull()
+        Assertions.assertThat(savedItem.get().isVisible).isEqualTo(DEFAULT_IS_VISIBLE)
+        Assertions.assertThat(savedItem.get().isPortfolio).isEqualTo(DEFAULT_IS_PORTFOLIO)
+        Assertions.assertThat(savedItem.get().isStudentVisible).isEqualTo(DEFAULT_IS_STUDENT_VISIBLE)
+        Assertions.assertThat(savedItem.get().isStudentInput).isEqualTo(DEFAULT_IS_STUDENT_INPUT)
+        Assertions.assertThat(savedItem.get().isMulti).isEqualTo(DEFAULT_IS_MULTI)
     }
 
     @DisplayName("repository: 마일리지 항목 전체 조회")
     @Test
     fun getSubitems() {
         // given
-        val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
+        val category = Category(MileageCategoryRepositoryTests.NAME)
         val savedCategory = categoryRepository.save(category)
-        val item1 =
-            Item(savedCategory, "전공 상담 세부 항목1", false, "description1", "description2", "R")
-        val item2 =
-            Item(savedCategory, "전공 상담 세부 항목2", false, "description1", "description2", "R")
+        val item1 = Item(
+            category = savedCategory,
+            name = NAME
+        ).apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            stuType = STU_TYPE
+            isVisible = IS_VISIBLE
+            isPortfolio = IS_PORTFOLIO
+            isStudentVisible = IS_STUDENT_VISIBLE
+            isStudentInput = IS_STUDENT_INPUT
+            isMulti = IS_MULTI
+        }
+        val item2 = Item(
+            category = savedCategory,
+            name = "전공 상담2"
+        ).apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            stuType = STU_TYPE
+            isVisible = IS_VISIBLE
+            isPortfolio = IS_PORTFOLIO
+            isStudentVisible = IS_STUDENT_VISIBLE
+            isStudentInput = IS_STUDENT_INPUT
+            isMulti = IS_MULTI
+        }
 
         // when
         itemRepository.save(item1)
         itemRepository.save(item2)
-        val subitems = itemRepository.findAll()
+        val items = itemRepository.findAll()
 
         // then
-        Assertions.assertThat(subitems).isNotNull
+        Assertions.assertThat(items).isNotNull
+        Assertions.assertThat(items).hasSize(2)
     }
 
     @DisplayName("repository: 마일리지 항목 삭제")
     @Test
     fun deleteSubitem() {
         // given
-        val category = Category("전공 상담", "교수님과 전공 상담 진행", 20)
+        val category = Category(MileageCategoryRepositoryTests.NAME)
         val savedCategory = categoryRepository.save(category)
-        val item = Item(savedCategory, "전공 상담 세부 항목", false, "description1", "description2", "R")
+        val item = Item(
+            category = savedCategory,
+            name = NAME
+        ).apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            stuType = STU_TYPE
+            isVisible = IS_VISIBLE
+            isPortfolio = IS_PORTFOLIO
+            isStudentVisible = IS_STUDENT_VISIBLE
+            isStudentInput = IS_STUDENT_INPUT
+            isMulti = IS_MULTI
+        }
 
         // when
         itemRepository.save(item)
         itemRepository.deleteById(item.id!!)
-        val subitemOptional = itemRepository.findById(item.id!!)
+        val itemOptional = itemRepository.findById(item.id!!)
 
         // then
-        Assertions.assertThat(subitemOptional).isEmpty
+        Assertions.assertThat(itemOptional).isEmpty
     }
 }
