@@ -64,8 +64,11 @@ class CategoryQueryService(
                     semesterItem.semesterName == semesterName
                 }.map { semesterItem ->
                     SemesterItemDto.InfoV3(
-                        semesterItem.semesterName,
-                        semesterItem.pointValue
+                        id = semesterItem.id,
+                        semesterName = semesterItem.semesterName,
+                        points = semesterItem.pointValue,
+                        itemMaxPoints = semesterItem.itemMaxPoints,
+                        categoryMaxPoints = semesterItem.categoryMaxPoints
                     )
                 }
                 ItemDto.InfoV3(

@@ -130,19 +130,21 @@ class MileageItemServiceTests @Autowired constructor(
         assertThat(itemService.categoryRepository).isNotNull
     }
 
-    fun createDefaultItem(category: Category): Item {
-        return Item(
-            category = category,
-            name = NAME
-        ).apply {
-            description1 = DESCRIPTION1
-            description2 = DESCRIPTION2
-            stuType = STU_TYPE
-            isPortfolio = IS_PORTFOLIO
-            isVisible = IS_VISIBLE
-            isStudentVisible = IS_STUDENT_VISIBLE
-            isStudentInput = IS_STUDENT_INPUT
-            isMulti = IS_MULTI
+    companion object {
+        fun createDefaultItem(category: Category): Item {
+            return Item(
+                category = category,
+                name = NAME
+            ).apply {
+                description1 = DESCRIPTION1
+                description2 = DESCRIPTION2
+                stuType = STU_TYPE
+                isPortfolio = IS_PORTFOLIO
+                isVisible = IS_VISIBLE
+                isStudentVisible = IS_STUDENT_VISIBLE
+                isStudentInput = IS_STUDENT_INPUT
+                isMulti = IS_MULTI
+            }
         }
     }
 }

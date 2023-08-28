@@ -64,7 +64,9 @@ class MileageRecordServiceTests @Autowired constructor(
             SemesterItemForm(
                 itemId = savedItem,
                 points = 1.0f,
-                maxPoints = 0f
+                itemMaxPoints = 1.0f,
+                categoryMaxPoints = 1.0f,
+                semesterName = null
             ),
             "2023-02"
         )
@@ -77,7 +79,8 @@ class MileageRecordServiceTests @Autowired constructor(
                 major1 = "",
                 major2 = "",
                 year = 1,
-                semesterCount = 1
+                semesterCount = 1,
+                isChecked = true
             )
         )
 
@@ -89,7 +92,8 @@ class MileageRecordServiceTests @Autowired constructor(
                 major1 = "",
                 major2 = "",
                 year = 2,
-                semesterCount = 3
+                semesterCount = 3,
+                isChecked = true
             )
         )
     }

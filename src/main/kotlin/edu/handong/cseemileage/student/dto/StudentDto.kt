@@ -1,23 +1,21 @@
 package edu.handong.cseemileage.student.dto
 
-import edu.handong.cseemileage.student.domain.Student
+import java.time.LocalDateTime
 
 class StudentDto(
     val students: List<Info>
 ) {
-    class Info(student: Student) {
-        val name: String = student.name!!
-        val sid: String = student.sid!!
-        val year: Int = student.year!!
-        val semesterCount: Int = student.semesterCount!!
-        val mobile: String = "" // TODO: Not specified yet
-        val email: String = "" // TODO: Not specified yet
-        val department: String = student.department!!
-        val major1: String = student.major1!!
-        val major2: String = student.major2!!
-        val loginCount: Int = student.loginCount
-        val lastLoginDate: String = student.lastLoginDate.toString()
-        val regDate: String = student.regDate.toString()
-        val isApproved: Boolean = true // TODO: Not specified yet
-    }
+    class Info(
+        val id: Int? = 0,
+        val name: String? = null,
+        val sid: String? = null,
+        val department: String? = null,
+        val major1: String? = null,
+        val major2: String? = null,
+        val year: Int? = 0,
+        val semesterCount: Int? = 0,
+        val loginCount: Int? = 0,
+        val lastLoginDate: LocalDateTime = LocalDateTime.now(),
+        val isChecked: Boolean = true
+    )
 }

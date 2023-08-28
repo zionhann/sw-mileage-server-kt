@@ -6,7 +6,9 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemQueryService
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -63,5 +65,24 @@ class MileageSemesterItemController(
         // Todo: filter 사용(학기, 항목명 등)
         val semesterItems = semesterItemQueryService.getSemesterItemsV1(semesterName)
         return ResponseEntity.ok(SemesterItemDto(semesterItems = semesterItems))
+    }
+
+    @PatchMapping("/{semesterItemId}")
+    fun modifyItem(
+        @PathVariable semesterItemId: Int,
+        @RequestBody @Valid
+        form: SemesterItemForm
+    ): ResponseEntity<Map<String, Int>> {
+        val modifiedId = semesterItemService.modifySemesterItem(semesterItemId, form)
+        return ResponseEntity.ok(mapOf("id" to modifiedId))
+    }
+
+    @DeleteMapping("/{semesterItemId}")
+    fun deleteItem(
+        @PathVariable
+        semesterItemId: Int
+    ): ResponseEntity<Map<String, Int>> {
+        val removedId = semesterItemService.deleteSemesterItem(semesterItemId)
+        return ResponseEntity.ok(mapOf("id" to removedId))
     }
 }

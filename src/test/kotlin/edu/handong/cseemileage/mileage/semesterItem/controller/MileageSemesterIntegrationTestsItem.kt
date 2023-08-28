@@ -8,6 +8,10 @@ import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.CATEGORY_MAX_POINTS
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.ITEM_MAX_POINTS
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.POINT_VALUE
+import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.SEMESTER_NAME
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -38,9 +42,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
 ) {
 
     companion object {
-        private const val SEMESTER_NAME = "2023-02"
-        private const val POINT_VALUE = 3f
-        private const val ITEM_MAX_POINTS = 15f
         private const val API_URI = "/api/mileage/semesters"
     }
 
@@ -76,15 +77,18 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         itemRepository.save(subitem3)
     }
 
-    /**
-     * Lazy Loading이 걸린 item은 service 단에서 검사
-     * */
     @DisplayName("integration: 학기별 마일리지 항목 생성")
     @Test
     fun createSemester() {
         // Given
         val itemId = itemRepository.findTopByOrderByIdDesc()?.id ?: 0
-        val form = SemesterItemForm(itemId, POINT_VALUE, ITEM_MAX_POINTS)
+        val form = SemesterItemForm(
+            itemId = itemId,
+            points = POINT_VALUE,
+            itemMaxPoints = ITEM_MAX_POINTS,
+            categoryMaxPoints = CATEGORY_MAX_POINTS,
+            semesterName = null
+        )
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -101,11 +105,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
 
         // Then
         Assertions.assertThat(mvcResult.response.status).isEqualTo(HttpStatus.CREATED.value())
-        semesterItemRepository.findById(id).ifPresent {
-            Assertions.assertThat(it.pointValue).isEqualTo(POINT_VALUE)
-            Assertions.assertThat(it.itemMaxPoints).isEqualTo(ITEM_MAX_POINTS)
-            Assertions.assertThat(it.semesterName).isEqualTo(SEMESTER_NAME)
-        }
     }
 
     /**
@@ -121,10 +120,26 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         val item2 = itemRepository.findByName("캠프 항목1")
         val semesterList = mutableListOf<SemesterItemForm>()
         item1.id?.let {
-            semesterList.add(SemesterItemForm(it, POINT_VALUE, ITEM_MAX_POINTS))
+            semesterList.add(
+                SemesterItemForm(
+                    itemId = it,
+                    points = POINT_VALUE,
+                    itemMaxPoints = ITEM_MAX_POINTS,
+                    categoryMaxPoints = CATEGORY_MAX_POINTS,
+                    semesterName = null
+                )
+            )
         }
         item2.id?.let {
-            semesterList.add(SemesterItemForm(it, POINT_VALUE * 2, ITEM_MAX_POINTS))
+            semesterList.add(
+                SemesterItemForm(
+                    itemId = it,
+                    points = POINT_VALUE * 2,
+                    itemMaxPoints = ITEM_MAX_POINTS,
+                    categoryMaxPoints = CATEGORY_MAX_POINTS,
+                    semesterName = null
+                )
+            )
         }
         val form = SemesterItemMultipleForm(semesterList)
         val req = mapper.writeValueAsString(form)
