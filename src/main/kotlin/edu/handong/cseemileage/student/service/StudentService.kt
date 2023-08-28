@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.student.service
 
+import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundException
 import edu.handong.cseemileage.student.domain.Student
 import edu.handong.cseemileage.student.dto.StudentForm
 import edu.handong.cseemileage.student.repository.StudentRepository
@@ -12,16 +13,20 @@ class StudentService(
     val studentRepository: StudentRepository
 ) {
     fun register(form: StudentForm): Int {
-        val entity = Student(
-            name = form.name,
-            sid = form.sid,
-            department = form.department,
-            major1 = form.major1,
-            major2 = form.major2,
-            year = form.year,
-            semesterCount = form.semesterCount
-        )
-        val saved = studentRepository.save(entity)
+        val student = Student.createStudent(form)
+        val saved = studentRepository.save(student)
         return saved.id!!
+    }
+
+    fun modifyStudent(id: Int, form: StudentForm): Int {
+        return studentRepository
+            .findById(id)
+            .orElseThrow { CategoryNotFoundException() }
+            .update(form)
+    }
+
+    fun deleteStudent(studentId: Int): Int {
+        studentRepository.deleteById(studentId)
+        return studentId
     }
 }

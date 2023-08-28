@@ -18,10 +18,13 @@ class SemesterItemQueryService(
         val semesterItems = repository.findAllBySemesterName(semesterItems)
         return semesterItems.map {
             SemesterItemDto.InfoV1(
-                modelMapper.map(it.item, ItemDto.InfoV2::class.java),
-                modelMapper.map(it.category, CategoryDto.InfoV1::class.java),
-                it.semesterName,
-                it.pointValue
+                id = it.id,
+                item = modelMapper.map(it.item, ItemDto.InfoV2::class.java),
+                category = modelMapper.map(it.category, CategoryDto.InfoV1::class.java),
+                semesterName = it.semesterName,
+                points = it.pointValue,
+                itemMaxPoints = it.itemMaxPoints,
+                categoryMaxPoints = it.categoryMaxPoints
             )
         }
     }

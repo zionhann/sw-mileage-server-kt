@@ -3,7 +3,6 @@ package edu.handong.cseemileage.mileage.item.repository
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
-import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.NAME
 import edu.handong.cseemileage.mileage.item.domain.Item
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName

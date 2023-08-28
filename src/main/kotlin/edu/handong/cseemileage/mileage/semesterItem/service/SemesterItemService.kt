@@ -5,6 +5,7 @@ import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
+import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterItemNotFoundException
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemJdbcRepository
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import org.springframework.stereotype.Service
@@ -44,5 +45,22 @@ class SemesterItemService(
 
     fun saveSemesterItemMultipleBulkInsert(form: SemesterItemMultipleForm, semesterName: String) {
         jdbcRepository.insertSemesterList(createSemesterItemMultiple(form, semesterName))
+    }
+
+    fun modifySemesterItem(semesterItemId: Int, form: SemesterItemForm): Int {
+        val item = form.itemId?.let {
+            itemRepository
+                .findById(it)
+                .orElseThrow { throw ItemNotFoundException() }
+        }
+        return repository
+            .findById(semesterItemId)
+            .orElseThrow { SemesterItemNotFoundException() }
+            .update(form, item!!)
+    }
+
+    fun deleteSemesterItem(semesterItemId: Int): Int {
+        repository.deleteById(semesterItemId)
+        return semesterItemId
     }
 }
