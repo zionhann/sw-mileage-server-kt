@@ -75,8 +75,9 @@ class MileageSemesterItemController(
     @GetMapping("/{semesterName}/items/records")
     fun getSemesterItemsAndRecords(
         @PathVariable semesterName: String
-    ): ResponseEntity<List<SemesterItemDto.InfoV4>> {
-        return ResponseEntity.ok(semesterItemQueryService.getSemesterItemsWithRecords(semesterName))
+    ): ResponseEntity<SemesterItemDto> {
+        val list = semesterItemQueryService.getSemesterItemsWithRecords(semesterName)
+        return ResponseEntity.ok(SemesterItemDto(semesterItemsWithRecords = list))
     }
 
     @PatchMapping("/{semesterItemId}")
