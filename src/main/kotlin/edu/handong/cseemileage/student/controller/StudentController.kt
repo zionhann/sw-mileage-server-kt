@@ -5,6 +5,7 @@ import edu.handong.cseemileage.student.dto.StudentForm
 import edu.handong.cseemileage.student.service.StudentQueryService
 import edu.handong.cseemileage.student.service.StudentService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -18,6 +19,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/students")
+@CrossOrigin(origins = ["*"])
 class StudentController(
     val studentService: StudentService,
     val studentQueryService: StudentQueryService

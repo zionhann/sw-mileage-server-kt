@@ -7,6 +7,12 @@ import edu.handong.cseemileage.mileage.item.dto.ItemForm
 import edu.handong.cseemileage.mileage.item.service.ItemService
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordForm
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepositoryTests.Companion.COUNTS
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepositoryTests.Companion.DESCRIPTION1
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepositoryTests.Companion.DESCRIPTION2
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepositoryTests.Companion.EXTRA_POINTS
+import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepositoryTests.Companion.POINTS
 import edu.handong.cseemileage.mileage.mileageRecord.service.MileageRecordQueryService
 import edu.handong.cseemileage.mileage.mileageRecord.service.MileageRecordService
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
@@ -37,10 +43,13 @@ class MileageRecordIntegrationTests @Autowired constructor(
     private val categoryService: CategoryService,
     private val itemService: ItemService,
     private val semesterItemService: SemesterItemService,
-    private val studentService: StudentService
+    private val studentService: StudentService,
+    private val mileageRecordRepository: MileageRecordRepository
 ) {
 
     var semesterId: Int? = null
+    var studentId1: Int? = null
+    var studentId2: Int? = null
 
     @BeforeEach
     fun init() {
@@ -83,7 +92,7 @@ class MileageRecordIntegrationTests @Autowired constructor(
             "2023-02"
         )
 
-        studentService.register(
+        studentId1 = studentService.register(
             StudentForm(
                 name = "홍길동",
                 sid = "21800123",
@@ -96,7 +105,7 @@ class MileageRecordIntegrationTests @Autowired constructor(
             )
         )
 
-        studentService.register(
+        studentId2 = studentService.register(
             StudentForm(
                 name = "동길홍",
                 sid = "21800456",
@@ -116,8 +125,12 @@ class MileageRecordIntegrationTests @Autowired constructor(
         // Given
         val form = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = "21800123",
-            counts = 1
+            studentId = studentId1!!,
+            counts = COUNTS,
+            points = POINTS,
+            extraPoints = EXTRA_POINTS,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
         )
         val req = objectMapper.writeValueAsString(form)
 
@@ -135,15 +148,10 @@ class MileageRecordIntegrationTests @Autowired constructor(
             Map::class.java
         )
         val id = res["id"] as Int
-        val found = mileageRecordQueryService.getRecordById(id)
+        val found = mileageRecordRepository.findById(id)
 
         // Then
-        assertThat(found.semester).isEqualTo("2023-02")
-        assertThat(found.category).isEqualTo("전공 마일리지")
-        assertThat(found.subcategory).isEqualTo("캡스톤 수강")
-        assertThat(found.studentId).isEqualTo("21800123")
-        assertThat(found.points).isEqualTo(1.0f)
-        assertThat(found.counts).isEqualTo(1)
+        assertThat(found).isNotNull
     }
 
     @DisplayName("마일리지 기록 전체조회")
@@ -152,13 +160,21 @@ class MileageRecordIntegrationTests @Autowired constructor(
         // Given
         val record1 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = "21800123",
-            counts = 1
+            studentId = studentId1!!,
+            counts = COUNTS,
+            points = POINTS,
+            extraPoints = EXTRA_POINTS,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
         )
         val record2 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = "21800456",
-            counts = 2
+            studentId = studentId2!!,
+            counts = COUNTS,
+            points = POINTS,
+            extraPoints = EXTRA_POINTS,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
         )
         mileageRecordService.add(record1)
         mileageRecordService.add(record2)

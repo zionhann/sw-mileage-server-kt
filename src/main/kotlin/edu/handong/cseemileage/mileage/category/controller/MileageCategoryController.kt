@@ -5,6 +5,7 @@ import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.service.CategoryQueryService
 import edu.handong.cseemileage.mileage.category.service.CategoryService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -19,6 +20,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/categories")
+@CrossOrigin(origins = ["*"])
 class MileageCategoryController(
     val categoryService: CategoryService,
     val categoryQueryService: CategoryQueryService

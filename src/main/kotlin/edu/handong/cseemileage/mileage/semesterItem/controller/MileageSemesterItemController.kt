@@ -6,6 +6,7 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemQueryService
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -19,6 +20,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/semesters")
+@CrossOrigin(origins = ["*"])
 class MileageSemesterItemController(
     val semesterItemService: SemesterItemService,
     val semesterItemQueryService: SemesterItemQueryService
@@ -65,6 +67,16 @@ class MileageSemesterItemController(
         // Todo: filter 사용(학기, 항목명 등)
         val semesterItems = semesterItemQueryService.getSemesterItemsV1(semesterName)
         return ResponseEntity.ok(SemesterItemDto(semesterItems = semesterItems))
+    }
+
+    /**
+     * semesterItem > category, item, students 형식 반환
+     * */
+    @GetMapping("/{semesterName}/items/records")
+    fun getSemesterItemsAndRecords(
+        @PathVariable semesterName: String
+    ): ResponseEntity<List<SemesterItemDto.InfoV4>> {
+        return ResponseEntity.ok(semesterItemQueryService.getSemesterItemsWithRecords(semesterName))
     }
 
     @PatchMapping("/{semesterItemId}")
