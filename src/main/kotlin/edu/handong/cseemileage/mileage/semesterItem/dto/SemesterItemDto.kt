@@ -8,7 +8,7 @@ import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class SemesterItemDto(
     val semesterItems: List<InfoV1>? = null,
-    val semesterItemsWithStudents: List<InfoV4>? = null
+    val semesterItemsWithRecords: List<InfoV4>? = null
 ) {
     class InfoV1(
         val id: Int = 0,

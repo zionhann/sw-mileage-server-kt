@@ -90,5 +90,4 @@ class SemesterItem(
     fun addRecord(record: MileageRecord) {
         records.add(record)
     }
-
 }
