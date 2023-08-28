@@ -5,6 +5,7 @@ import edu.handong.cseemileage.mileage.item.dto.ItemForm
 import edu.handong.cseemileage.mileage.item.service.ItemQueryService
 import edu.handong.cseemileage.mileage.item.service.ItemService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -18,6 +19,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/mileage/items")
+@CrossOrigin(origins = ["*"])
 class MileageItemController(
     val itemService: ItemService,
     val itemQueryService: ItemQueryService

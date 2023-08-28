@@ -3,6 +3,7 @@ package edu.handong.cseemileage.mileage.semesterItem.domain
 import edu.handong.cseemileage.BaseEntity
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.item.domain.Item
+import edu.handong.cseemileage.mileage.mileageRecord.domain.MileageRecord
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import org.hibernate.annotations.ColumnDefault
 import javax.persistence.Column
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -45,10 +47,12 @@ class SemesterItem(
     @Column(name = "semester_name", nullable = false, columnDefinition = "char(7)")
     var semesterName: String = "2023-02"
 
-    // 새로 추가된 필드
     @ColumnDefault("0")
     @Column(name = "category_max_points", nullable = false)
     var categoryMaxPoints: Float = 0f
+
+    @OneToMany(mappedBy = "semesterItem")
+    var records: MutableList<MileageRecord> = mutableListOf()
 
     companion object {
         fun createSemesterItem(
@@ -82,4 +86,9 @@ class SemesterItem(
         }
         return id!!
     }
+
+    fun addRecord(record: MileageRecord) {
+        records.add(record)
+    }
+
 }
