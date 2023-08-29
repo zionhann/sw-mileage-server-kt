@@ -23,19 +23,27 @@ fi
 spotless {
     kotlin {
         target '**/*.kt'
-        ktlint()
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
+        if (System.getenv('CI') == null) {
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+            ktlint()
+                    .editorConfigOverride([
+                            ij_kotlin_allow_trailing_comma             : false,
+                            ij_kotlin_allow_trailing_comma_on_call_site: false,
+                    ])
+        }
     }
     java {
         target '**/*.java'
-        googleJavaFormat()
-        removeUnusedImports()
-        formatAnnotations()
-        endWithNewline()
-        trimTrailingWhitespace()
-        indentWithTabs(2)
-        indentWithSpaces(4)
+        if (System.getenv('CI') == null) {
+            googleJavaFormat()
+            removeUnusedImports()
+            formatAnnotations()
+            endWithNewline()
+            trimTrailingWhitespace()
+            indentWithTabs(2)
+            indentWithSpaces(4)
+        }
     }
 }
