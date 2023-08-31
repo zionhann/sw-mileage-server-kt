@@ -1,9 +1,15 @@
 package edu.handong.cseemileage.student.dto
 
+import edu.handong.cseemileage.exception.ExceptionMessage
+import javax.validation.constraints.NotBlank
+
 class StudentForm(
     // nullable = true
     val name: String?,
+
+    @field:NotBlank(message = ExceptionMessage.STUDENT_SID_IS_EMPTY)
     val sid: String?,
+
     val department: String?,
     val major1: String?,
     val major2: String?,

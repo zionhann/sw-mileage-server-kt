@@ -1,12 +1,11 @@
 package edu.handong.cseemileage.mileage.semesterItem.dto
 
-import com.sun.istack.NotNull
+import edu.handong.cseemileage.exception.ExceptionMessage
 import javax.validation.constraints.Positive
 
 data class SemesterItemForm(
     // nullable = false, default (X)
-    @field:Positive
-    @field:NotNull
+    @field:Positive(message = ExceptionMessage.SEMESTER_ITEM_ID_IS_NOT_POSITIVE)
     val itemId: Int?,
 
     // nullable = false, default (O)

@@ -111,7 +111,6 @@ class MileageRecordServiceTests @Autowired constructor(
             semesterItemId = semesterId!!,
             studentId = studentId1!!,
             counts = MileageRecordRepositoryTests.COUNTS,
-            points = MileageRecordRepositoryTests.POINTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,
             description2 = MileageRecordRepositoryTests.DESCRIPTION2
@@ -133,7 +132,6 @@ class MileageRecordServiceTests @Autowired constructor(
             semesterItemId = semesterId!!,
             studentId = studentId1!!,
             counts = MileageRecordRepositoryTests.COUNTS,
-            points = MileageRecordRepositoryTests.POINTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,
             description2 = MileageRecordRepositoryTests.DESCRIPTION2
@@ -142,7 +140,6 @@ class MileageRecordServiceTests @Autowired constructor(
             semesterItemId = semesterId!!,
             studentId = studentId2!!,
             counts = MileageRecordRepositoryTests.COUNTS,
-            points = MileageRecordRepositoryTests.POINTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,
             description2 = MileageRecordRepositoryTests.DESCRIPTION2

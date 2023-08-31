@@ -20,7 +20,6 @@ interface DownloadStrategy {
             list.add(ExcelDto("name", "카테고리 이름", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description1", "카테고리 설명1", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description2", "카테고리 설명2", EXCEL_DTO_CATEGORY))
-            list.add(ExcelDto("maxPoints", "카테고리 최대 마일리지", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("isMulti", "다중 하위 항목 여부", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("itemType", "하위 항목 유형", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("modDate", "카테고리 마지막 수정일", EXCEL_DTO_CATEGORY))

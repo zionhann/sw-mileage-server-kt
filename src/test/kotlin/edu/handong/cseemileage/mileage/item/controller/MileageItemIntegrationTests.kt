@@ -2,6 +2,8 @@ package edu.handong.cseemileage.mileage.item.controller
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.handong.cseemileage.exception.ExceptionMessage
+import edu.handong.cseemileage.exception.ExceptionResponse
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
@@ -35,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
@@ -42,7 +45,6 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
 
@@ -54,12 +56,9 @@ class MileageItemIntegrationTests @Autowired constructor(
     val mapper: ObjectMapper,
     val itemRepository: ItemRepository,
     val categoryRepository: CategoryRepository,
-    val subitemController: MileageItemController
+    val subitemController: MileageItemController,
+    var mockMvc: MockMvc
 ) {
-
-    @Autowired
-    lateinit var mockMvc: MockMvc
-
     @BeforeEach
     fun setUp() {
     }
@@ -67,10 +66,6 @@ class MileageItemIntegrationTests @Autowired constructor(
     @PostConstruct
     @Profile("dev") // CI 환경에서만 실행
     fun init() {
-        mockMvc = MockMvcBuilders
-            .standaloneSetup(subitemController)
-            .build()
-
         val category = Category(MileageCategoryRepositoryTests.NAME)
         categoryRepository.save(category)
     }
@@ -79,7 +74,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun createSubitem() {
         // Given
-        val form = createDefaultItemForm()
+        val form = createDefaultItemForm(NAME)
         val req = mapper.writeValueAsString(form)
 
         // When
@@ -104,8 +99,8 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun getSubitems() {
         // Given
-        val form1 = createDefaultItemForm()
-        val form2 = createDefaultItemForm()
+        val form1 = createDefaultItemForm(NAME)
+        val form2 = createDefaultItemForm("중복 이름 방지")
 
         val req1 = mapper.writeValueAsString(form1)
         val req2 = mapper.writeValueAsString(form2)
@@ -145,7 +140,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun modifySubitem() {
         // Given
-        val form = createDefaultItemForm()
+        val form = createDefaultItemForm(NAME)
         val req = mapper.writeValueAsString(form)
         val modifyForm = createUpdateItemForm()
         val req2 = mapper.writeValueAsString(modifyForm)
@@ -175,7 +170,7 @@ class MileageItemIntegrationTests @Autowired constructor(
     @Test
     fun deleteSubitem() {
         // Given
-        val form = createDefaultItemForm()
+        val form = createDefaultItemForm("test1")
         val req = mapper.writeValueAsString(form)
 
         mockMvc
@@ -200,6 +195,84 @@ class MileageItemIntegrationTests @Autowired constructor(
         assertThat(itemRepository.findById(id)).isEmpty
     }
 
+    @DisplayName("service: category_id가 음수인 경우")
+    @Test
+    fun mileageItemIntegrationTests_202() {
+        // Given
+        val form = createFormCategoryIdNegative()
+        val req = mapper.writeValueAsString(form)
+
+        // When
+        val mvcResult = mockMvc
+            .post("/api/mileage/items") {
+                contentType = MediaType.APPLICATION_JSON
+                content = req
+            }
+            .andExpect { status { isBadRequest() } }
+            .andDo { print() }
+            .andReturn()
+
+        val res = mapper.readValue(
+            mvcResult.response.contentAsString,
+            ExceptionResponse::class.java
+        )
+        // Then
+        assertThat(res.error).isEqualTo(HttpStatus.BAD_REQUEST.reasonPhrase)
+        assertThat(res.message).isEqualTo(ExceptionMessage.ITEM_CATEGORY_ID_NOT_POSITIVE)
+    }
+
+    @DisplayName("service: itemName이 null인 경우")
+    @Test
+    fun mileageItemIntegrationTests_228() {
+        // Given
+        val form = createFormItemNameNull()
+        val req = mapper.writeValueAsString(form)
+
+        // When
+        val mvcResult = mockMvc
+            .post("/api/mileage/items") {
+                contentType = MediaType.APPLICATION_JSON
+                content = req
+            }
+            .andExpect { status { isBadRequest() } }
+            .andDo { print() }
+            .andReturn()
+
+        val res = mapper.readValue(
+            mvcResult.response.contentAsString,
+            ExceptionResponse::class.java
+        )
+        // Then
+        assertThat(res.error).isEqualTo(HttpStatus.BAD_REQUEST.reasonPhrase)
+        assertThat(res.message).isEqualTo(ExceptionMessage.ITEM_NAME_IS_EMPTY)
+    }
+
+    @DisplayName("service: itemName이 blank인 경우")
+    @Test
+    fun mileageItemIntegrationTests_254() {
+        // Given
+        val form = createFormItemNameBlank()
+        val req = mapper.writeValueAsString(form)
+
+        // When
+        val mvcResult = mockMvc
+            .post("/api/mileage/items") {
+                contentType = MediaType.APPLICATION_JSON
+                content = req
+            }
+            .andExpect { status { isBadRequest() } }
+            .andDo { print() }
+            .andReturn()
+
+        val res = mapper.readValue(
+            mvcResult.response.contentAsString,
+            ExceptionResponse::class.java
+        )
+        // Then
+        assertThat(res.error).isEqualTo(HttpStatus.BAD_REQUEST.reasonPhrase)
+        assertThat(res.message).isEqualTo(ExceptionMessage.ITEM_NAME_IS_EMPTY)
+    }
+
     @DisplayName("integration: service 의존성 주입")
     @Test
     fun getSubitemService() {
@@ -212,11 +285,11 @@ class MileageItemIntegrationTests @Autowired constructor(
         assertThat(subitemController.itemQueryService).isNotNull
     }
 
-    fun createDefaultItemForm(): ItemForm {
+    fun createDefaultItemForm(itemName: String): ItemForm {
         val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id!!
         return ItemForm(
             categoryId = categoryId,
-            itemName = NAME,
+            itemName = itemName,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             stuType = STU_TYPE,
@@ -244,6 +317,59 @@ class MileageItemIntegrationTests @Autowired constructor(
                 isMultiple = stringToBoolean(UPDATE_IS_MULTI),
                 isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
+            )
+        )
+    }
+
+    fun createFormCategoryIdNegative(): ItemForm {
+        return ItemForm(
+            categoryId = -1,
+            itemName = UPDATE_NAME,
+            description1 = UPDATE_DESCRIPTION1,
+            description2 = UPDATE_DESCRIPTION2,
+            stuType = UPDATE_STU_TYPE,
+            ItemForm.Flag(
+                isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
+                isPortfolio = UPDATE_IS_PORTFOLIO,
+                isMultiple = stringToBoolean(UPDATE_IS_MULTI),
+                isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
+                isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
+            )
+        )
+    }
+
+    fun createFormItemNameNull(): ItemForm {
+        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id!!
+        return ItemForm(
+            categoryId = categoryId,
+            itemName = null,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2,
+            stuType = STU_TYPE,
+            ItemForm.Flag(
+                isVisible = stringToBoolean(IS_VISIBLE),
+                isPortfolio = IS_PORTFOLIO,
+                isMultiple = stringToBoolean(IS_MULTI),
+                isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
+                isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
+            )
+        )
+    }
+
+    fun createFormItemNameBlank(): ItemForm {
+        val categoryId = categoryRepository.findTopByOrderByIdDesc()?.id!!
+        return ItemForm(
+            categoryId = categoryId,
+            itemName = "",
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2,
+            stuType = STU_TYPE,
+            ItemForm.Flag(
+                isVisible = stringToBoolean(IS_VISIBLE),
+                isPortfolio = IS_PORTFOLIO,
+                isMultiple = stringToBoolean(IS_MULTI),
+                isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
+                isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
             )
         )
     }

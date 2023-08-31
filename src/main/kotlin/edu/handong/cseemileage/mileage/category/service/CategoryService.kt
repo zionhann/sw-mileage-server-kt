@@ -3,6 +3,7 @@ package edu.handong.cseemileage.mileage.category.service
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundException
+import edu.handong.cseemileage.mileage.category.exception.DuplicateCategoryException
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -11,6 +12,7 @@ import javax.transaction.Transactional
 @Transactional
 class CategoryService(val repository: CategoryRepository) {
     fun saveCategory(form: CategoryForm): Int {
+        validateDuplicateCategory(form.title!!)
         val category = Category(
             form.title!!
         ).apply {
@@ -24,6 +26,13 @@ class CategoryService(val repository: CategoryRepository) {
         val result = repository.save(category)
 
         return result.id!!
+    }
+
+    private fun validateDuplicateCategory(title: String) {
+        val findCategory = repository.findByName(title)
+        if (findCategory != null) {
+            throw DuplicateCategoryException()
+        }
     }
 
     fun update(id: Int, form: CategoryForm): Int {
