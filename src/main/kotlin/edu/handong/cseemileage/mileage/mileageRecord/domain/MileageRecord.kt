@@ -56,7 +56,6 @@ class MileageRecord(
                 student = student
             ).apply {
                 counts = form.counts
-                points = form.points
                 extraPoints = form.extraPoints
                 description1 = form.description1
                 description2 = form.description2
@@ -72,7 +71,6 @@ class MileageRecord(
             this@MileageRecord.semesterItem = semesterItem
             this@MileageRecord.student = student
             counts = form.counts ?: counts
-            points = form.points ?: points
             extraPoints = form.extraPoints ?: extraPoints
             description1 = form.description1 ?: description1
             description2 = form.description2 ?: description2

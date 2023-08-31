@@ -1,14 +1,16 @@
 package edu.handong.cseemileage.mileage.item.dto
 
 import com.sun.istack.NotNull
+import edu.handong.cseemileage.exception.ExceptionMessage
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 
 data class ItemForm(
     // nullable = false, default (X)
-    @field:Positive
+    @field:Positive(message = ExceptionMessage.ITEM_CATEGORY_ID_NOT_POSITIVE)
     @field:NotNull
     val categoryId: Int?,
-    @field:NotNull
+    @field:NotBlank(message = ExceptionMessage.ITEM_NAME_IS_EMPTY)
     val itemName: String?,
 
     // nullable = true

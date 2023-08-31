@@ -29,7 +29,10 @@ class StudentController(
      * 학생 등록
      */
     @PostMapping
-    fun registerStudent(@RequestBody form: StudentForm): ResponseEntity<Map<String, Int>> {
+    fun registerStudent(
+        @RequestBody @Valid
+        form: StudentForm
+    ): ResponseEntity<Map<String, Int>> {
         val registeredId = studentService.register(form)
         return ResponseEntity.created(
             URI.create("/api/mileage/students/$registeredId")

@@ -4,12 +4,12 @@ import edu.handong.cseemileage.exception.ExceptionMessage
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.exception.CategoryNotFoundException
+import edu.handong.cseemileage.mileage.category.exception.DuplicateCategoryException
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.DESCRIPTION1
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.DESCRIPTION2
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.IS_MULTI
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.ITEM_TYPE
-import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.NAME
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.ORDER_IDX
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_DESCRIPTION1
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_DESCRIPTION2
@@ -38,7 +38,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     fun saveCategory1() {
         // given
         val form = CategoryForm(
-            title = NAME,
+            title = "중복방지1",
             orderIdx = ORDER_IDX,
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
@@ -58,7 +58,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     fun saveCategory2() {
         // given
         val form = CategoryForm(
-            title = NAME,
+            title = "중복 방지2",
             orderIdx = null,
             itemType = null,
             isMulti = null,
@@ -73,6 +73,27 @@ class MileageCategoryServiceTests @Autowired constructor(
         assertThat(id).isNotNull
     }
 
+    @DisplayName("service: 중복된 이름의 카테고리를 저장할 수 없다.")
+    @Test
+    fun saveDuplicateCategory() {
+        // given
+        val form = CategoryForm(
+            title = "중복 방지3",
+            orderIdx = ORDER_IDX,
+            itemType = ITEM_TYPE,
+            isMulti = IS_MULTI,
+            description1 = DESCRIPTION1,
+            description2 = DESCRIPTION2
+        )
+
+        // then
+        assertThrows<DuplicateCategoryException> {
+            // when
+            categoryService.saveCategory(form)
+            categoryService.saveCategory(form)
+        }
+    }
+
     @DisplayName("service: CategoryRepository 의존성 주입")
     @Test
     fun getRepository() {
@@ -84,7 +105,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     fun mileageCategoryServiceTests_41() {
         // Given
         val form = CategoryForm(
-            title = NAME,
+            title = "중복 방지4",
             orderIdx = ORDER_IDX,
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
@@ -100,7 +121,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         assertThat(list).isNotEmpty
         list.find { it.id == savedId }.let {
             assertThat(it).isNotNull
-            assertThat(it?.name).isEqualTo(NAME)
+            assertThat(it?.name).isEqualTo("중복 방지4")
         }
     }
 
@@ -108,7 +129,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     @Test
     fun mileageCategoryServiceTests_58() {
         // Given
-        val category = Category(NAME).apply {
+        val category = Category("중복 방지5").apply {
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
@@ -143,7 +164,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     @Test
     fun mileageCategoryServiceTests_143() {
         // Given
-        val category = Category(NAME).apply {
+        val category = Category("중복 방지6").apply {
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
@@ -179,7 +200,7 @@ class MileageCategoryServiceTests @Autowired constructor(
     fun mileageCategoryServiceTests_75() {
         // Given
         val form = CategoryForm(
-            title = NAME,
+            title = "중복 방지7",
             orderIdx = ORDER_IDX,
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,

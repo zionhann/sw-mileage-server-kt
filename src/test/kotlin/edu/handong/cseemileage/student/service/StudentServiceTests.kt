@@ -18,6 +18,7 @@ import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Co
 import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.YEAR
 import edu.handong.cseemileage.student.domain.Student
 import edu.handong.cseemileage.student.dto.StudentForm
+import edu.handong.cseemileage.student.exception.DuplicateStudentException
 import edu.handong.cseemileage.student.repository.StudentRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import org.testng.Assert.assertThrows
 
 @Transactional
 @SpringBootTest
@@ -95,6 +97,29 @@ class StudentServiceTests @Autowired constructor(
         assertThat(updatedStudent.year).isEqualTo(YEAR)
         assertThat(updatedStudent.semesterCount).isEqualTo(SEMESTER_COUNT)
         assertThat(updatedStudent.isChecked).isEqualTo(IS_CHECKED)
+    }
+
+    @DisplayName("service: 중복 sid 저장 불가")
+    @Test
+    fun StudentServiceTests_102() {
+        // Given
+        val form = StudentForm(
+            name = NAME,
+            sid = SID,
+            department = DEPARTMENT,
+            major1 = MAJOR1,
+            major2 = MAJOR2,
+            year = YEAR,
+            semesterCount = SEMESTER_COUNT,
+            isChecked = IS_CHECKED
+        )
+
+        // Then
+        assertThrows(DuplicateStudentException::class.java) {
+            // When
+            studentService.register(form)
+            studentService.register(form)
+        }
     }
 
     companion object {

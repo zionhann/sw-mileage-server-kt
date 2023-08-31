@@ -34,7 +34,6 @@ class MileageRecordRepositoryTests @Autowired constructor(
 
     companion object {
         const val COUNTS = 4f
-        const val POINTS = 16
         const val EXTRA_POINTS = 8
         const val DESCRIPTION1 = "설명1"
         const val DESCRIPTION2 = "설명2"
@@ -58,7 +57,6 @@ class MileageRecordRepositoryTests @Autowired constructor(
             student = map["student"] as Student
         ).apply {
             counts = COUNTS
-            points = POINTS
             extraPoints = EXTRA_POINTS
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
@@ -76,7 +74,7 @@ class MileageRecordRepositoryTests @Autowired constructor(
         Assertions.assertThat(saved.get().semesterItem.item).isEqualTo(map["item"] as Item)
         Assertions.assertThat(saved.get().semesterItem.item.category).isEqualTo(map["category"] as Category)
         Assertions.assertThat(saved.get().counts).isEqualTo(COUNTS)
-        Assertions.assertThat(saved.get().points).isEqualTo(POINTS)
+        Assertions.assertThat(saved.get().points).isNull()
         Assertions.assertThat(saved.get().extraPoints).isEqualTo(EXTRA_POINTS)
         Assertions.assertThat(saved.get().description1).isEqualTo(DESCRIPTION1)
         Assertions.assertThat(saved.get().description2).isEqualTo(DESCRIPTION2)

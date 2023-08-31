@@ -1,6 +1,8 @@
 package edu.handong.cseemileage.mileage.semesterItem.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.handong.cseemileage.exception.ExceptionMessage
+import edu.handong.cseemileage.exception.ExceptionResponse
 import edu.handong.cseemileage.mileage.category.domain.Category
 import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.domain.Item
@@ -25,7 +27,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
 
@@ -38,15 +39,13 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
     val semesterItemRepository: SemesterItemRepository,
     val itemRepository: ItemRepository,
     val categoryRepository: CategoryRepository,
-    val semesterController: MileageSemesterItemController
+    val semesterController: MileageSemesterItemController,
+    val mockMvc: MockMvc
 ) {
 
     companion object {
         private const val API_URI = "/api/mileage/semesters"
     }
-
-    @Autowired
-    lateinit var mockMvc: MockMvc
 
     @BeforeEach
     fun setUp() {
@@ -55,10 +54,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
     @PostConstruct
     @Profile("dev") // CI 환경에서만 실행
     fun init() {
-        mockMvc = MockMvcBuilders
-            .standaloneSetup(semesterController)
-            .build()
-
         var category1 = Category("전공 마일리지")
         categoryRepository.save(category1)
 
@@ -119,27 +114,31 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         val item1 = itemRepository.findByName("전공 항목1")
         val item2 = itemRepository.findByName("캠프 항목1")
         val semesterList = mutableListOf<SemesterItemForm>()
-        item1.id?.let {
-            semesterList.add(
-                SemesterItemForm(
-                    itemId = it,
-                    points = POINT_VALUE,
-                    itemMaxPoints = ITEM_MAX_POINTS,
-                    categoryMaxPoints = CATEGORY_MAX_POINTS,
-                    semesterName = null
+        if (item1 != null) {
+            item1.id?.let {
+                semesterList.add(
+                    SemesterItemForm(
+                        itemId = it,
+                        points = POINT_VALUE,
+                        itemMaxPoints = ITEM_MAX_POINTS,
+                        categoryMaxPoints = CATEGORY_MAX_POINTS,
+                        semesterName = null
+                    )
                 )
-            )
+            }
         }
-        item2.id?.let {
-            semesterList.add(
-                SemesterItemForm(
-                    itemId = it,
-                    points = POINT_VALUE * 2,
-                    itemMaxPoints = ITEM_MAX_POINTS,
-                    categoryMaxPoints = CATEGORY_MAX_POINTS,
-                    semesterName = null
+        if (item2 != null) {
+            item2.id?.let {
+                semesterList.add(
+                    SemesterItemForm(
+                        itemId = it,
+                        points = POINT_VALUE * 2,
+                        itemMaxPoints = ITEM_MAX_POINTS,
+                        categoryMaxPoints = CATEGORY_MAX_POINTS,
+                        semesterName = null
+                    )
                 )
-            )
+            }
         }
         val form = SemesterItemMultipleForm(semesterList)
         val req = mapper.writeValueAsString(form)
@@ -157,5 +156,38 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         // Then
         Assertions.assertThat(mvcResult.response.status).isEqualTo(HttpStatus.CREATED.value())
         Assertions.assertThat(semesterItemRepository.findAllBySemesterName(SEMESTER_NAME).size).isEqualTo(2)
+    }
+
+    @DisplayName("integration: 글로벌 항목 ID가 음수인 경우")
+    @Test
+    fun MileageSemesterItemServiceTestsItem_163() {
+        // Given
+        val form = SemesterItemForm(
+            itemId = -1,
+            points = POINT_VALUE,
+            itemMaxPoints = ITEM_MAX_POINTS,
+            categoryMaxPoints = CATEGORY_MAX_POINTS,
+            semesterName = SEMESTER_NAME
+        )
+        val req = mapper.writeValueAsString(form)
+
+        // When
+        val mvcResult = mockMvc
+            .post("$API_URI/{SEMESTER_NAME}/items", SEMESTER_NAME) {
+                contentType = MediaType.APPLICATION_JSON
+                content = req
+            }
+            .andExpect { status { isBadRequest() } }
+            .andDo { print() }
+            .andReturn()
+
+        val response = mapper.readValue(
+            mvcResult.response.contentAsString,
+            ExceptionResponse::class.java
+        )
+
+        // Then
+        Assertions.assertThat(response.status).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        Assertions.assertThat(response.message).isEqualTo(ExceptionMessage.SEMESTER_ITEM_ID_IS_NOT_POSITIVE)
     }
 }

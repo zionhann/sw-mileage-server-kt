@@ -46,11 +46,13 @@ class SemesterItemQueryService(
                 MileageRecordDto.InfoV2(
                     id = record.id,
                     studentName = record.student.name,
+                    studentSid = record.student.sid,
                     counts = record.counts,
                     points = record.points,
                     extraPoints = record.extraPoints,
                     description1 = record.description1,
-                    description2 = record.description2
+                    description2 = record.description2,
+                    modDate = record.modDate.toString()
                 )
             }
 

@@ -25,10 +25,12 @@ class MileageRecordDto(
     class InfoV2(
         val id: Int = 0,
         val studentName: String? = "",
+        val studentSid: String? = "",
         val counts: Float? = 1f,
         val points: Int? = null,
         val extraPoints: Int? = null,
         val description1: String? = null,
-        val description2: String? = null
+        val description2: String? = null,
+        val modDate: String? = null
     )
 }

@@ -5,6 +5,7 @@ import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
 import edu.handong.cseemileage.mileage.item.domain.Item
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
+import edu.handong.cseemileage.mileage.item.exception.DuplicateItemException
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.DESCRIPTION1
 import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.DESCRIPTION2
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import org.testng.Assert.assertThrows
 
 @Transactional
 @SpringBootTest
@@ -116,6 +118,29 @@ class MileageItemServiceTests @Autowired constructor(
         assertThat(updatedItem.isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
         assertThat(updatedItem.isStudentInput).isEqualTo(IS_STUDENT_INPUT)
         assertThat(updatedItem.isMulti).isEqualTo(IS_MULTI)
+    }
+
+    @DisplayName("service: 중복된 마일리지 항목을 저장할 수 없다.")
+    @Test
+    fun mileageItemServiceTests_123() {
+        // Given
+        val category = Category(MileageCategoryRepositoryTests.NAME)
+        categoryRepository.save(category)
+        val form = ItemForm(
+            categoryId = category.id,
+            itemName = NAME,
+            description1 = null,
+            description2 = null,
+            stuType = null,
+            flags = null
+        )
+
+        // When
+        assertThrows(DuplicateItemException::class.java) {
+            // Then
+            itemService.saveItem(form)
+            itemService.saveItem(form)
+        }
     }
 
     @DisplayName("service: repository 의존성 주입")
