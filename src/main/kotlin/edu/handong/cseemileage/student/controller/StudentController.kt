@@ -47,7 +47,13 @@ class StudentController(
     @GetMapping
     fun getStudents(): ResponseEntity<StudentDto> {
         val students = studentQueryService.getStudents()
-        return ResponseEntity.ok(StudentDto(students))
+        return ResponseEntity.ok(
+            StudentDto(
+                list = students,
+                count = students.size,
+                description = "학생 전체 조회"
+            )
+        )
     }
 
     @PatchMapping("/{studentId}")

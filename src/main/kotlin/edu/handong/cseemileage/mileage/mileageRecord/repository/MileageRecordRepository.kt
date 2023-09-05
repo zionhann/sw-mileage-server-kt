@@ -15,4 +15,7 @@ interface MileageRecordRepository : JpaRepository<MileageRecord, Int> {
 
     @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem i JOIN FETCH r.student s WHERE i.id = :semesterItemId")
     fun findAllBySemesterItemId(semesterItemId: Int): List<MileageRecord>
+
+    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.student s JOIN FETCH r.semesterItem i JOIN FETCH i.item it")
+    fun findAllWithAllReferences(): List<MileageRecord>
 }

@@ -14,7 +14,19 @@ class StudentQueryService(
         return studentRepository
             .findAll()
             .map {
-                modelMapper.map(it, StudentDto.Info::class.java)
+                StudentDto.Info(
+                    id = it.id,
+                    name = it.name,
+                    sid = it.sid,
+                    department = it.department,
+                    major1 = it.major1,
+                    major2 = it.major2,
+                    year = it.year,
+                    semesterCount = it.semesterCount,
+                    loginCount = it.loginCount,
+                    lastLoginDate = it.lastLoginDate,
+                    isChecked = it.isChecked
+                )
             }
     }
 }

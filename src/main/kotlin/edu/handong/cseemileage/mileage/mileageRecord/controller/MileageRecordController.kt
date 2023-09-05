@@ -41,18 +41,26 @@ class MileageRecordController(
 
     @GetMapping
     fun readRecords(): ResponseEntity<MileageRecordDto> {
-        return ResponseEntity.ok(MileageRecordDto(mileageRecordQueryService.getRecords()))
+        val records = mileageRecordQueryService.getRecords()
+        return ResponseEntity.ok(
+            MileageRecordDto(
+                list = records,
+                count = records.size,
+                description = "마일리지 기록 전체 조회 결과"
+            )
+        )
     }
 
     @GetMapping("/students/{studentId}")
     fun readRecordsByStudentId(
         @PathVariable studentId: Int
     ): ResponseEntity<MileageRecordDto> {
+        val records = mileageRecordQueryService.getRecordsByStudentId(studentId)
         return ResponseEntity.ok(
             MileageRecordDto(
-                deleteFailureReasons = mileageRecordQueryService.getRecordsByStudentId(
-                    studentId
-                )
+                list = records,
+                count = records.size,
+                description = "학생 별로 마일리지 기록 조회 결과"
             )
         )
     }
@@ -61,11 +69,12 @@ class MileageRecordController(
     fun readRecordsBySemesterItemId(
         @PathVariable semesterItemId: Int
     ): ResponseEntity<MileageRecordDto> {
+        val records = mileageRecordQueryService.getRecordsBySemesterItemId(semesterItemId)
         return ResponseEntity.ok(
             MileageRecordDto(
-                deleteFailureReasons = mileageRecordQueryService.getRecordsBySemesterItemId(
-                    semesterItemId
-                )
+                list = records,
+                count = records.size,
+                description = "학기 항목 별로 마일리지 기록 조회한 결과"
             )
         )
     }

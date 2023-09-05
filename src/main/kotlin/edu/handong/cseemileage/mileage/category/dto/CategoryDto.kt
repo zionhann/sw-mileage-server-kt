@@ -5,37 +5,20 @@ import edu.handong.cseemileage.mileage.item.dto.ItemDto
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class CategoryDto(
-    val categories: List<InfoV1>? = null,
-    val categoriesWithItems: List<InfoV2>? = null,
-    val categoriesWithItemsAndSemesters: List<InfoV3>? = null
+    val description: String,
+    val count: Int? = null,
+    val list: List<Info>? = null,
+    val data: Info? = null
 ) {
-
-    /**
-     * Category 단독 조회
-     * */
-    class InfoV1(
-        val id: Int = 0,
-        val name: String = "",
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    class Info(
+        val id: Int? = null,
+        val name: String? = null,
         val description1: String? = null,
         val description2: String? = null,
-        val orderIdx: Int = 0,
-        val itemType: String = "",
-        val isMulti: Boolean = false
-    )
-
-    /**
-     * Category와 Item 조회
-     * */
-    class InfoV2(
-        val category: InfoV1,
-        val items: List<ItemDto.InfoV2>
-    )
-
-    /**
-     * Category와 Item, Semester 조회
-     * */
-    class InfoV3(
-        val category: InfoV1,
-        val items: List<ItemDto.InfoV3>
+        val orderIdx: Int? = null,
+        val itemType: String? = null,
+        val isMulti: Boolean? = null,
+        val items: List<ItemDto.Info>? = null
     )
 }

@@ -43,14 +43,39 @@ class MileageCategoryController(
     @GetMapping
     fun getCategories(): ResponseEntity<CategoryDto> {
         val categories = categoryQueryService.getCategories()
-        return ResponseEntity.ok(CategoryDto(categories = categories))
+        return ResponseEntity.ok(
+            CategoryDto(
+                list = categories,
+                count = categories.size,
+                description = "카테고리 목록 조회 결과"
+            )
+        )
     }
 
-    @GetMapping("/global")
-    fun getCategoriesWithItems(): ResponseEntity<CategoryDto> {
-        val categories = categoryQueryService.getCategoriesWithItems()
-        return ResponseEntity.ok(CategoryDto(categoriesWithItems = categories))
+    @GetMapping("{categoryId}")
+    fun getOneCategory(
+        @PathVariable categoryId: Int
+    ): ResponseEntity<CategoryDto> {
+        val category = categoryQueryService.getCategoryById(categoryId)
+        return ResponseEntity.ok(
+            CategoryDto(
+                data = category,
+                description = "카테고리 단건 조회 by categoryId ( = $categoryId )"
+            )
+        )
     }
+
+//    @GetMapping("/global")
+//    fun getCategoriesWithItems(): ResponseEntity<CategoryDto> {
+//        val categories = categoryQueryService.getCategoriesWithItems()
+//        return ResponseEntity.ok(
+//            CategoryDto(
+//                list = categories,
+//                count = categories.size,
+//                description = "글로벌 카테고리, 항목 join 조회 결과"
+//            )
+//        )
+//    }
 
     /**
      * 학기별 카테고리, 항목, 학기 정보 조회
@@ -60,7 +85,13 @@ class MileageCategoryController(
         @RequestParam("semester") semester: String
     ): ResponseEntity<CategoryDto> {
         val list = categoryQueryService.getCategoryWithItemAndSemester(semester)
-        return ResponseEntity.ok(CategoryDto(categoriesWithItemsAndSemesters = list))
+        return ResponseEntity.ok(
+            CategoryDto(
+                list = list,
+                count = list.size,
+                description = "학기별로 카테고리, 항목, 학기별 항목 정보 조회한 결과"
+            )
+        )
     }
 
     @PatchMapping("/{id}")

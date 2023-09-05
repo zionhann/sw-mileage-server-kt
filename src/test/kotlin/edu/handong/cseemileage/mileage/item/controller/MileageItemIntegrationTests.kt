@@ -133,7 +133,7 @@ class MileageItemIntegrationTests @Autowired constructor(
         )
 
         // Then
-        assertThat(res.items).hasSize(2)
+        assertThat(res.count).isEqualTo(2)
     }
 
     @DisplayName("integration: 마일리지 항목 수정")

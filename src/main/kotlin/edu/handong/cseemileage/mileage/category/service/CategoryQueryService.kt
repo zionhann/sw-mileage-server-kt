@@ -16,39 +16,43 @@ class CategoryQueryService(
     val semesterItemRepository: SemesterItemRepository,
     val modelMapper: ModelMapper
 ) {
-    fun getCategories(): List<CategoryDto.InfoV1> {
+    fun getCategories(): List<CategoryDto.Info> {
         return repository
             .findAll()
             .map {
-                modelMapper.map(it, CategoryDto.InfoV1::class.java)
+                CategoryDto.Info(
+                    id = it.id,
+                    name = it.name,
+                    description1 = it.description1,
+                    description2 = it.description2,
+                    orderIdx = it.orderIdx,
+                    itemType = it.itemType,
+                    isMulti = it.isMulti
+                )
             }
     }
 
-    fun getCategoriesWithItems(): List<CategoryDto.InfoV2> {
-        val categories = repository.findAll()
-        return categories.map {
-            CategoryDto.InfoV2(
-                modelMapper.map(it, CategoryDto.InfoV1::class.java),
-                it.items.map { item ->
-                    modelMapper.map(item, ItemDto.InfoV2::class.java)
-                }
-            )
-        }
-    }
-
-    fun getCategoryById(id: Int): CategoryDto.InfoV1 {
+    fun getCategoryById(id: Int): CategoryDto.Info {
         repository
             .findById(id)
             .orElseThrow { throw CategoryNotFoundException() }
             .let {
-                return modelMapper.map(it, CategoryDto.InfoV1::class.java)
+                return CategoryDto.Info(
+                    id = it.id,
+                    name = it.name,
+                    description1 = it.description1,
+                    description2 = it.description2,
+                    orderIdx = it.orderIdx,
+                    itemType = it.itemType,
+                    isMulti = it.isMulti
+                )
             }
     }
 
     /**
      * 학기별 카테고리, 항목, 학기 정보를 가져온다
      * */
-    fun getCategoryWithItemAndSemester(semesterName: String): List<CategoryDto.InfoV3> {
+    fun getCategoryWithItemAndSemester(semesterName: String): List<CategoryDto.Info> {
         // 해당 학기 정보 전체 조회
         val semesterList = semesterItemRepository.findAllBySemesterName(semesterName)
 
@@ -63,7 +67,7 @@ class CategoryQueryService(
                     // 해당 학기에 사용된 항목만 필터링
                     semesterItem.semesterName == semesterName
                 }.map { semesterItem ->
-                    SemesterItemDto.InfoV3(
+                    SemesterItemDto.Info(
                         id = semesterItem.id,
                         semesterName = semesterItem.semesterName,
                         points = semesterItem.pointValue,
@@ -71,7 +75,7 @@ class CategoryQueryService(
                         categoryMaxPoints = semesterItem.categoryMaxPoints
                     )
                 }
-                ItemDto.InfoV3(
+                ItemDto.Info(
                     id = item.id,
                     name = item.name,
                     isPortfolio = item.isPortfolio,
@@ -85,11 +89,17 @@ class CategoryQueryService(
                     semesterItems = semesterInfos
                 )
             }
-            CategoryDto.InfoV3(
-                modelMapper.map(category, CategoryDto.InfoV1::class.java),
-                itemInfos
+            CategoryDto.Info(
+                id = category.id,
+                name = category.name,
+                description1 = category.description1,
+                description2 = category.description2,
+                orderIdx = category.orderIdx,
+                itemType = category.itemType,
+                isMulti = category.isMulti,
+                items = itemInfos
             )
-        }.toList()
+        }
 
         return categoryInfos
     }

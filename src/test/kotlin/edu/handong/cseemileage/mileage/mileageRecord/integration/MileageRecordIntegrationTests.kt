@@ -192,7 +192,7 @@ class MileageRecordIntegrationTests @Autowired constructor(
         )
 
         // Then
-        assertThat(res.records).hasSize(2)
+        assertThat(res.count).isEqualTo(2)
     }
 
     @DisplayName("service: semesterItem_id가 음수인 경우")
