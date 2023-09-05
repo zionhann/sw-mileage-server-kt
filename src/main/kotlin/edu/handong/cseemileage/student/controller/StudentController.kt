@@ -2,8 +2,10 @@ package edu.handong.cseemileage.student.controller
 
 import edu.handong.cseemileage.student.dto.StudentDto
 import edu.handong.cseemileage.student.dto.StudentForm
+import edu.handong.cseemileage.student.exception.StudentCannotDeleteException
 import edu.handong.cseemileage.student.service.StudentQueryService
 import edu.handong.cseemileage.student.service.StudentService
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -63,7 +65,11 @@ class StudentController(
         @PathVariable
         studentId: Int
     ): ResponseEntity<Map<String, Int>> {
-        val removedId = studentService.deleteStudent(studentId)
-        return ResponseEntity.ok(mapOf("id" to removedId))
+        try {
+            val removedId = studentService.deleteStudent(studentId)
+            return ResponseEntity.ok(mapOf("id" to removedId))
+        } catch (e: DataIntegrityViolationException) {
+            throw StudentCannotDeleteException()
+        }
     }
 }

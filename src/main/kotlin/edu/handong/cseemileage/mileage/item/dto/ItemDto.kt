@@ -6,7 +6,8 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class ItemDto(
-    var items: List<InfoV1>? = null
+    var items: List<InfoV1>? = null,
+    var deleteFailureReasons: List<deleteFailureInfo>? = null
 ) {
 
     /**
@@ -57,5 +58,10 @@ class ItemDto(
         val isStudentInput: Boolean = true,
         val isMulti: Boolean = true,
         val semesterItems: List<SemesterItemDto.InfoV3>
+    )
+
+    class deleteFailureInfo(
+        val id: Int?,
+        val name: String = ""
     )
 }

@@ -2,8 +2,10 @@ package edu.handong.cseemileage.mileage.category.controller
 
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
+import edu.handong.cseemileage.mileage.category.exception.CategoryCannotDeleteException
 import edu.handong.cseemileage.mileage.category.service.CategoryQueryService
 import edu.handong.cseemileage.mileage.category.service.CategoryService
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -75,7 +77,11 @@ class MileageCategoryController(
     fun removeCategory(
         @PathVariable id: Int
     ): ResponseEntity<Map<String, Int>> {
-        val removedId = categoryService.remove(id)
-        return ResponseEntity.ok(mapOf("id" to removedId))
+        try {
+            val removedId = categoryService.remove(id)
+            return ResponseEntity.ok(mapOf("id" to removedId))
+        } catch (e: DataIntegrityViolationException) {
+            throw CategoryCannotDeleteException()
+        }
     }
 }

@@ -3,8 +3,10 @@ package edu.handong.cseemileage.mileage.semesterItem.controller
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
+import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterItemCannotDeleteException
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemQueryService
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemService
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -80,6 +82,14 @@ class MileageSemesterItemController(
         return ResponseEntity.ok(SemesterItemDto(semesterItemsWithRecords = list))
     }
 
+    @GetMapping("/items/{itemId}")
+    fun getSemesterItemByItemId(
+        @PathVariable itemId: Int
+    ): ResponseEntity<SemesterItemDto> {
+        val list = semesterItemQueryService.getSemesterItemByItemId(itemId)
+        return ResponseEntity.ok(SemesterItemDto(deleteFailureReasons = list))
+    }
+
     @PatchMapping("/{semesterItemId}")
     fun modifyItem(
         @PathVariable semesterItemId: Int,
@@ -95,7 +105,11 @@ class MileageSemesterItemController(
         @PathVariable
         semesterItemId: Int
     ): ResponseEntity<Map<String, Int>> {
-        val removedId = semesterItemService.deleteSemesterItem(semesterItemId)
-        return ResponseEntity.ok(mapOf("id" to removedId))
+        return try {
+            val removedId = semesterItemService.deleteSemesterItem(semesterItemId)
+            ResponseEntity.ok(mapOf("id" to removedId))
+        } catch (e: DataIntegrityViolationException) {
+            throw SemesterItemCannotDeleteException()
+        }
     }
 }
