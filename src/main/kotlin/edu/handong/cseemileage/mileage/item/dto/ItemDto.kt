@@ -6,58 +6,25 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class ItemDto(
-    var items: List<InfoV1>? = null,
-    var deleteFailureReasons: List<deleteFailureInfo>? = null
+    val description: String,
+    val count: Int? = null,
+    val list: List<Info>? = null,
+    val data: Info? = null
 ) {
-
-    /**
-     * Item과 Category 조회
-     * */
-    class InfoV1(
-        val id: Int = 0,
-        val category: CategoryDto.InfoV1 = CategoryDto.InfoV1(),
-        val name: String = "",
-        val isPortfolio: Boolean = false,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    class Info(
+        val id: Int? = null,
+        val category: CategoryDto.Info? = null,
+        val name: String? = null,
+        val isPortfolio: Boolean? = null,
         val description1: String? = null,
         val description2: String? = null,
         val stuType: String? = null,
-        val isVisible: Boolean = true,
-        val isStudentVisible: Boolean = true,
-        val isStudentInput: Boolean = true,
-        val isMulti: Boolean = true
-    )
-
-    /**
-     * Item 단독 조회
-     * */
-    class InfoV2(
-        val id: Int = 0,
-        val name: String = "",
-        val isPortfolio: Boolean = false,
-        val description1: String? = null,
-        val description2: String? = null,
-        val stuType: String? = null,
-        val isVisible: Boolean = true,
-        val isStudentVisible: Boolean = true,
-        val isStudentInput: Boolean = true,
-        val isMulti: Boolean = true
-    )
-
-    /**
-     * Item과 Semester 조회
-     * */
-    class InfoV3(
-        val id: Int?,
-        val name: String = "",
-        val isPortfolio: Boolean = false,
-        val description1: String? = null,
-        val description2: String? = null,
-        val stuType: String? = null,
-        val isVisible: Boolean = true,
-        val isStudentVisible: Boolean = true,
-        val isStudentInput: Boolean = true,
-        val isMulti: Boolean = true,
-        val semesterItems: List<SemesterItemDto.InfoV3>
+        val isVisible: Boolean? = null,
+        val isStudentVisible: Boolean? = null,
+        val isStudentInput: Boolean? = null,
+        val isMulti: Boolean? = null,
+        val semesterItems: List<SemesterItemDto.Info>? = null
     )
 
     class deleteFailureInfo(

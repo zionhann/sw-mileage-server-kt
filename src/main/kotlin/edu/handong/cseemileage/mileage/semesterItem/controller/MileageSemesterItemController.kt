@@ -68,7 +68,13 @@ class MileageSemesterItemController(
     ): ResponseEntity<SemesterItemDto> {
         // Todo: filter 사용(학기, 항목명 등)
         val semesterItems = semesterItemQueryService.getSemesterItemsV1(semesterName)
-        return ResponseEntity.ok(SemesterItemDto(semesterItems = semesterItems))
+        return ResponseEntity.ok(
+            SemesterItemDto(
+                list = semesterItems,
+                count = semesterItems.size,
+                description = "학기별 항목 조회 결과 filtered by $semesterName"
+            )
+        )
     }
 
     /**
@@ -78,16 +84,28 @@ class MileageSemesterItemController(
     fun getSemesterItemsAndRecords(
         @PathVariable semesterName: String
     ): ResponseEntity<SemesterItemDto> {
-        val list = semesterItemQueryService.getSemesterItemsWithRecords(semesterName)
-        return ResponseEntity.ok(SemesterItemDto(semesterItemsWithRecords = list))
+        val semesterItems = semesterItemQueryService.getSemesterItemsWithRecords(semesterName)
+        return ResponseEntity.ok(
+            SemesterItemDto(
+                list = semesterItems,
+                count = semesterItems.size,
+                description = "학기별 항목 조회 join with 카테고리, 항목, 마일리지 기록, 학생"
+            )
+        )
     }
 
     @GetMapping("/items/{itemId}")
     fun getSemesterItemByItemId(
         @PathVariable itemId: Int
     ): ResponseEntity<SemesterItemDto> {
-        val list = semesterItemQueryService.getSemesterItemByItemId(itemId)
-        return ResponseEntity.ok(SemesterItemDto(deleteFailureReasons = list))
+        val semesterItems = semesterItemQueryService.getSemesterItemByItemId(itemId)
+        return ResponseEntity.ok(
+            SemesterItemDto(
+                list = semesterItems,
+                count = semesterItems.size,
+                description = "학기별 항목 조회 by itemId($itemId)"
+            )
+        )
     }
 
     @PatchMapping("/{semesterItemId}")

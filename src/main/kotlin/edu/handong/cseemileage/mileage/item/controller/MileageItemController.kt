@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.mileage.item.controller
 
+import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
 import edu.handong.cseemileage.mileage.item.exception.ItemCannotDeleteException
@@ -40,7 +41,13 @@ class MileageItemController(
     @GetMapping
     fun getItems(): ResponseEntity<ItemDto> {
         val items = itemQueryService.getItems()
-        return ResponseEntity.ok(ItemDto(items = items))
+        return ResponseEntity.ok(
+            ItemDto(
+                list = items,
+                count = items.size,
+                description = "세부 항목 목록 조회 결과"
+            )
+        )
     }
 
     @GetMapping("/categories/{categoryId}")
@@ -48,7 +55,26 @@ class MileageItemController(
         @PathVariable categoryId: Int
     ): ResponseEntity<ItemDto> {
         val items = itemQueryService.getItemsByCategoryId(categoryId)
-        return ResponseEntity.ok(ItemDto(deleteFailureReasons = items))
+        return ResponseEntity.ok(
+            ItemDto(
+                list = items,
+                count = items.size,
+                description = "카테고리 별 세부 항목 목록 조회 결과"
+            )
+        )
+    }
+
+    // TODO: global 조회 api 링크 바뀌었음을 고지하기
+    @GetMapping("/global")
+    fun getItemsWithCategories(): ResponseEntity<CategoryDto> {
+        val list = itemQueryService.getItemsWithCategory()
+        return ResponseEntity.ok(
+            CategoryDto(
+                list = list,
+                count = list.size,
+                description = "글로벌 카테고리, 항목 join 조회 결과"
+            )
+        )
     }
 
     @PatchMapping("/{itemId}")

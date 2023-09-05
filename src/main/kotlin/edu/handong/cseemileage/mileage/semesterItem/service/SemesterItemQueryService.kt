@@ -7,23 +7,29 @@ import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import org.modelmapper.ModelMapper
+import edu.handong.cseemileage.student.dto.StudentDto
 import org.springframework.stereotype.Service
 
 @Service
 class SemesterItemQueryService(
     val repository: SemesterItemRepository,
     val categoryRepository: CategoryRepository,
-    val recordRepository: MileageRecordRepository,
-    val modelMapper: ModelMapper
+    val recordRepository: MileageRecordRepository
 ) {
-    fun getSemesterItemsV1(semesterItems: String): List<SemesterItemDto.InfoV1> {
+    fun getSemesterItemsV1(semesterItems: String): List<SemesterItemDto.Info> {
         val semesterItems = repository.findAllBySemesterName(semesterItems)
         return semesterItems.map {
-            SemesterItemDto.InfoV1(
+            SemesterItemDto.Info(
                 id = it.id,
-                item = modelMapper.map(it.item, ItemDto.InfoV2::class.java),
-                category = modelMapper.map(it.category, CategoryDto.InfoV1::class.java),
+                item = ItemDto.Info(
+                    id = it.item.id,
+                    name = it.item.name,
+                    description1 = it.item.description1
+                ),
+                category = CategoryDto.Info(
+                    id = it.item.category.id,
+                    name = it.item.category.name
+                ),
                 semesterName = it.semesterName,
                 points = it.pointValue,
                 itemMaxPoints = it.itemMaxPoints,
@@ -32,7 +38,7 @@ class SemesterItemQueryService(
         }
     }
 
-    fun getSemesterItemsWithRecords(semesterName: String): List<SemesterItemDto.InfoV4> {
+    fun getSemesterItemsWithRecords(semesterName: String): List<SemesterItemDto.Info> {
         // 해당 학기 record 전체 조회
         val recordList = recordRepository.findAllBySemesterName(semesterName)
 
@@ -43,10 +49,13 @@ class SemesterItemQueryService(
         // 반환 데이터 조립
         return distinctSemesterItems.map { semesterItem ->
             val recordInfos = semesterItem.records.map { record ->
-                MileageRecordDto.InfoV2(
+                MileageRecordDto.Info(
                     id = record.id,
-                    studentName = record.student.name,
-                    studentSid = record.student.sid,
+                    student = StudentDto.Info(
+                        id = record.student.id,
+                        name = record.student.name,
+                        sid = record.student.sid
+                    ),
                     counts = record.counts,
                     points = record.points,
                     extraPoints = record.extraPoints,
@@ -56,10 +65,16 @@ class SemesterItemQueryService(
                 )
             }
 
-            SemesterItemDto.InfoV4(
+            SemesterItemDto.Info(
                 id = semesterItem.id,
-                itemName = semesterItem.item.name,
-                categoryName = semesterItem.category.name,
+                item = ItemDto.Info(
+                    id = semesterItem.item.id,
+                    name = semesterItem.item.name
+                ),
+                category = CategoryDto.Info(
+                    id = semesterItem.category.id,
+                    name = semesterItem.category.name
+                ),
                 semesterName = semesterItem.semesterName,
                 points = semesterItem.pointValue,
                 itemMaxPoints = semesterItem.itemMaxPoints,
@@ -69,10 +84,10 @@ class SemesterItemQueryService(
         }
     }
 
-    fun getSemesterItemByItemId(itemId: Int): List<SemesterItemDto.InfoV3> {
+    fun getSemesterItemByItemId(itemId: Int): List<SemesterItemDto.Info> {
         val semesterItems = repository.findAllByItemId(itemId)
         return semesterItems.map {
-            SemesterItemDto.InfoV3(
+            SemesterItemDto.Info(
                 id = it.id,
                 semesterName = it.semesterName,
                 points = it.pointValue,
