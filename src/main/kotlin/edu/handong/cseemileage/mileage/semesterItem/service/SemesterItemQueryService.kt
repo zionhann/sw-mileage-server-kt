@@ -68,4 +68,17 @@ class SemesterItemQueryService(
             )
         }
     }
+
+    fun getSemesterItemByItemId(itemId: Int): List<SemesterItemDto.InfoV3> {
+        val semesterItems = repository.findAllByItemId(itemId)
+        return semesterItems.map {
+            SemesterItemDto.InfoV3(
+                id = it.id,
+                semesterName = it.semesterName,
+                points = it.pointValue,
+                itemMaxPoints = it.itemMaxPoints,
+                categoryMaxPoints = it.categoryMaxPoints
+            )
+        }
+    }
 }

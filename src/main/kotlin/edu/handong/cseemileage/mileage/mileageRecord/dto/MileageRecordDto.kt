@@ -7,7 +7,8 @@ import edu.handong.cseemileage.student.dto.StudentDto
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class MileageRecordDto(
-    val records: List<Info>? = null
+    val records: List<Info>? = null,
+    val deleteFailureReasons: List<DeleteFailureInfo>? = null
 ) {
 
     class Info(
@@ -32,5 +33,13 @@ class MileageRecordDto(
         val description1: String? = null,
         val description2: String? = null,
         val modDate: String? = null
+    )
+
+    class DeleteFailureInfo(
+        val id: Int,
+        val semesterItemName: String? = "",
+        val studentName: String? = "",
+        val points: Int? = null,
+        val semester: String? = null
     )
 }

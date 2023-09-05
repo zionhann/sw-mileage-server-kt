@@ -36,4 +36,14 @@ class ItemQueryService(
             )
         }
     }
+
+    fun getItemsByCategoryId(categoryId: Int): List<ItemDto.deleteFailureInfo> {
+        val items = repository.findAllByCategoryId(categoryId)
+        return items.map {
+            ItemDto.deleteFailureInfo(
+                id = it.id,
+                name = it.name
+            )
+        }
+    }
 }

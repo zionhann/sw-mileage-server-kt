@@ -44,6 +44,32 @@ class MileageRecordController(
         return ResponseEntity.ok(MileageRecordDto(mileageRecordQueryService.getRecords()))
     }
 
+    @GetMapping("/students/{studentId}")
+    fun readRecordsByStudentId(
+        @PathVariable studentId: Int
+    ): ResponseEntity<MileageRecordDto> {
+        return ResponseEntity.ok(
+            MileageRecordDto(
+                deleteFailureReasons = mileageRecordQueryService.getRecordsByStudentId(
+                    studentId
+                )
+            )
+        )
+    }
+
+    @GetMapping("/semesterItems/{semesterItemId}")
+    fun readRecordsBySemesterItemId(
+        @PathVariable semesterItemId: Int
+    ): ResponseEntity<MileageRecordDto> {
+        return ResponseEntity.ok(
+            MileageRecordDto(
+                deleteFailureReasons = mileageRecordQueryService.getRecordsBySemesterItemId(
+                    semesterItemId
+                )
+            )
+        )
+    }
+
     @PatchMapping("/{mileageRecordId}")
     fun modifyMileageRecord(
         @PathVariable mileageRecordId: Int,

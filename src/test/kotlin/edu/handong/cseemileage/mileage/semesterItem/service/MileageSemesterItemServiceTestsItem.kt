@@ -18,6 +18,8 @@ import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepos
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_ITEM_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_POINT_VALUE
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_SEMESTER_NAME
+import edu.handong.cseemileage.student.domain.Student
+import edu.handong.cseemileage.student.repository.StudentRepository
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -36,7 +38,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
     val categoryRepository: CategoryRepository,
     val itemRepository: ItemRepository,
     val semesterItemRepository: SemesterItemRepository,
-    val semesterItemService: SemesterItemService
+    val semesterItemService: SemesterItemService,
+    val studentRepository: StudentRepository
 ) {
 
     // TODO: 학기 수정 추가하기
@@ -203,11 +206,16 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         itemRepository.save(item2)
         val semesterItem = createDefaultSemesterItem(item1)
         semesterItemRepository.save(semesterItem)
+        val student = Student()
+        studentRepository.save(student)
 
         return mapOf(
+            "category1" to category1,
             "category2" to category2,
+            "item1" to item1,
             "item2" to item2,
-            "semesterItem" to semesterItem
+            "semesterItem" to semesterItem,
+            "student" to student
         )
     }
 }

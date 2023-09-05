@@ -8,6 +8,7 @@ interface SemesterItemRepository : JpaRepository<SemesterItem, Int> {
     fun findTopByOrderByIdDesc(): SemesterItem?
     fun findAllBySemesterName(name: String): List<SemesterItem>
     fun countBySemesterName(name: String): Long
+    fun findAllByItemId(itemId: Int): List<SemesterItem>
 
     @Query("SELECT s FROM SemesterItem s JOIN FETCH s.item i JOIN FETCH i.category WHERE s.semesterName = :name")
     fun findAllWithItemAndCategory(name: String): List<SemesterItem>

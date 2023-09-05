@@ -8,6 +8,7 @@ interface ItemRepository : JpaRepository<Item, Int> {
     fun findTopByOrderByIdDesc(): Item?
     fun findByName(name: String): Item?
     fun findAllByName(name: String): List<Item>
+    fun findAllByCategoryId(categoryId: Int): List<Item>
 
     @Query("SELECT i FROM Item i JOIN FETCH i.category")
     fun findAllWithCategory(): List<Item>

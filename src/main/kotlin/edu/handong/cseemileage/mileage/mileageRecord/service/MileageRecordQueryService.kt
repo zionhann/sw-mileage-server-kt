@@ -2,6 +2,7 @@ package edu.handong.cseemileage.mileage.mileageRecord.service
 
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
+import edu.handong.cseemileage.mileage.mileageRecord.domain.MileageRecord
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 import edu.handong.cseemileage.mileage.mileageRecord.exception.MileageRecordNotFoundException
 import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
@@ -66,6 +67,28 @@ class MileageRecordQueryService(
                 extraPoints = it.extraPoints,
                 description1 = it.description1,
                 description2 = it.description2
+            )
+        }
+    }
+
+    fun getRecordsByStudentId(studentId: Int): List<MileageRecordDto.DeleteFailureInfo> {
+        val records = mileageRecordRepository.findAllByStudentId(studentId)
+        return recordsToDeleteFailureInfo(records)
+    }
+
+    fun getRecordsBySemesterItemId(semesterItemId: Int): List<MileageRecordDto.DeleteFailureInfo> {
+        val records = mileageRecordRepository.findAllBySemesterItemId(semesterItemId)
+        return recordsToDeleteFailureInfo(records)
+    }
+
+    private fun recordsToDeleteFailureInfo(records: List<MileageRecord>): List<MileageRecordDto.DeleteFailureInfo> {
+        return records.map {
+            MileageRecordDto.DeleteFailureInfo(
+                id = it.id,
+                semesterItemName = it.semesterItem.semesterName,
+                studentName = it.student.name,
+                points = it.points,
+                semester = it.semesterItem.semesterName
             )
         }
     }

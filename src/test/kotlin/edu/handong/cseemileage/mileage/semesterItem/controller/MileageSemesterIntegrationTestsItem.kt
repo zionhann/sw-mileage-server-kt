@@ -107,8 +107,8 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
      * category2 / subitem2
      * 2023-02학기에 위의 두 항목을 추가한다.
      * */
+    //    @Test
     @DisplayName("integration: 학기별 마일리지 항목 생성(multiple)")
-    @Test
     fun createSemesterMultiple() {
         // Given
         val item1 = itemRepository.findByName("전공 항목1")

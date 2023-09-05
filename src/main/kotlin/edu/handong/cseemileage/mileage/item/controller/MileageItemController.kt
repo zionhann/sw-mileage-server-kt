@@ -2,8 +2,10 @@ package edu.handong.cseemileage.mileage.item.controller
 
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
+import edu.handong.cseemileage.mileage.item.exception.ItemCannotDeleteException
 import edu.handong.cseemileage.mileage.item.service.ItemQueryService
 import edu.handong.cseemileage.mileage.item.service.ItemService
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -41,6 +43,14 @@ class MileageItemController(
         return ResponseEntity.ok(ItemDto(items = items))
     }
 
+    @GetMapping("/categories/{categoryId}")
+    fun getItemsByCategoryId(
+        @PathVariable categoryId: Int
+    ): ResponseEntity<ItemDto> {
+        val items = itemQueryService.getItemsByCategoryId(categoryId)
+        return ResponseEntity.ok(ItemDto(deleteFailureReasons = items))
+    }
+
     @PatchMapping("/{itemId}")
     fun modifyItem(
         @PathVariable itemId: Int,
@@ -56,7 +66,11 @@ class MileageItemController(
         @PathVariable
         itemId: Int
     ): ResponseEntity<Map<String, Int>> {
-        val removedId = itemService.deleteItem(itemId)
-        return ResponseEntity.ok(mapOf("id" to removedId))
+        try {
+            val removedId = itemService.deleteItem(itemId)
+            return ResponseEntity.ok(mapOf("id" to removedId))
+        } catch (e: DataIntegrityViolationException) {
+            throw ItemCannotDeleteException()
+        }
     }
 }
