@@ -5,10 +5,13 @@ import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests
 import edu.handong.cseemileage.mileage.item.domain.Item
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.NAME
 import edu.handong.cseemileage.mileage.item.service.MileageItemServiceTests
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
+import edu.handong.cseemileage.mileage.semesterItem.exception.DuplicateSemesterItemException
+import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterNameNotFoundException
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.CATEGORY_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.ITEM_MAX_POINTS
@@ -28,6 +31,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.transaction.annotation.Transactional
+import org.testng.Assert.assertThrows
+import org.testng.Assert.fail
 import javax.annotation.PostConstruct
 import kotlin.system.measureTimeMillis
 
@@ -79,8 +84,36 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
     fun mileageSemetserItemServiceTests_82() {
         // Given
         val map = prepareData()
+        val semesterItem = map["semesterItem"] as SemesterItem
+
+        val updateForm = SemesterItemForm(
+            itemId = semesterItem.item.id,
+            points = null,
+            itemMaxPoints = null,
+            categoryMaxPoints = null,
+            semesterName = SEMESTER_NAME
+        )
+
+        // When
+        semesterItemService.modifySemesterItem(semesterItem.id, updateForm)
+        val updatedSemesterItem = semesterItemRepository.findById(semesterItem.id).get()
+
+        // Then
+        Assertions.assertThat(updatedSemesterItem).isNotNull
+        Assertions.assertThat(updatedSemesterItem.category).isEqualTo(semesterItem.category)
+        Assertions.assertThat(updatedSemesterItem.item).isEqualTo(semesterItem.item)
+        Assertions.assertThat(updatedSemesterItem.pointValue).isEqualTo(POINT_VALUE)
+        Assertions.assertThat(updatedSemesterItem.itemMaxPoints).isEqualTo(ITEM_MAX_POINTS)
+        Assertions.assertThat(updatedSemesterItem.categoryMaxPoints).isEqualTo(CATEGORY_MAX_POINTS)
+        Assertions.assertThat(updatedSemesterItem.semesterName).isEqualTo(SEMESTER_NAME)
+    }
+
+    @DisplayName("학기별 항목 수정 시 semesterName을 보내지 않으면 exception")
+    @Test
+    fun mileageSemetserItemServiceTests_111() {
+        // Given
+        val map = prepareData()
         val item2 = map["item2"] as Item
-        val category2 = map["category2"] as Category
         val semesterItem = map["semesterItem"] as SemesterItem
 
         val updateForm = SemesterItemForm(
@@ -92,17 +125,56 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         )
 
         // When
-        semesterItemService.modifySemesterItem(semesterItem.id, updateForm)
-        val updatedSemesterItem = semesterItemRepository.findById(semesterItem.id).get()
+        assertThrows(SemesterNameNotFoundException::class.java) {
+            semesterItemService.modifySemesterItem(semesterItem.id, updateForm)
+        }
+    }
 
-        // Then
-        Assertions.assertThat(updatedSemesterItem).isNotNull
-        Assertions.assertThat(updatedSemesterItem.category).isEqualTo(category2)
-        Assertions.assertThat(updatedSemesterItem.item).isEqualTo(item2)
-        Assertions.assertThat(updatedSemesterItem.pointValue).isEqualTo(POINT_VALUE)
-        Assertions.assertThat(updatedSemesterItem.itemMaxPoints).isEqualTo(ITEM_MAX_POINTS)
-        Assertions.assertThat(updatedSemesterItem.categoryMaxPoints).isEqualTo(CATEGORY_MAX_POINTS)
-        Assertions.assertThat(updatedSemesterItem.semesterName).isEqualTo(SEMESTER_NAME)
+    @DisplayName("학기별 항목 수정 시 itemId-semesterName 조합 중복 불가")
+    @Test
+    fun mileageSemetserItemServiceTests_136() {
+        // Given
+        val map = prepareData()
+        val item2 = map["item2"] as Item
+        val semesterItem = map["semesterItem"] as SemesterItem
+
+        // semesterItem2와 중복
+        val updateForm = SemesterItemForm(
+            itemId = item2.id,
+            points = null,
+            itemMaxPoints = null,
+            categoryMaxPoints = null,
+            semesterName = semesterItem.semesterName
+        )
+
+        // When
+        assertThrows(DuplicateSemesterItemException::class.java) {
+            semesterItemService.modifySemesterItem(semesterItem.id, updateForm)
+        }
+    }
+
+    @DisplayName("학기별 항목 수정 시 itemId-semesterName 변경 안 할 경우 중복 검사 안함")
+    @Test
+    fun mileageSemetserItemServiceTests_160() {
+        // Given
+        val map = prepareData()
+        val semesterItem = map["semesterItem"] as SemesterItem
+
+        val updateForm = SemesterItemForm(
+            itemId = semesterItem.item.id,
+            points = null,
+            itemMaxPoints = null,
+            categoryMaxPoints = null,
+            semesterName = semesterItem.semesterName
+        )
+
+        // When
+        try {
+            semesterItemService.modifySemesterItem(semesterItem.id, updateForm)
+        } catch (e: DuplicateSemesterItemException) {
+            e.printStackTrace()
+            fail("An exception is " + e.message)
+        }
     }
 
     @PostConstruct
@@ -200,12 +272,14 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         val category2 = Category("category2")
         categoryRepository.save(category1)
         categoryRepository.save(category2)
-        val item1 = MileageItemServiceTests.createDefaultItem(category1)
+        val item1 = MileageItemServiceTests.createDefaultItem(category1, NAME)
         itemRepository.save(item1)
-        val item2 = MileageItemServiceTests.createDefaultItem(category2)
+        val item2 = MileageItemServiceTests.createDefaultItem(category2, NAME)
         itemRepository.save(item2)
         val semesterItem = createDefaultSemesterItem(item1)
         semesterItemRepository.save(semesterItem)
+        val semesterItem2 = createDefaultSemesterItem(item2)
+        semesterItemRepository.save(semesterItem2)
         val student = Student()
         studentRepository.save(student)
 

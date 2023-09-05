@@ -25,6 +25,8 @@ class ExceptionMessage {
         const val SEMESTER_ITEM_NOT_FOUND = "해당 학기가 존재하지 않습니다."
         const val SEMESTER_ITEM_ID_IS_NOT_POSITIVE = "글로벌 항목 ID가 양수가 아닙니다."
         const val SEMESTER_ITEM_CANNOT_DELETE = "이미 마일리지가 등록된 항목은 삭제할 수 없습니다."
+        const val SEMESTER_ITEM_DUPLICATE = "해당 학기에 이미 등록된 항목입니다."
+        const val SEMESTER_NAME_NOT_FOUND = "수정 시 학기 이름은 필수 요청 항목입니다."
 
         const val STUDENT_NOT_FOUND = "해당 학생이 존재하지 않습니다."
         const val STUDENT_DUPLICATE = "이미 존재하는 학생 입니다."

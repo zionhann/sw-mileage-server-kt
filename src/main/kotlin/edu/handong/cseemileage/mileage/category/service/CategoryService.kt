@@ -12,7 +12,7 @@ import javax.transaction.Transactional
 @Transactional
 class CategoryService(val repository: CategoryRepository) {
     fun saveCategory(form: CategoryForm): Int {
-        validateDuplicateCategory(form.title!!)
+        validateDuplicateCategory(form.title!!, 0)
         val category = Category(
             form.title!!
         ).apply {
@@ -28,14 +28,15 @@ class CategoryService(val repository: CategoryRepository) {
         return result.id!!
     }
 
-    private fun validateDuplicateCategory(title: String) {
+    private fun validateDuplicateCategory(title: String, id: Int) {
         val findCategory = repository.findByName(title)
-        if (findCategory != null) {
+        if (findCategory != null && findCategory.id != id) {
             throw DuplicateCategoryException()
         }
     }
 
     fun update(id: Int, form: CategoryForm): Int {
+        validateDuplicateCategory(form.title!!, id)
         return repository
             .findById(id)
             .orElseThrow { CategoryNotFoundException() }

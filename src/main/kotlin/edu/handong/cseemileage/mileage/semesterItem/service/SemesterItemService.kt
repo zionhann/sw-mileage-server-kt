@@ -5,7 +5,9 @@ import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
+import edu.handong.cseemileage.mileage.semesterItem.exception.DuplicateSemesterItemException
 import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterItemNotFoundException
+import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterNameNotFoundException
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemJdbcRepository
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import org.springframework.stereotype.Service
@@ -20,6 +22,7 @@ class SemesterItemService(
 ) {
 
     fun createOneSemesterItem(form: SemesterItemForm, semesterName: String): SemesterItem {
+        validateDuplicateSemesterItem(semesterName!!, form.itemId!!, 0)
         val item = itemRepository
             .findById(form.itemId)
             .orElseThrow { ItemNotFoundException() }
@@ -48,6 +51,10 @@ class SemesterItemService(
     }
 
     fun modifySemesterItem(semesterItemId: Int, form: SemesterItemForm): Int {
+        if (form.semesterName == null) {
+            throw SemesterNameNotFoundException()
+        }
+        validateDuplicateSemesterItem(form.semesterName!!, form.itemId!!, semesterItemId)
         val item = form.itemId?.let {
             itemRepository
                 .findById(it)
@@ -62,5 +69,12 @@ class SemesterItemService(
     fun deleteSemesterItem(semesterItemId: Int): Int {
         repository.deleteById(semesterItemId)
         return semesterItemId
+    }
+
+    private fun validateDuplicateSemesterItem(semesterName: String, itemId: Int, semesterItemId: Int) {
+        val semesterItem = repository.findBySemesterNameAndItemId(semesterName, itemId)
+        if (semesterItem != null && semesterItem.id != semesterItemId) {
+            throw DuplicateSemesterItemException()
+        }
     }
 }

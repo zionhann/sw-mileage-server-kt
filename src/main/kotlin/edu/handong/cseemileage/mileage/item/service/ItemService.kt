@@ -17,7 +17,7 @@ class ItemService(
     val categoryRepository: CategoryRepository
 ) {
     fun saveItem(form: ItemForm): Int {
-        validateDuplicateItem(form.itemName!!)
+        validateDuplicateItem(form.itemName!!, 0)
         val category = form.categoryId?.let {
             categoryRepository
                 .findById(it)
@@ -28,14 +28,15 @@ class ItemService(
         return saved.id!!
     }
 
-    private fun validateDuplicateItem(name: String) {
+    private fun validateDuplicateItem(name: String, itemId: Int) {
         val foundItem = repository.findByName(name)
-        if (foundItem != null) {
+        if (foundItem != null && foundItem.id != itemId) {
             throw DuplicateItemException()
         }
     }
 
     fun modifyItem(itemId: Int, form: ItemForm): Int {
+        validateDuplicateItem(form.itemName!!, itemId)
         val category = form.categoryId?.let {
             categoryRepository
                 .findById(it)

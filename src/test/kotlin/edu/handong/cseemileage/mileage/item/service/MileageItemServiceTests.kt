@@ -27,6 +27,7 @@ import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTest
 import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests.Companion.UPDATE_STU_TYPE
 import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,7 +51,7 @@ class MileageItemServiceTests @Autowired constructor(
         val category2 = Category("update")
         categoryRepository.save(category1)
         categoryRepository.save(category2)
-        val item = createDefaultItem(category1)
+        val item = createDefaultItem(category1, NAME)
         val updateForm = ItemForm(
             categoryId = category2.id,
             itemName = UPDATE_NAME,
@@ -92,7 +93,7 @@ class MileageItemServiceTests @Autowired constructor(
         val category2 = Category("update")
         categoryRepository.save(category1)
         categoryRepository.save(category2)
-        val item = createDefaultItem(category1)
+        val item = createDefaultItem(category1, NAME)
         val updateForm = ItemForm(
             categoryId = category2.id,
             itemName = UPDATE_NAME,
@@ -120,13 +121,43 @@ class MileageItemServiceTests @Autowired constructor(
         assertThat(updatedItem.isMulti).isEqualTo(IS_MULTI)
     }
 
-    @DisplayName("service: 중복된 마일리지 항목을 저장할 수 없다.")
+    @DisplayName("수정 시 중복된 이름이 있으면 예외 발생")
     @Test
     fun mileageItemServiceTests_123() {
         // Given
         val category = Category(MileageCategoryRepositoryTests.NAME)
         categoryRepository.save(category)
-        val form = ItemForm(
+        val item = createDefaultItem(category, NAME)
+        val item2 = createDefaultItem(category, "test")
+        itemRepository.save(item)
+        itemRepository.save(item2)
+
+        val updateForm = ItemForm(
+            categoryId = category.id,
+            itemName = "test",
+            description1 = null,
+            description2 = null,
+            stuType = null,
+            flags = null
+        )
+
+        // Then
+        assertThrows(DuplicateItemException::class.java) {
+            // When
+            itemService.modifyItem(item.id, updateForm)
+        }
+    }
+
+    @DisplayName("수정 시 이름을 수정하지 않으면 예외 발생 하지 않음")
+    @Test
+    fun mileageItemServiceTests_152() {
+        // Given
+        val category = Category(MileageCategoryRepositoryTests.NAME)
+        categoryRepository.save(category)
+        val item = createDefaultItem(category, NAME)
+        itemRepository.save(item)
+
+        val updateForm = ItemForm(
             categoryId = category.id,
             itemName = NAME,
             description1 = null,
@@ -135,11 +166,12 @@ class MileageItemServiceTests @Autowired constructor(
             flags = null
         )
 
-        // When
-        assertThrows(DuplicateItemException::class.java) {
-            // Then
-            itemService.saveItem(form)
-            itemService.saveItem(form)
+        // Then
+        try {
+            itemService.modifyItem(item.id, updateForm)
+        } catch (e: DuplicateItemException) {
+            e.printStackTrace()
+            fail("An exception is" + e.message)
         }
     }
 
@@ -156,10 +188,10 @@ class MileageItemServiceTests @Autowired constructor(
     }
 
     companion object {
-        fun createDefaultItem(category: Category): Item {
+        fun createDefaultItem(category: Category, name: String): Item {
             return Item(
                 category = category,
-                name = NAME
+                name = name
             ).apply {
                 description1 = DESCRIPTION1
                 description2 = DESCRIPTION2
