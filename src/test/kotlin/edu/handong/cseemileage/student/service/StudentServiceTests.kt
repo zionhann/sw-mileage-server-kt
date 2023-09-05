@@ -21,6 +21,7 @@ import edu.handong.cseemileage.student.dto.StudentForm
 import edu.handong.cseemileage.student.exception.DuplicateStudentException
 import edu.handong.cseemileage.student.repository.StudentRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +40,7 @@ class StudentServiceTests @Autowired constructor(
     @Test
     fun studentServiceTests_43() {
         // Given
-        val student = createDefaultStudent()
+        val student = createDefaultStudent(SID)
         val updateForm = StudentForm(
             name = UPDATE_NAME,
             sid = UPDATE_SID,
@@ -71,10 +72,10 @@ class StudentServiceTests @Autowired constructor(
     @Test
     fun studentServiceTests_69() {
         // Given
-        val student = createDefaultStudent()
+        val student = createDefaultStudent(SID)
         val updateForm = StudentForm(
             name = null,
-            sid = null,
+            sid = SID,
             department = null,
             major1 = null,
             major2 = null,
@@ -122,11 +123,62 @@ class StudentServiceTests @Autowired constructor(
         }
     }
 
+    @DisplayName("학생 수정 시 sid 중복 불가")
+    @Test
+    fun studentServiceTests_127() {
+        // Given
+        val student = createDefaultStudent(SID)
+        val student2 = createDefaultStudent("00001111")
+        val updateForm = StudentForm(
+            name = UPDATE_NAME,
+            sid = "00001111",
+            department = UPDATE_DEPARTMENT,
+            major1 = UPDATE_MAJOR1,
+            major2 = UPDATE_MAJOR2,
+            year = UPDATE_YEAR,
+            semesterCount = UPDATE_SEMESTER_COUNT,
+            isChecked = UPDATE_IS_CHECKED
+        )
+        studentRepository.save(student)
+        studentRepository.save(student2)
+
+        // When
+        assertThrows(DuplicateStudentException::class.java) {
+            studentService.modifyStudent(student.id!!, updateForm)
+        }
+    }
+
+    @DisplayName("sid 수정 안할 시 중복 검사 안함")
+    @Test
+    fun studentServiceTests_152() {
+        // Given
+        val student = createDefaultStudent(SID)
+        val updateForm = StudentForm(
+            name = UPDATE_NAME,
+            sid = SID,
+            department = UPDATE_DEPARTMENT,
+            major1 = UPDATE_MAJOR1,
+            major2 = UPDATE_MAJOR2,
+            year = UPDATE_YEAR,
+            semesterCount = UPDATE_SEMESTER_COUNT,
+            isChecked = UPDATE_IS_CHECKED
+        )
+        studentRepository.save(student)
+
+        // When
+        try {
+            studentService.modifyStudent(student.id!!, updateForm)
+        } catch (e: DuplicateStudentException) {
+            e.printStackTrace()
+            fail("An exception is " + e.message)
+        }
+    }
+
     companion object {
-        fun createDefaultStudent(): Student {
+        fun createDefaultStudent(studentId: String): Student {
             return Student().apply {
                 name = NAME
-                sid = SID
+                sid = studentId
                 department = DEPARTMENT
                 major1 = MAJOR1
                 major2 = MAJOR2

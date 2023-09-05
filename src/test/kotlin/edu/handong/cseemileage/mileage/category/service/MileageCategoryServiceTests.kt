@@ -17,7 +17,9 @@ import edu.handong.cseemileage.mileage.category.repository.MileageCategoryReposi
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_ITEM_TYPE
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_NAME
 import edu.handong.cseemileage.mileage.category.repository.MileageCategoryRepositoryTests.Companion.UPDATE_ORDER_IDX
+import edu.handong.cseemileage.mileage.item.exception.DuplicateItemException
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -217,5 +219,70 @@ class MileageCategoryServiceTests @Autowired constructor(
             categoryQueryService.getCategoryById(saved)
         }
         assertThat(e.info).isEqualTo(ExceptionMessage.CATEGORY_NOT_FOUND)
+    }
+
+    @DisplayName("카테고리 이름 수정 시 중복 불가")
+    @Test
+    fun mileageCategoryServiceTests_224() {
+        // Given
+        val category = Category("중복 방지8").apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            orderIdx = ORDER_IDX
+            itemType = ITEM_TYPE
+            isMulti = IS_MULTI
+        }
+        val category2 = Category("중복 방지9").apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            orderIdx = ORDER_IDX
+            itemType = ITEM_TYPE
+            isMulti = IS_MULTI
+        }
+        val updateForm = CategoryForm(
+            title = "중복 방지9",
+            orderIdx = UPDATE_ORDER_IDX,
+            itemType = UPDATE_ITEM_TYPE,
+            isMulti = UPDATE_IS_MULTI,
+            description1 = UPDATE_DESCRIPTION1,
+            description2 = UPDATE_DESCRIPTION2
+        )
+        categoryRepository.save(category)
+        categoryRepository.save(category2)
+
+        // Then
+        assertThrows<DuplicateCategoryException> {
+            // When
+            categoryService.update(category.id, updateForm)
+        }
+    }
+
+    @DisplayName("카테고리 수정 시 이름 수정 안하는 경우 중복 검사를 하지 않는다.")
+    @Test
+    fun mileageCategoryServiceTests_260() {
+        // Given
+        val category = Category("중복 방지10").apply {
+            description1 = DESCRIPTION1
+            description2 = DESCRIPTION2
+            orderIdx = ORDER_IDX
+            itemType = ITEM_TYPE
+            isMulti = IS_MULTI
+        }
+        val updateForm = CategoryForm(
+            title = "중복 방지10",
+            orderIdx = UPDATE_ORDER_IDX,
+            itemType = UPDATE_ITEM_TYPE,
+            isMulti = UPDATE_IS_MULTI,
+            description1 = UPDATE_DESCRIPTION1,
+            description2 = UPDATE_DESCRIPTION2
+        )
+        categoryRepository.save(category)
+
+        try {
+            categoryService.update(category.id, updateForm)
+        } catch (e: DuplicateItemException) {
+            e.printStackTrace()
+            fail("An exception occurred: " + e.message)
+        }
     }
 }
