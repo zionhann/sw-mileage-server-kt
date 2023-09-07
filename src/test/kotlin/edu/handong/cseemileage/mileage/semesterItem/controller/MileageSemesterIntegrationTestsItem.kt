@@ -10,7 +10,6 @@ import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.CATEGORY_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.ITEM_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.POINT_VALUE
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.SEMESTER_NAME
@@ -81,7 +80,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
             itemId = itemId,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            categoryMaxPoints = CATEGORY_MAX_POINTS,
             semesterName = null
         )
         val req = mapper.writeValueAsString(form)
@@ -121,7 +119,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        categoryMaxPoints = CATEGORY_MAX_POINTS,
                         semesterName = null
                     )
                 )
@@ -134,7 +131,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE * 2,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        categoryMaxPoints = CATEGORY_MAX_POINTS,
                         semesterName = null
                     )
                 )
@@ -166,7 +162,6 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
             itemId = -1,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            categoryMaxPoints = CATEGORY_MAX_POINTS,
             semesterName = SEMESTER_NAME
         )
         val req = mapper.writeValueAsString(form)

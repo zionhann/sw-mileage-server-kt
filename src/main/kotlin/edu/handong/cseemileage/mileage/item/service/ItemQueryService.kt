@@ -5,14 +5,12 @@ import edu.handong.cseemileage.mileage.category.repository.CategoryRepository
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class ItemQueryService(
     val repository: ItemRepository,
-    val categoryRepository: CategoryRepository,
-    val modelMapper: ModelMapper
+    val categoryRepository: CategoryRepository
 ) {
     fun getItems(): List<ItemDto.Info> {
         val items = repository.findAllWithCategory()
@@ -22,10 +20,12 @@ class ItemQueryService(
                 category = CategoryDto.Info(
                     id = item.category.id,
                     name = item.category.name,
+                    categoryMaxPoints = item.category.categoryMaxPoints,
                     itemType = item.category.itemType,
                     isMulti = item.category.isMulti
                 ),
                 name = item.name,
+                itemMaxPoints = item.itemMaxPoints,
                 isPortfolio = item.isPortfolio,
                 description1 = item.description1,
                 description2 = item.description2,
@@ -58,6 +58,7 @@ class ItemQueryService(
                 ItemDto.Info(
                     id = item.id,
                     name = item.name,
+                    itemMaxPoints = item.itemMaxPoints,
                     isPortfolio = item.isPortfolio,
                     description1 = item.description1,
                     description2 = item.description2,
@@ -73,6 +74,7 @@ class ItemQueryService(
                 name = category.name,
                 description1 = category.description1,
                 description2 = category.description2,
+                categoryMaxPoints = category.categoryMaxPoints,
                 orderIdx = category.orderIdx,
                 itemType = category.itemType,
                 isMulti = category.isMulti,

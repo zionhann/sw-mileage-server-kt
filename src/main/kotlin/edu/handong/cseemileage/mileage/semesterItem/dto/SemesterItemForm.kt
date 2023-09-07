@@ -11,7 +11,6 @@ data class SemesterItemForm(
     // nullable = false, default (O)
     val points: Float?,
     val itemMaxPoints: Float?,
-    val categoryMaxPoints: Float?,
 
     // update 폼에서만 사용. create: PathVariable 사용
     val semesterName: String?

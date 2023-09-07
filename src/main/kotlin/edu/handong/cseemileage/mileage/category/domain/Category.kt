@@ -24,6 +24,10 @@ class Category(
     @Column(name = "id", nullable = false, length = 11)
     var id: Int = 0
 
+    @ColumnDefault("0")
+    @Column(name = "category_max_points", nullable = false)
+    var categoryMaxPoints: Float = 0f
+
     @Column(name = "description1", length = 300)
     var description1: String? = null
 
@@ -49,6 +53,7 @@ class Category(
         this.apply {
             name = form.title ?: name
             orderIdx = form.orderIdx ?: orderIdx
+            categoryMaxPoints = form.categoryMaxPoints ?: categoryMaxPoints
             description1 = form.description1 ?: description1
             description2 = form.description2 ?: description2
             itemType = form.itemType ?: itemType

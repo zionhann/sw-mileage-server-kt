@@ -47,10 +47,6 @@ class SemesterItem(
     @Column(name = "semester_name", nullable = false, columnDefinition = "char(7)")
     var semesterName: String = "2023-02"
 
-    @ColumnDefault("0")
-    @Column(name = "category_max_points", nullable = false)
-    var categoryMaxPoints: Float = 0f
-
     @OneToMany(mappedBy = "semesterItem")
     var records: MutableList<MileageRecord> = mutableListOf()
 
@@ -66,9 +62,8 @@ class SemesterItem(
                 category = category
             ).apply {
                 pointValue = form.points ?: 0f
-                itemMaxPoints = form.itemMaxPoints ?: 0f
+                itemMaxPoints = form.itemMaxPoints ?: item.itemMaxPoints
                 semesterName = semester
-                categoryMaxPoints = form.categoryMaxPoints ?: 0f
             }
             item.addSemesterItem(semesterItem)
             return semesterItem
@@ -81,7 +76,6 @@ class SemesterItem(
             this@SemesterItem.item = item
             pointValue = form.points ?: pointValue
             itemMaxPoints = form.itemMaxPoints ?: itemMaxPoints
-            categoryMaxPoints = form.categoryMaxPoints ?: categoryMaxPoints
             semesterName = form.semesterName ?: semesterName
         }
         return id!!

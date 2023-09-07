@@ -17,6 +17,7 @@ interface DownloadStrategy {
         fun addCategoryColumns(list: MutableList<ExcelDto>) {
             list.add(ExcelDto("id", "카테고리 ID", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("orderIdx", "순서", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("categoryMaxPoints", "카테고리 최대 마일리지", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("name", "카테고리 이름", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description1", "카테고리 설명1", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description2", "카테고리 설명2", EXCEL_DTO_CATEGORY))
@@ -28,6 +29,7 @@ interface DownloadStrategy {
 
         fun addItemColumns(list: MutableList<ExcelDto>) {
             list.add(ExcelDto("id", "세부 항목 ID", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("itemMaxPoints", "세부 항목 최대 마일리지", EXCEL_DTO_ITEM))
             list.add(ExcelDto("name", "세부 항목 이름", EXCEL_DTO_ITEM))
             list.add(ExcelDto("isPortfolio", "포트폴리오 여부", EXCEL_DTO_ITEM))
             list.add(ExcelDto("description1", "세부 항목 설명1", EXCEL_DTO_ITEM))
@@ -48,7 +50,6 @@ interface DownloadStrategy {
             list.add(ExcelDto("semesterName", "학기", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("pointValue", "가중치", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("itemMaxPoints", "학기별 항목 최대 마일리지", EXCEL_DTO_SEMESTER))
-            list.add(ExcelDto("categoryMaxPoints", "학기별 카테고리 최대 마일리지", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("modDate", "학기별 항목 마지막 수정일", EXCEL_DTO_ITEM))
             list.add(ExcelDto("regDate", "학기별 항목 등록일", EXCEL_DTO_ITEM))
         }

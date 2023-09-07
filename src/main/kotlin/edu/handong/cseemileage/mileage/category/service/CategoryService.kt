@@ -16,6 +16,7 @@ class CategoryService(val repository: CategoryRepository) {
         val category = Category(
             form.title!!
         ).apply {
+            categoryMaxPoints = form.categoryMaxPoints ?: 0f
             description1 = form.description1
             description2 = form.description2
             orderIdx = form.orderIdx ?: 0

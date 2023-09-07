@@ -7,14 +7,12 @@ import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class CategoryQueryService(
     val repository: CategoryRepository,
-    val semesterItemRepository: SemesterItemRepository,
-    val modelMapper: ModelMapper
+    val semesterItemRepository: SemesterItemRepository
 ) {
     fun getCategories(): List<CategoryDto.Info> {
         return repository
@@ -25,6 +23,7 @@ class CategoryQueryService(
                     name = it.name,
                     description1 = it.description1,
                     description2 = it.description2,
+                    categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     itemType = it.itemType,
                     isMulti = it.isMulti
@@ -42,6 +41,7 @@ class CategoryQueryService(
                     name = it.name,
                     description1 = it.description1,
                     description2 = it.description2,
+                    categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     itemType = it.itemType,
                     isMulti = it.isMulti
@@ -71,8 +71,7 @@ class CategoryQueryService(
                         id = semesterItem.id,
                         semesterName = semesterItem.semesterName,
                         points = semesterItem.pointValue,
-                        itemMaxPoints = semesterItem.itemMaxPoints,
-                        categoryMaxPoints = semesterItem.categoryMaxPoints
+                        itemMaxPoints = semesterItem.itemMaxPoints
                     )
                 }
                 ItemDto.Info(
@@ -94,6 +93,7 @@ class CategoryQueryService(
                 name = category.name,
                 description1 = category.description1,
                 description2 = category.description2,
+                categoryMaxPoints = category.categoryMaxPoints,
                 orderIdx = category.orderIdx,
                 itemType = category.itemType,
                 isMulti = category.isMulti,

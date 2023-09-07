@@ -33,6 +33,10 @@ class Item(
     var id: Int = 0
 
     @ColumnDefault("0")
+    @Column(name = "item_max_points", nullable = false)
+    var itemMaxPoints: Float = 0f
+
+    @ColumnDefault("0")
     @Column(columnDefinition = "tinyint(1)", nullable = false, name = "is_portfolio")
     var isPortfolio: Boolean = false
 
@@ -79,6 +83,7 @@ class Item(
                 category = category,
                 name = form.itemName!!
             ).apply {
+                itemMaxPoints = form.itemMaxPoints ?: 0f
                 description1 = form.description1
                 description2 = form.description2
                 stuType = form.stuType
@@ -101,6 +106,7 @@ class Item(
         this.apply {
             name = form.itemName ?: name
             this@Item.category = category
+            itemMaxPoints = form.itemMaxPoints ?: itemMaxPoints
             description1 = form.description1 ?: description1
             description2 = form.description2 ?: description2
             stuType = form.stuType ?: stuType

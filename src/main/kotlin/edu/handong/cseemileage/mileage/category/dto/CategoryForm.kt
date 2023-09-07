@@ -12,6 +12,7 @@ class CategoryForm(
     val orderIdx: Int?,
     val itemType: String?,
     val isMulti: Boolean?,
+    val categoryMaxPoints: Float?,
 
     // nullable = true
     val description1: String?,

@@ -293,6 +293,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             stuType = STU_TYPE,
+            itemMaxPoints = 10f,
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,
@@ -311,6 +312,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             stuType = UPDATE_STU_TYPE,
+            itemMaxPoints = 5f,
             ItemForm.Flag(
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
                 isPortfolio = UPDATE_IS_PORTFOLIO,
@@ -328,6 +330,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             stuType = UPDATE_STU_TYPE,
+            itemMaxPoints = 5f,
             ItemForm.Flag(
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
                 isPortfolio = UPDATE_IS_PORTFOLIO,
@@ -346,6 +349,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             stuType = STU_TYPE,
+            itemMaxPoints = 10f,
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,
@@ -364,6 +368,7 @@ class MileageItemIntegrationTests @Autowired constructor(
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             stuType = STU_TYPE,
+            itemMaxPoints = 10f,
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,

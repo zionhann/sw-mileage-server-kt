@@ -20,7 +20,6 @@ class SemesterItemDto(
         val semesterName: String? = null,
         val points: Float? = null,
         val itemMaxPoints: Float? = null,
-        val categoryMaxPoints: Float? = null,
         val records: List<MileageRecordDto.Info>? = null
     )
 }

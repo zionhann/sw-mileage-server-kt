@@ -65,7 +65,6 @@ class SemesterItemRepositoryTests @Autowired constructor(
         Assertions.assertThat(savedSemesterItem.get().semesterName).isEqualTo(SEMESTER_NAME)
         Assertions.assertThat(savedSemesterItem.get().pointValue).isEqualTo(POINT_VALUE)
         Assertions.assertThat(savedSemesterItem.get().itemMaxPoints).isEqualTo(ITEM_MAX_POINTS)
-        Assertions.assertThat(savedSemesterItem.get().categoryMaxPoints).isEqualTo(CATEGORY_MAX_POINTS)
     }
 
     @DisplayName("모든 값을 지정하지 않아도 @ColumnDefault 값이 들어가야 한다")
@@ -93,7 +92,6 @@ class SemesterItemRepositoryTests @Autowired constructor(
         Assertions.assertThat(savedSemesterItem.get().semesterName).isEqualTo(DEFAULT_SEMESTER_NAME)
         Assertions.assertThat(savedSemesterItem.get().pointValue).isEqualTo(DEFAULT_POINT_VALUE)
         Assertions.assertThat(savedSemesterItem.get().itemMaxPoints).isEqualTo(DEFAULT_ITEM_MAX_POINTS)
-        Assertions.assertThat(savedSemesterItem.get().categoryMaxPoints).isEqualTo(DEFAULT_CATEGORY_MAX_POINTS)
     }
 
     @DisplayName("repository: 마일리지 항목 전체 조회")
@@ -148,7 +146,6 @@ class SemesterItemRepositoryTests @Autowired constructor(
             semesterName = semester
             pointValue = POINT_VALUE
             itemMaxPoints = ITEM_MAX_POINTS
-            categoryMaxPoints = CATEGORY_MAX_POINTS
         }
     }
 
@@ -167,6 +164,7 @@ class SemesterItemRepositoryTests @Autowired constructor(
             isStudentVisible = MileageItemRepositoryTests.IS_STUDENT_VISIBLE
             isStudentInput = MileageItemRepositoryTests.IS_STUDENT_INPUT
             isMulti = MileageItemRepositoryTests.IS_MULTI
+            itemMaxPoints = 20f
         }
         val savedItem = itemRepository.save(item)
         return mapOf(
