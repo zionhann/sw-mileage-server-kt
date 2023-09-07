@@ -34,6 +34,28 @@ class MileageRecordQueryService(
         }
     }
 
+    fun getRecordsBy(
+        semesterItemId: Int
+    ): List<MileageRecordDto.Info> {
+        val mileageRecords = mileageRecordRepository.findAllBySemesterItemIdWithStudent(semesterItemId)
+        return mileageRecords.map {
+            MileageRecordDto.Info(
+                id = it.id,
+                student = StudentDto.Info(
+                    id = it.student.id,
+                    name = it.student.name,
+                    sid = it.student.sid
+                ),
+                counts = it.counts,
+                points = it.points,
+                extraPoints = it.extraPoints,
+                description1 = it.description1,
+                description2 = it.description2,
+                modDate = it.modDate.toString()
+            )
+        }
+    }
+
     private fun createMileageRecordDtoInfo(it: MileageRecord): MileageRecordDto.Info {
         return MileageRecordDto.Info(
             id = it.id,
