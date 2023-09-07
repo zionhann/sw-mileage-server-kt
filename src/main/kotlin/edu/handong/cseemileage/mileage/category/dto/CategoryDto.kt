@@ -14,6 +14,7 @@ class CategoryDto(
     class Info(
         val id: Int? = null,
         val name: String? = null,
+        val categoryMaxPoints: Float? = null,
         val description1: String? = null,
         val description2: String? = null,
         val orderIdx: Int? = null,

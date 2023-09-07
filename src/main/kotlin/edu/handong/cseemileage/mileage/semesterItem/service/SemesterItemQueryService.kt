@@ -27,13 +27,13 @@ class SemesterItemQueryService(
                     description1 = it.item.description1
                 ),
                 category = CategoryDto.Info(
-                    id = it.item.category.id,
-                    name = it.item.category.name
+                    id = it.category.id,
+                    name = it.category.name,
+                    categoryMaxPoints = it.category.categoryMaxPoints
                 ),
                 semesterName = it.semesterName,
                 points = it.pointValue,
-                itemMaxPoints = it.itemMaxPoints,
-                categoryMaxPoints = it.categoryMaxPoints
+                itemMaxPoints = it.itemMaxPoints
             )
         }
     }
@@ -73,12 +73,12 @@ class SemesterItemQueryService(
                 ),
                 category = CategoryDto.Info(
                     id = semesterItem.category.id,
-                    name = semesterItem.category.name
+                    name = semesterItem.category.name,
+                    categoryMaxPoints = semesterItem.category.categoryMaxPoints
                 ),
                 semesterName = semesterItem.semesterName,
                 points = semesterItem.pointValue,
                 itemMaxPoints = semesterItem.itemMaxPoints,
-                categoryMaxPoints = semesterItem.categoryMaxPoints,
                 records = recordInfos
             )
         }
@@ -91,8 +91,7 @@ class SemesterItemQueryService(
                 id = it.id,
                 semesterName = it.semesterName,
                 points = it.pointValue,
-                itemMaxPoints = it.itemMaxPoints,
-                categoryMaxPoints = it.categoryMaxPoints
+                itemMaxPoints = it.itemMaxPoints
             )
         }
     }

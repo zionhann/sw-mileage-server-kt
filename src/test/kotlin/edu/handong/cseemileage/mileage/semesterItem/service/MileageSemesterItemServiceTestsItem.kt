@@ -13,11 +13,9 @@ import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemMultipleForm
 import edu.handong.cseemileage.mileage.semesterItem.exception.DuplicateSemesterItemException
 import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterNameNotFoundException
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.CATEGORY_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.ITEM_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.POINT_VALUE
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.SEMESTER_NAME
-import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_CATEGORY_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_ITEM_MAX_POINTS
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_POINT_VALUE
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepositoryTests.Companion.UPDATE_SEMESTER_NAME
@@ -61,7 +59,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = UPDATE_POINT_VALUE,
             itemMaxPoints = UPDATE_ITEM_MAX_POINTS,
-            categoryMaxPoints = UPDATE_CATEGORY_MAX_POINTS,
             semesterName = UPDATE_SEMESTER_NAME
         )
 
@@ -75,7 +72,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         Assertions.assertThat(updatedSemesterItem.item).isEqualTo(item2)
         Assertions.assertThat(updatedSemesterItem.pointValue).isEqualTo(UPDATE_POINT_VALUE)
         Assertions.assertThat(updatedSemesterItem.itemMaxPoints).isEqualTo(UPDATE_ITEM_MAX_POINTS)
-        Assertions.assertThat(updatedSemesterItem.categoryMaxPoints).isEqualTo(UPDATE_CATEGORY_MAX_POINTS)
         Assertions.assertThat(updatedSemesterItem.semesterName).isEqualTo(UPDATE_SEMESTER_NAME)
     }
 
@@ -90,7 +86,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = semesterItem.item.id,
             points = null,
             itemMaxPoints = null,
-            categoryMaxPoints = null,
             semesterName = SEMESTER_NAME
         )
 
@@ -104,8 +99,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         Assertions.assertThat(updatedSemesterItem.item).isEqualTo(semesterItem.item)
         Assertions.assertThat(updatedSemesterItem.pointValue).isEqualTo(POINT_VALUE)
         Assertions.assertThat(updatedSemesterItem.itemMaxPoints).isEqualTo(ITEM_MAX_POINTS)
-        Assertions.assertThat(updatedSemesterItem.categoryMaxPoints).isEqualTo(CATEGORY_MAX_POINTS)
-        Assertions.assertThat(updatedSemesterItem.semesterName).isEqualTo(SEMESTER_NAME)
     }
 
     @DisplayName("학기별 항목 수정 시 semesterName을 보내지 않으면 exception")
@@ -120,7 +113,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = null,
             itemMaxPoints = null,
-            categoryMaxPoints = null,
             semesterName = null
         )
 
@@ -143,7 +135,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = null,
             itemMaxPoints = null,
-            categoryMaxPoints = null,
             semesterName = semesterItem.semesterName
         )
 
@@ -164,7 +155,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = semesterItem.item.id,
             points = null,
             itemMaxPoints = null,
-            categoryMaxPoints = null,
             semesterName = semesterItem.semesterName
         )
 
@@ -200,7 +190,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = itemId,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            categoryMaxPoints = CATEGORY_MAX_POINTS,
             semesterName = null
         )
 
@@ -228,7 +217,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        categoryMaxPoints = CATEGORY_MAX_POINTS,
                         semesterName = null
                     )
                 )
@@ -262,7 +250,6 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         ).apply {
             pointValue = POINT_VALUE
             itemMaxPoints = ITEM_MAX_POINTS
-            categoryMaxPoints = CATEGORY_MAX_POINTS
             semesterName = SEMESTER_NAME
         }
     }

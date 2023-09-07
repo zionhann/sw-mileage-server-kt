@@ -9,14 +9,12 @@ import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRep
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
 import edu.handong.cseemileage.student.dto.StudentDto
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class MileageRecordQueryService(
     val mileageRecordRepository: MileageRecordRepository,
-    val semesterItemRepository: SemesterItemRepository,
-    val modelMapper: ModelMapper
+    val semesterItemRepository: SemesterItemRepository
 ) {
     fun getRecordById(id: Int): MileageRecordDto.Info {
         mileageRecordRepository
@@ -67,12 +65,12 @@ class MileageRecordQueryService(
                 ),
                 semesterName = it.semesterItem.semesterName,
                 points = it.semesterItem.pointValue,
-                itemMaxPoints = it.semesterItem.itemMaxPoints,
-                categoryMaxPoints = it.semesterItem.categoryMaxPoints
+                itemMaxPoints = it.semesterItem.itemMaxPoints
             ),
             category = CategoryDto.Info(
-                id = it.semesterItem.item.category.id,
-                name = it.semesterItem.item.category.name
+                id = it.semesterItem.category.id,
+                name = it.semesterItem.category.name,
+                categoryMaxPoints = it.semesterItem.category.categoryMaxPoints
             ),
             student = StudentDto.Info(
                 id = it.student.id,

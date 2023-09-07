@@ -16,6 +16,7 @@ class ItemDto(
         val id: Int? = null,
         val category: CategoryDto.Info? = null,
         val name: String? = null,
+        val itemMaxPoints: Float? = null,
         val isPortfolio: Boolean? = null,
         val description1: String? = null,
         val description2: String? = null,
@@ -25,10 +26,5 @@ class ItemDto(
         val isStudentInput: Boolean? = null,
         val isMulti: Boolean? = null,
         val semesterItems: List<SemesterItemDto.Info>? = null
-    )
-
-    class deleteFailureInfo(
-        val id: Int?,
-        val name: String = ""
     )
 }

@@ -45,7 +45,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
             description1 = DESCRIPTION1,
-            description2 = DESCRIPTION2
+            description2 = DESCRIPTION2,
+            categoryMaxPoints = 20f
         )
 
         // when
@@ -65,7 +66,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = null,
             isMulti = null,
             description1 = null,
-            description2 = null
+            description2 = null,
+            categoryMaxPoints = null
         )
 
         // when
@@ -85,7 +87,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
             description1 = DESCRIPTION1,
-            description2 = DESCRIPTION2
+            description2 = DESCRIPTION2,
+            categoryMaxPoints = 20f
         )
 
         // then
@@ -112,7 +115,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
             description1 = DESCRIPTION1,
-            description2 = DESCRIPTION2
+            description2 = DESCRIPTION2,
+            categoryMaxPoints = 20f
         )
         val savedId = categoryService.saveCategory(form)
 
@@ -144,7 +148,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = UPDATE_ITEM_TYPE,
             isMulti = UPDATE_IS_MULTI,
             description1 = UPDATE_DESCRIPTION1,
-            description2 = UPDATE_DESCRIPTION2
+            description2 = UPDATE_DESCRIPTION2,
+            categoryMaxPoints = 10f
         )
         categoryRepository.save(category)
 
@@ -179,7 +184,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = null,
             isMulti = null,
             description1 = null,
-            description2 = null
+            description2 = null,
+            categoryMaxPoints = null
         )
         categoryRepository.save(category)
 
@@ -207,7 +213,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = ITEM_TYPE,
             isMulti = IS_MULTI,
             description1 = DESCRIPTION1,
-            description2 = DESCRIPTION2
+            description2 = DESCRIPTION2,
+            categoryMaxPoints = 20f
         )
         val saved = categoryService.saveCategory(form)
 
@@ -245,7 +252,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = UPDATE_ITEM_TYPE,
             isMulti = UPDATE_IS_MULTI,
             description1 = UPDATE_DESCRIPTION1,
-            description2 = UPDATE_DESCRIPTION2
+            description2 = UPDATE_DESCRIPTION2,
+            categoryMaxPoints = 10f
         )
         categoryRepository.save(category)
         categoryRepository.save(category2)
@@ -274,7 +282,8 @@ class MileageCategoryServiceTests @Autowired constructor(
             itemType = UPDATE_ITEM_TYPE,
             isMulti = UPDATE_IS_MULTI,
             description1 = UPDATE_DESCRIPTION1,
-            description2 = UPDATE_DESCRIPTION2
+            description2 = UPDATE_DESCRIPTION2,
+            categoryMaxPoints = 10f
         )
         categoryRepository.save(category)
 

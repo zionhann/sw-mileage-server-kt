@@ -58,6 +58,7 @@ class MileageItemServiceTests @Autowired constructor(
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             stuType = UPDATE_STU_TYPE,
+            itemMaxPoints = 5f,
             flags = ItemForm.Flag(
                 isPortfolio = UPDATE_IS_PORTFOLIO,
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
@@ -100,6 +101,7 @@ class MileageItemServiceTests @Autowired constructor(
             description1 = null,
             description2 = null,
             stuType = null,
+            itemMaxPoints = null,
             flags = null
         )
         itemRepository.save(item)
@@ -138,6 +140,7 @@ class MileageItemServiceTests @Autowired constructor(
             description1 = null,
             description2 = null,
             stuType = null,
+            itemMaxPoints = null,
             flags = null
         )
 
@@ -163,6 +166,7 @@ class MileageItemServiceTests @Autowired constructor(
             description1 = null,
             description2 = null,
             stuType = null,
+            itemMaxPoints = null,
             flags = null
         )
 

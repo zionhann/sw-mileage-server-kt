@@ -19,6 +19,7 @@ data class ItemForm(
     val stuType: String?,
 
     // nullable = false, default (O)
+    val itemMaxPoints: Float?,
     val flags: Flag?
 ) {
     class Flag(
