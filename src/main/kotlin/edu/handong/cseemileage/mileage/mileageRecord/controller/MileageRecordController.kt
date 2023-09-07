@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import javax.validation.Valid
@@ -47,6 +48,20 @@ class MileageRecordController(
                 list = records,
                 count = records.size,
                 description = "마일리지 기록 전체 조회 결과"
+            )
+        )
+    }
+
+    @GetMapping("/filter")
+    fun readRecordsBy(
+        @RequestParam(required = true) semesterItemId: Int
+    ): ResponseEntity<MileageRecordDto> {
+        val records = mileageRecordQueryService.getRecordsBy(semesterItemId)
+        return ResponseEntity.ok(
+            MileageRecordDto(
+                list = records,
+                count = records.size,
+                description = "마일리지 기록 전체 조회 결과 filtered by (semesterItemId = $semesterItemId)"
             )
         )
     }
