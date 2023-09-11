@@ -1,6 +1,7 @@
 package edu.handong.cseemileage.excel.strategy
 
 import edu.handong.cseemileage.excel.dto.ExcelDto
+import org.apache.poi.hssf.util.HSSFColor
 import java.lang.reflect.Field
 
 interface DownloadStrategy {
@@ -50,25 +51,41 @@ interface DownloadStrategy {
             list.add(ExcelDto("semesterName", "학기", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("pointValue", "가중치", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("itemMaxPoints", "학기별 항목 최대 마일리지", EXCEL_DTO_SEMESTER))
-            list.add(ExcelDto("modDate", "학기별 항목 마지막 수정일", EXCEL_DTO_ITEM))
-            list.add(ExcelDto("regDate", "학기별 항목 등록일", EXCEL_DTO_ITEM))
+            list.add(ExcelDto("modDate", "학기별 항목 마지막 수정일", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("regDate", "학기별 항목 등록일", EXCEL_DTO_SEMESTER))
         }
     }
 
     var semester: String
     var description: String
+
+    fun getHSSFColor(): Short
+
+    fun getCategoryHSSFColor(): Short {
+        return HSSFColor.HSSFColorPredefined.LIGHT_CORNFLOWER_BLUE.index
+    }
+
+    fun getItemHSSFColor(): Short {
+        return HSSFColor.HSSFColorPredefined.LIGHT_YELLOW.index
+    }
+
+    fun getSemesterHSSFColor(): Short {
+        return HSSFColor.HSSFColorPredefined.LIGHT_TURQUOISE.index
+    }
     fun getExcelDtoList(): List<ExcelDto>
     fun getCount(): Long
     fun getList(): List<*>?
     fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any
     fun getBasicValue(obj: Any, fieldName: String): Any {
-        val field: Field = try {
-            obj.javaClass.getDeclaredField(fieldName)
+        try {
+            val field = obj.javaClass.getDeclaredField(fieldName)
+            field.isAccessible = true
+            field.get(obj)?.let { return it }
         } catch (e: NoSuchFieldException) {
-            obj.javaClass.superclass.getDeclaredField(fieldName)
+            val dateField = obj.javaClass.superclass.getDeclaredField(fieldName)
+            dateField.isAccessible = true
+            dateField.get(obj)?.let { return it.toString().split("T")[0] }
         }
-        field.isAccessible = true
-        field.get(obj)?.let { return it }
         return ""
     }
 

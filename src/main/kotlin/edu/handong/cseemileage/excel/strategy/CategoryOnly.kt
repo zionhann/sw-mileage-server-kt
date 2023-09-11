@@ -11,6 +11,10 @@ class CategoryOnly(
 ) : DownloadStrategy {
     override var semester: String = ""
     override var description: String = "글로벌 카테고리 단독 조회"
+    override fun getHSSFColor(): Short {
+        return super.getCategoryHSSFColor()
+    }
+
     override fun getExcelDtoList(): List<ExcelDto> {
         val list: MutableList<ExcelDto> = ArrayList()
         addCategoryColumns(list)

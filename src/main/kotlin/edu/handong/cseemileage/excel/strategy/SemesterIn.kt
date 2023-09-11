@@ -13,6 +13,10 @@ class SemesterIn(
 ) : DownloadStrategy {
     override var semester: String = ""
     override var description: String = "학기별 항목 조회"
+    override fun getHSSFColor(): Short {
+        return super.getSemesterHSSFColor()
+    }
+
     override fun getExcelDtoList(): List<ExcelDto> {
         val list: MutableList<ExcelDto> = ArrayList()
         addCategoryColumns(list)
