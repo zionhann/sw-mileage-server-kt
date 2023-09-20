@@ -10,5 +10,9 @@ class Utils {
         fun stringToBoolean(value: String): Boolean {
             return value == "Y"
         }
+
+        fun isTypeOfNumber(value: String): Boolean {
+            return value.matches(Regex("^[+-]?\\d+(\\.\\d+)?$"))
+        }
     }
 }

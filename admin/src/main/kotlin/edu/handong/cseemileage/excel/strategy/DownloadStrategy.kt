@@ -3,6 +3,8 @@ package edu.handong.cseemileage.excel.strategy
 import edu.handong.cseemileage.excel.dto.ExcelDto
 import org.apache.poi.hssf.util.HSSFColor
 import java.lang.reflect.Field
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 interface DownloadStrategy {
 
@@ -72,6 +74,7 @@ interface DownloadStrategy {
     fun getSemesterHSSFColor(): Short {
         return HSSFColor.HSSFColorPredefined.LIGHT_TURQUOISE.index
     }
+
     fun getExcelDtoList(): List<ExcelDto>
     fun getCount(): Long
     fun getList(): List<*>?
@@ -82,9 +85,13 @@ interface DownloadStrategy {
             field.isAccessible = true
             field.get(obj)?.let { return it }
         } catch (e: NoSuchFieldException) {
+            // BaseEntity 필드인 경우
             val dateField = obj.javaClass.superclass.getDeclaredField(fieldName)
             dateField.isAccessible = true
-            dateField.get(obj)?.let { return it.toString().split("T")[0] }
+            dateField.get(obj)?.let { datetime ->
+                return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    .format(datetime as LocalDateTime)
+            }
         }
         return ""
     }

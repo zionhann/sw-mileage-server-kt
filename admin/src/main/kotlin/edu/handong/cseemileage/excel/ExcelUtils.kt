@@ -4,6 +4,7 @@ import edu.handong.cseemileage.excel.dto.ExcelDto
 import edu.handong.cseemileage.excel.strategy.DownloadStrategy
 import edu.handong.cseemileage.excel.strategy.Global
 import edu.handong.cseemileage.excel.strategy.SemesterIn
+import edu.handong.cseemileage.utils.Utils
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.Cell
@@ -64,14 +65,17 @@ class ExcelUtils(
                         cellStyle.fillForegroundColor = downloadStrategy.getCategoryHSSFColor()
                         cellStyle
                     }
+
                     DownloadStrategy.EXCEL_DTO_ITEM -> {
                         cellStyle.fillForegroundColor = downloadStrategy.getItemHSSFColor()
                         cellStyle
                     }
+
                     DownloadStrategy.EXCEL_DTO_SEMESTER -> {
                         cellStyle.fillForegroundColor = downloadStrategy.getSemesterHSSFColor()
                         cellStyle
                     }
+
                     else -> cellStyle
                 }
                 cell.setCellValue(excelDtoList[i].columnName)
@@ -99,7 +103,15 @@ class ExcelUtils(
                         )
                     }
                     cell.cellStyle = basicStyle
-                    cell.setCellValue((value ?: "").toString())
+
+                    // if value is type of number, set cell type to numeric
+                    val valueAsString = (value ?: "").toString()
+
+                    if (Utils.isTypeOfNumber(valueAsString)) {
+                        cell.setCellValue(valueAsString.toDouble())
+                    } else {
+                        cell.setCellValue(valueAsString)
+                    }
                 }
             }
         }

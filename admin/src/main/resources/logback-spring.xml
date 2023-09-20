@@ -15,7 +15,7 @@
     <property name="LOG_PATTERN_PROD"
               value="[%d{yyyy-MM-dd HH:mm:ss}] [%thread] %-5level %logger{36} - %msg%n"/>
 
-    <springProfile name="dev,prod">
+    <springProfile name="dev,prod,test">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>${LOG_PATTERN_CONSOLE}
