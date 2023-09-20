@@ -10,15 +10,15 @@ interface MileageRecordRepository : JpaRepository<MileageRecord, Int> {
     @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem s WHERE s.semesterName = :name")
     fun findAllBySemesterName(name: String): List<MileageRecord>
 
-    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.student s JOIN FETCH r.semesterItem i WHERE s.id = :studentId")
-    fun findAllByStudentId(studentId: Int): List<MileageRecord>
+    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem i WHERE r.sid = :sid")
+    fun findAllByStudentId(sid: String): List<MileageRecord>
 
-    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem i JOIN FETCH r.student s WHERE i.id = :semesterItemId")
+    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem i WHERE i.id = :semesterItemId")
     fun findAllBySemesterItemId(semesterItemId: Int): List<MileageRecord>
 
-    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.student s JOIN FETCH r.semesterItem i JOIN FETCH i.item it")
+    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.semesterItem i JOIN FETCH i.item it")
     fun findAllWithAllReferences(): List<MileageRecord>
 
-    @Query("SELECT r FROM MileageRecord r JOIN FETCH r.student s WHERE r.semesterItem.id = :semesterItemId")
+    @Query("SELECT r FROM MileageRecord r WHERE r.semesterItem.id = :semesterItemId")
     fun findAllBySemesterItemIdWithStudent(semesterItemId: Int): List<MileageRecord>
 }

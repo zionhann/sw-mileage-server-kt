@@ -3,7 +3,6 @@ package edu.handong.cseemileage.mileage.mileageRecord.domain
 import edu.handong.cseemileage.BaseEntity
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordForm
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
-import edu.handong.cseemileage.student.domain.Student
 import org.hibernate.annotations.ColumnDefault
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -22,9 +21,11 @@ class MileageRecord(
     @JoinColumn(name = "semester_item_id", nullable = false)
     var semesterItem: SemesterItem,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    var student: Student
+    @Column(name = "name", length = 20)
+    var name: String,
+
+    @Column(name = "sid", length = 12)
+    var sid: String
 ) : BaseEntity() {
 
     @Id
@@ -50,10 +51,11 @@ class MileageRecord(
     var description2: String? = null
 
     companion object {
-        fun createMileageRecord(form: MileageRecordForm, semesterItem: SemesterItem, student: Student): MileageRecord {
+        fun createMileageRecord(form: MileageRecordForm, semesterItem: SemesterItem, name: String, sid: String): MileageRecord {
             val mileageRecord = MileageRecord(
                 semesterItem = semesterItem,
-                student = student
+                name = name,
+                sid = sid
             ).apply {
                 counts = form.counts
                 extraPoints = form.extraPoints
@@ -61,15 +63,15 @@ class MileageRecord(
                 description2 = form.description2
             }
             semesterItem.addRecord(mileageRecord)
-            student.addRecord(mileageRecord)
             return mileageRecord
         }
     }
 
-    fun update(form: MileageRecordForm, semesterItem: SemesterItem, student: Student): Int {
+    fun update(form: MileageRecordForm, semesterItem: SemesterItem, name: String, sid: String): Int {
         this.apply {
             this@MileageRecord.semesterItem = semesterItem
-            this@MileageRecord.student = student
+            this@MileageRecord.name = name
+            this@MileageRecord.sid = sid
             counts = form.counts ?: counts
             extraPoints = form.extraPoints ?: extraPoints
             description1 = form.description1 ?: description1

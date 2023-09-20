@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import edu.handong.cseemileage.mileage.category.dto.CategoryDto
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class SemesterItemDto(
@@ -20,6 +21,7 @@ class SemesterItemDto(
         val semesterName: String? = null,
         val points: Float? = null,
         val itemMaxPoints: Float? = null,
+        val modDate: LocalDateTime? = null,
         val records: List<MileageRecordDto.Info>? = null
     )
 }

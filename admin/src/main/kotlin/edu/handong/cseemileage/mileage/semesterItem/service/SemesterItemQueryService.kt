@@ -7,7 +7,6 @@ import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import edu.handong.cseemileage.student.dto.StudentDto
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,16 +23,19 @@ class SemesterItemQueryService(
                 item = ItemDto.Info(
                     id = it.item.id,
                     name = it.item.name,
-                    description1 = it.item.description1
+                    description1 = it.item.description1,
+                    modDate = it.item.modDate
                 ),
                 category = CategoryDto.Info(
                     id = it.category.id,
                     name = it.category.name,
-                    categoryMaxPoints = it.category.categoryMaxPoints
+                    categoryMaxPoints = it.category.categoryMaxPoints,
+                    modDate = it.category.modDate
                 ),
                 semesterName = it.semesterName,
                 points = it.pointValue,
-                itemMaxPoints = it.itemMaxPoints
+                itemMaxPoints = it.itemMaxPoints,
+                modDate = it.modDate
             )
         }
     }
@@ -51,17 +53,14 @@ class SemesterItemQueryService(
             val recordInfos = semesterItem.records.map { record ->
                 MileageRecordDto.Info(
                     id = record.id,
-                    student = StudentDto.Info(
-                        id = record.student.id,
-                        name = record.student.name,
-                        sid = record.student.sid
-                    ),
+                    studentName = record.name,
+                    sid = record.sid,
                     counts = record.counts,
                     points = record.points,
                     extraPoints = record.extraPoints,
                     description1 = record.description1,
                     description2 = record.description2,
-                    modDate = record.modDate.toString()
+                    modDate = record.modDate
                 )
             }
 
@@ -69,16 +68,19 @@ class SemesterItemQueryService(
                 id = semesterItem.id,
                 item = ItemDto.Info(
                     id = semesterItem.item.id,
-                    name = semesterItem.item.name
+                    name = semesterItem.item.name,
+                    modDate = semesterItem.item.modDate
                 ),
                 category = CategoryDto.Info(
                     id = semesterItem.category.id,
                     name = semesterItem.category.name,
-                    categoryMaxPoints = semesterItem.category.categoryMaxPoints
+                    categoryMaxPoints = semesterItem.category.categoryMaxPoints,
+                    modDate = semesterItem.category.modDate
                 ),
                 semesterName = semesterItem.semesterName,
                 points = semesterItem.pointValue,
                 itemMaxPoints = semesterItem.itemMaxPoints,
+                modDate = semesterItem.modDate,
                 records = recordInfos
             )
         }
@@ -91,7 +93,8 @@ class SemesterItemQueryService(
                 id = it.id,
                 semesterName = it.semesterName,
                 points = it.pointValue,
-                itemMaxPoints = it.itemMaxPoints
+                itemMaxPoints = it.itemMaxPoints,
+                modDate = it.modDate
             )
         }
     }

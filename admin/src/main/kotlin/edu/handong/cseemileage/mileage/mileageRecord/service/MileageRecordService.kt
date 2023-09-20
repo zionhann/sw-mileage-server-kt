@@ -7,9 +7,6 @@ import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRep
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import edu.handong.cseemileage.mileage.semesterItem.exception.SemesterItemNotFoundException
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import edu.handong.cseemileage.student.domain.Student
-import edu.handong.cseemileage.student.exception.StudentNotFoundException
-import edu.handong.cseemileage.student.repository.StudentRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -17,34 +14,22 @@ import javax.transaction.Transactional
 @Transactional
 class MileageRecordService(
     val semesterItemRepository: SemesterItemRepository,
-    val studentRepository: StudentRepository,
     val mileageRecordRepository: MileageRecordRepository
 ) {
     fun add(form: MileageRecordForm): Int {
         val semesterItem = findSemesterItem(form)
-        val student = findStudent(form)
-        val record = MileageRecord.createMileageRecord(form, semesterItem!!, student!!)
+        val record = MileageRecord.createMileageRecord(form, semesterItem, form.studentName!!, form.sid!!)
         val saved = mileageRecordRepository.save(record)
 
-        return saved.id!!
+        return saved.id
     }
 
     fun modifyMileageRecord(mileageRecordId: Int, form: MileageRecordForm): Int {
         val semesterItem = findSemesterItem(form)
-        val student = findStudent(form)
         return mileageRecordRepository
             .findById(mileageRecordId)
             .orElseThrow { MileageRecordNotFoundException() }
-            .update(form, semesterItem!!, student!!)
-    }
-
-    fun findStudent(form: MileageRecordForm): Student {
-        val student = form.studentId?.let {
-            studentRepository
-                .findById(it)
-                .orElseThrow(::StudentNotFoundException)
-        }
-        return student!!
+            .update(form, semesterItem, form.studentName!!, form.sid!!)
     }
 
     fun findSemesterItem(form: MileageRecordForm): SemesterItem {

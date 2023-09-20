@@ -8,7 +8,6 @@ import edu.handong.cseemileage.mileage.mileageRecord.exception.MileageRecordNotF
 import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemDto
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
-import edu.handong.cseemileage.student.dto.StudentDto
 import org.springframework.stereotype.Service
 
 @Service
@@ -39,17 +38,14 @@ class MileageRecordQueryService(
         return mileageRecords.map {
             MileageRecordDto.Info(
                 id = it.id,
-                student = StudentDto.Info(
-                    id = it.student.id,
-                    name = it.student.name,
-                    sid = it.student.sid
-                ),
+                studentName = it.name,
+                sid = it.sid,
                 counts = it.counts,
                 points = it.points,
                 extraPoints = it.extraPoints,
                 description1 = it.description1,
                 description2 = it.description2,
-                modDate = it.modDate.toString()
+                modDate = it.modDate
             )
         }
     }
@@ -61,32 +57,33 @@ class MileageRecordQueryService(
                 id = it.semesterItem.id,
                 item = ItemDto.Info(
                     id = it.semesterItem.item.id,
-                    name = it.semesterItem.item.name
+                    name = it.semesterItem.item.name,
+                    modDate = it.semesterItem.item.modDate
                 ),
                 semesterName = it.semesterItem.semesterName,
                 points = it.semesterItem.pointValue,
-                itemMaxPoints = it.semesterItem.itemMaxPoints
+                itemMaxPoints = it.semesterItem.itemMaxPoints,
+                modDate = it.semesterItem.modDate
             ),
             category = CategoryDto.Info(
                 id = it.semesterItem.category.id,
                 name = it.semesterItem.category.name,
-                categoryMaxPoints = it.semesterItem.category.categoryMaxPoints
+                categoryMaxPoints = it.semesterItem.category.categoryMaxPoints,
+                modDate = it.semesterItem.category.modDate
             ),
-            student = StudentDto.Info(
-                id = it.student.id,
-                name = it.student.name,
-                sid = it.student.sid
-            ),
+            studentName = it.name,
+            sid = it.sid,
             counts = it.counts,
             points = it.points,
             extraPoints = it.extraPoints,
             description1 = it.description1,
-            description2 = it.description2
+            description2 = it.description2,
+            modDate = it.modDate
         )
     }
 
-    fun getRecordsByStudentId(studentId: Int): List<MileageRecordDto.Info> {
-        val records = mileageRecordRepository.findAllByStudentId(studentId)
+    fun getRecordsByStudentId(sid: String): List<MileageRecordDto.Info> {
+        val records = mileageRecordRepository.findAllByStudentId(sid)
         return recordsToDeleteFailureInfo(records)
     }
 
@@ -101,17 +98,18 @@ class MileageRecordQueryService(
                 id = it.id,
                 item = ItemDto.Info(
                     id = it.semesterItem.item.id,
-                    name = it.semesterItem.item.name
+                    name = it.semesterItem.item.name,
+                    modDate = it.semesterItem.item.modDate
                 ),
                 semesterItem = SemesterItemDto.Info(
                     id = it.semesterItem.id,
-                    semesterName = it.semesterItem.semesterName
+                    semesterName = it.semesterItem.semesterName,
+                    modDate = it.semesterItem.modDate
                 ),
-                student = StudentDto.Info(
-                    id = it.student.id,
-                    name = it.student.name
-                ),
-                points = it.points
+                studentName = it.name,
+                sid = it.sid,
+                points = it.points,
+                modDate = it.modDate
             )
         }
     }

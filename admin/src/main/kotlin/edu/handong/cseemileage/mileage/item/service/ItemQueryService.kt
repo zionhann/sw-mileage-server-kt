@@ -22,7 +22,8 @@ class ItemQueryService(
                     name = item.category.name,
                     categoryMaxPoints = item.category.categoryMaxPoints,
                     itemType = item.category.itemType,
-                    isMulti = item.category.isMulti
+                    isMulti = item.category.isMulti,
+                    modDate = item.category.modDate
                 ),
                 name = item.name,
                 itemMaxPoints = item.itemMaxPoints,
@@ -30,10 +31,11 @@ class ItemQueryService(
                 description1 = item.description1,
                 description2 = item.description2,
                 stuType = item.stuType,
-                isMulti = stringToBoolean(item.isMulti),
-                isStudentInput = stringToBoolean(item.isStudentInput),
+                isVisible = stringToBoolean(item.isVisible),
                 isStudentVisible = stringToBoolean(item.isStudentVisible),
-                isVisible = stringToBoolean(item.isVisible)
+                isStudentInput = stringToBoolean(item.isStudentInput),
+                isMulti = stringToBoolean(item.isMulti),
+                modDate = item.modDate
             )
         }
     }
@@ -43,7 +45,8 @@ class ItemQueryService(
         return items.map {
             ItemDto.Info(
                 id = it.id,
-                name = it.name
+                name = it.name,
+                modDate = it.modDate
             )
         }
     }
@@ -66,7 +69,8 @@ class ItemQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    isMulti = stringToBoolean(item.isMulti)
+                    isMulti = stringToBoolean(item.isMulti),
+                    modDate = item.modDate
                 )
             }
             CategoryDto.Info(
@@ -78,6 +82,7 @@ class ItemQueryService(
                 orderIdx = category.orderIdx,
                 itemType = category.itemType,
                 isMulti = category.isMulti,
+                modDate = category.modDate,
                 items = itemInfos
             )
         }

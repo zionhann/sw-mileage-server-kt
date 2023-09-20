@@ -66,16 +66,16 @@ class MileageRecordController(
         )
     }
 
-    @GetMapping("/students/{studentId}")
-    fun readRecordsByStudentId(
-        @PathVariable studentId: Int
+    @GetMapping("/students/{sid}")
+    fun readRecordsBySid(
+        @PathVariable sid: String
     ): ResponseEntity<MileageRecordDto> {
-        val records = mileageRecordQueryService.getRecordsByStudentId(studentId)
+        val records = mileageRecordQueryService.getRecordsByStudentId(sid)
         return ResponseEntity.ok(
             MileageRecordDto(
                 list = records,
                 count = records.size,
-                description = "학생 별로 마일리지 기록 조회 결과"
+                description = "학생 별로 마일리지 기록 조회 결과 (sid = $sid)"
             )
         )
     }

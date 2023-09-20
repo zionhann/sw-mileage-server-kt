@@ -6,6 +6,8 @@ import edu.handong.cseemileage.mileage.category.repository.MileageCategoryReposi
 import edu.handong.cseemileage.mileage.item.domain.Item
 import edu.handong.cseemileage.mileage.item.repository.ItemRepository
 import edu.handong.cseemileage.mileage.item.repository.MileageItemRepositoryTests
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.NAME
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.SID
 import edu.handong.cseemileage.mileage.mileageRecord.domain.MileageRecord
 import edu.handong.cseemileage.mileage.semesterItem.domain.SemesterItem
 import edu.handong.cseemileage.mileage.semesterItem.repository.SemesterItemRepository
@@ -54,7 +56,8 @@ class MileageRecordRepositoryTests @Autowired constructor(
         val map = prepareDate()
         val mileageRecord = MileageRecord(
             semesterItem = map["semesterItem"] as SemesterItem,
-            student = map["student"] as Student
+            sid = SID,
+            name = NAME
         ).apply {
             counts = COUNTS
             extraPoints = EXTRA_POINTS
@@ -70,7 +73,8 @@ class MileageRecordRepositoryTests @Autowired constructor(
         Assertions.assertThat(saved).isNotNull
         Assertions.assertThat(saved.get()).isEqualTo(mileageRecord)
         Assertions.assertThat(saved.get().semesterItem).isEqualTo(map["semesterItem"] as SemesterItem)
-        Assertions.assertThat(saved.get().student).isEqualTo(map["student"] as Student)
+        Assertions.assertThat(saved.get().sid).isEqualTo(SID)
+        Assertions.assertThat(saved.get().name).isEqualTo(NAME)
         Assertions.assertThat(saved.get().semesterItem.item).isEqualTo(map["item"] as Item)
         Assertions.assertThat(saved.get().semesterItem.item.category).isEqualTo(map["category"] as Category)
         Assertions.assertThat(saved.get().counts).isEqualTo(COUNTS)
@@ -87,7 +91,8 @@ class MileageRecordRepositoryTests @Autowired constructor(
         val map = prepareDate()
         val mileageRecord = MileageRecord(
             semesterItem = map["semesterItem"] as SemesterItem,
-            student = map["student"] as Student
+            sid = SID,
+            name = NAME
         )
 
         // when
@@ -98,7 +103,8 @@ class MileageRecordRepositoryTests @Autowired constructor(
         Assertions.assertThat(saved).isNotNull
         Assertions.assertThat(saved.get()).isEqualTo(mileageRecord)
         Assertions.assertThat(saved.get().semesterItem).isEqualTo(map["semesterItem"] as SemesterItem)
-        Assertions.assertThat(saved.get().student).isEqualTo(map["student"] as Student)
+        Assertions.assertThat(saved.get().sid).isEqualTo(SID)
+        Assertions.assertThat(saved.get().name).isEqualTo(NAME)
         Assertions.assertThat(saved.get().semesterItem.item).isEqualTo(map["item"] as Item)
         Assertions.assertThat(saved.get().semesterItem.item.category).isEqualTo(map["category"] as Category)
         Assertions.assertThat(saved.get().counts).isEqualTo(DEFAULT_COUNTS)
@@ -115,11 +121,13 @@ class MileageRecordRepositoryTests @Autowired constructor(
         val map = prepareDate()
         val mileageRecord1 = MileageRecord(
             semesterItem = map["semesterItem"] as SemesterItem,
-            student = map["student"] as Student
+            sid = SID,
+            name = NAME
         )
         val mileageRecord2 = MileageRecord(
             semesterItem = map["semesterItem"] as SemesterItem,
-            student = map["student"] as Student
+            sid = SID,
+            name = NAME
         )
 
         // when
@@ -139,7 +147,8 @@ class MileageRecordRepositoryTests @Autowired constructor(
         val map = prepareDate()
         val mileageRecord = MileageRecord(
             semesterItem = map["semesterItem"] as SemesterItem,
-            student = map["student"] as Student
+            sid = SID,
+            name = NAME
         )
         mileageRecordRepository.save(mileageRecord)
 

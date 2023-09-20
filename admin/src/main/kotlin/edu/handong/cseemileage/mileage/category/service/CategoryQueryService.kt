@@ -26,7 +26,8 @@ class CategoryQueryService(
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     itemType = it.itemType,
-                    isMulti = it.isMulti
+                    isMulti = it.isMulti,
+                    modDate = it.modDate
                 )
             }
     }
@@ -44,7 +45,8 @@ class CategoryQueryService(
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     itemType = it.itemType,
-                    isMulti = it.isMulti
+                    isMulti = it.isMulti,
+                    modDate = it.modDate
                 )
             }
     }
@@ -82,9 +84,9 @@ class CategoryQueryService(
                     description2 = item.description2,
                     stuType = item.stuType,
                     isVisible = stringToBoolean(item.isVisible),
-                    isMulti = stringToBoolean(item.isMulti),
-                    isStudentInput = stringToBoolean(item.isStudentInput),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
+                    isStudentInput = stringToBoolean(item.isStudentInput),
+                    isMulti = stringToBoolean(item.isMulti),
                     semesterItems = semesterInfos
                 )
             }
@@ -97,6 +99,7 @@ class CategoryQueryService(
                 orderIdx = category.orderIdx,
                 itemType = category.itemType,
                 isMulti = category.isMulti,
+                modDate = category.modDate,
                 items = itemInfos
             )
         }

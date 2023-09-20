@@ -2,6 +2,7 @@ package edu.handong.cseemileage.mileage.category.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import edu.handong.cseemileage.mileage.item.dto.ItemDto
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class CategoryDto(
@@ -20,6 +21,7 @@ class CategoryDto(
         val orderIdx: Int? = null,
         val itemType: String? = null,
         val isMulti: Boolean? = null,
+        val modDate: LocalDateTime? = null,
         val items: List<ItemDto.Info>? = null
     )
 }

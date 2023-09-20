@@ -2,13 +2,11 @@ package edu.handong.cseemileage.student.service
 
 import edu.handong.cseemileage.student.dto.StudentDto
 import edu.handong.cseemileage.student.repository.StudentRepository
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
 @Service
 class StudentQueryService(
-    val studentRepository: StudentRepository,
-    val modelMapper: ModelMapper
+    val studentRepository: StudentRepository
 ) {
     fun getStudents(): List<StudentDto.Info> {
         return studentRepository
@@ -25,7 +23,8 @@ class StudentQueryService(
                     semesterCount = it.semesterCount,
                     loginCount = it.loginCount,
                     lastLoginDate = it.lastLoginDate,
-                    isChecked = it.isChecked
+                    isChecked = it.isChecked,
+                    modDate = it.modDate
                 )
             }
     }

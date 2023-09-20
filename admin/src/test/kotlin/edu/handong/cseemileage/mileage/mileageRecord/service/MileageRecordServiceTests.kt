@@ -3,6 +3,8 @@ package edu.handong.cseemileage.mileage.mileageRecord.service
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.service.CategoryService
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.NAME
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.SID
 import edu.handong.cseemileage.mileage.item.service.ItemService
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordForm
 import edu.handong.cseemileage.mileage.mileageRecord.repository.MileageRecordRepository
@@ -110,7 +112,8 @@ class MileageRecordServiceTests @Autowired constructor(
         // Given
         val form = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId1!!,
+            sid = SID,
+            studentName = NAME,
             counts = MileageRecordRepositoryTests.COUNTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,
@@ -131,7 +134,8 @@ class MileageRecordServiceTests @Autowired constructor(
         // Given
         val record1 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId1!!,
+            sid = SID,
+            studentName = NAME,
             counts = MileageRecordRepositoryTests.COUNTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,
@@ -139,7 +143,8 @@ class MileageRecordServiceTests @Autowired constructor(
         )
         val record2 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId2!!,
+            sid = SID,
+            studentName = NAME,
             counts = MileageRecordRepositoryTests.COUNTS,
             extraPoints = MileageRecordRepositoryTests.EXTRA_POINTS,
             description1 = MileageRecordRepositoryTests.DESCRIPTION1,

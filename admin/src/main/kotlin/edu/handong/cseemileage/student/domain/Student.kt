@@ -1,7 +1,6 @@
 package edu.handong.cseemileage.student.domain
 
 import edu.handong.cseemileage.BaseEntity
-import edu.handong.cseemileage.mileage.mileageRecord.domain.MileageRecord
 import edu.handong.cseemileage.student.dto.StudentForm
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.CreationTimestamp
@@ -11,7 +10,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -57,9 +55,6 @@ class Student : BaseEntity() {
     @Column(name = "is_checked", length = 11)
     var isChecked: Boolean = false
 
-    @OneToMany(mappedBy = "student")
-    var records: MutableList<MileageRecord> = mutableListOf()
-
     companion object {
         fun createStudent(form: StudentForm): Student {
             val student = Student().apply {
@@ -88,9 +83,5 @@ class Student : BaseEntity() {
             isChecked = form.isChecked ?: isChecked
         }
         return id!!
-    }
-
-    fun addRecord(record: MileageRecord) {
-        records.add(record)
     }
 }

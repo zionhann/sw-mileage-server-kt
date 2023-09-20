@@ -6,6 +6,8 @@ import edu.handong.cseemileage.exception.ExceptionResponse
 import edu.handong.cseemileage.mileage.category.dto.CategoryForm
 import edu.handong.cseemileage.mileage.category.service.CategoryService
 import edu.handong.cseemileage.mileage.item.dto.ItemForm
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.NAME
+import edu.handong.cseemileage.mileage.item.repository.StudentRepositoryTests.Companion.SID
 import edu.handong.cseemileage.mileage.item.service.ItemService
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordDto
 import edu.handong.cseemileage.mileage.mileageRecord.dto.MileageRecordForm
@@ -18,7 +20,6 @@ import edu.handong.cseemileage.mileage.mileageRecord.service.MileageRecordQueryS
 import edu.handong.cseemileage.mileage.mileageRecord.service.MileageRecordService
 import edu.handong.cseemileage.mileage.semesterItem.dto.SemesterItemForm
 import edu.handong.cseemileage.mileage.semesterItem.service.SemesterItemService
-import edu.handong.cseemileage.student.dto.StudentForm
 import edu.handong.cseemileage.student.service.StudentService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -50,8 +51,6 @@ class MileageRecordIntegrationTests @Autowired constructor(
 ) {
 
     var semesterId: Int? = null
-    var studentId1: Int? = null
-    var studentId2: Int? = null
 
     @BeforeEach
     fun init() {
@@ -94,32 +93,6 @@ class MileageRecordIntegrationTests @Autowired constructor(
             ),
             "2023-02"
         )
-
-        studentId1 = studentService.register(
-            StudentForm(
-                name = "홍길동",
-                sid = "21800123",
-                department = "",
-                major1 = "",
-                major2 = "",
-                year = 1,
-                semesterCount = 1,
-                isChecked = true
-            )
-        )
-
-        studentId2 = studentService.register(
-            StudentForm(
-                name = "동길홍",
-                sid = "21800456",
-                department = "",
-                major1 = "",
-                major2 = "",
-                year = 2,
-                semesterCount = 3,
-                isChecked = true
-            )
-        )
     }
 
     @DisplayName("마일리지 기록을 생성한다.")
@@ -128,7 +101,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
         // Given
         val form = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId1!!,
+            sid = SID,
+            studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,
             description1 = DESCRIPTION1,
@@ -162,7 +136,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
         // Given
         val record1 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId1!!,
+            sid = SID,
+            studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,
             description1 = DESCRIPTION1,
@@ -170,7 +145,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
         )
         val record2 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId2!!,
+            sid = SID,
+            studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,
             description1 = DESCRIPTION1,
@@ -222,32 +198,6 @@ class MileageRecordIntegrationTests @Autowired constructor(
         assertThat(res.message).isEqualTo(ExceptionMessage.RECORD_SEMESTER_IS_NOT_POSITIVE)
     }
 
-    @DisplayName("service: student_id가 음수인 경우")
-    @Test
-    fun mileageRecordIntegrationTests_230() {
-        // Given
-        val form = createFormStudentIdNegative()
-        val req = objectMapper.writeValueAsString(form)
-
-        // When
-        val mvcResult = mockMvc
-            .post("/api/mileage/records") {
-                contentType = MediaType.APPLICATION_JSON
-                content = req
-            }
-            .andExpect { status { isBadRequest() } }
-            .andDo { print() }
-            .andReturn()
-
-        val res = objectMapper.readValue(
-            mvcResult.response.contentAsString,
-            ExceptionResponse::class.java
-        )
-        // Then
-        assertThat(res.error).isEqualTo(HttpStatus.BAD_REQUEST.reasonPhrase)
-        assertThat(res.message).isEqualTo(ExceptionMessage.RECORD_STUDENT_ID_IS_NOT_POSITIVE)
-    }
-
     @DisplayName("service: counts가 음수인 경우")
     @Test
     fun mileageRecordIntegrationTests_256() {
@@ -277,18 +227,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
     fun createFormSemesterItemIdNegative(): MileageRecordForm {
         return MileageRecordForm(
             semesterItemId = -1,
-            studentId = studentId1!!,
-            counts = COUNTS,
-            extraPoints = EXTRA_POINTS,
-            description1 = DESCRIPTION1,
-            description2 = DESCRIPTION2
-        )
-    }
-
-    fun createFormStudentIdNegative(): MileageRecordForm {
-        return MileageRecordForm(
-            semesterItemId = semesterId!!,
-            studentId = -1,
+            sid = SID,
+            studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,
             description1 = DESCRIPTION1,
@@ -299,7 +239,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
     fun createFormCountsNegative(): MileageRecordForm {
         return MileageRecordForm(
             semesterItemId = semesterId!!,
-            studentId = studentId1!!,
+            sid = SID,
+            studentName = NAME,
             counts = -1f,
             extraPoints = EXTRA_POINTS,
             description1 = DESCRIPTION1,

@@ -64,7 +64,6 @@ class MileageItemController(
         )
     }
 
-    // TODO: global 조회 api 링크 바뀌었음을 고지하기
     @GetMapping("/global")
     fun getItemsWithCategories(): ResponseEntity<CategoryDto> {
         val list = itemQueryService.getItemsWithCategory()

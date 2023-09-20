@@ -22,6 +22,7 @@ class StudentDto(
         val semesterCount: Int? = null,
         val loginCount: Int? = null,
         val lastLoginDate: LocalDateTime? = null,
-        val isChecked: Boolean? = null
+        val isChecked: Boolean? = null,
+        val modDate: LocalDateTime? = null
     )
 }
