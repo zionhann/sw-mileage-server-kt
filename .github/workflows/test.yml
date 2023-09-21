@@ -35,7 +35,9 @@ jobs:
 
       - name: Configure the properties
         run: |
-          echo "${{ secrets.APP_CONFIG_TEST }}" > ./admin/src/test/resources/application.yml
+          echo "${{ secrets.APP_CONFIG_TEST }}" > ./student-api/src/test/resources/application.yml
+          echo "${{ secrets.APP_CONFIG_TEST }}" > ./admin-api/src/test/resources/application.yml
+          echo "${{ secrets.APP_CONFIG_TEST }}" > ./data/src/test/resources/application.yml
 
       - name: Test with Gradle
         run: ./gradlew test

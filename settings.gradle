@@ -2,6 +2,8 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
 }
 rootProject.name = 'sw-mileage'
-include 'admin'
-include 'student'
+include 'admin-api'
+include 'student-api'
+include 'data'
+
 
