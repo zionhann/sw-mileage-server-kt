@@ -31,7 +31,7 @@ class StudentIntegrationTests @Autowired constructor(
 
     companion object {
         const val NAME = "홍길동"
-        const val SID = "223000123"
+        const val SID = "22000680"
         const val DEPARTMENT = "전산전자공학부"
         const val MAJOR1 = "컴퓨터공학"
         const val MAJOR2 = "경영학"
@@ -40,7 +40,7 @@ class StudentIntegrationTests @Autowired constructor(
         const val IS_CHECKED = true
 
         const val UPDATE_NAME = "장길동"
-        const val UPDATE_SID = "223000321"
+        const val UPDATE_SID = "22000314"
         const val UPDATE_DEPARTMENT = "경영경제학부"
         const val UPDATE_MAJOR1 = "경영학"
         const val UPDATE_MAJOR2 = "경제학"

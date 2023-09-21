@@ -44,14 +44,14 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         const val ORDER_IDX = 5
         const val DESCRIPTION1 = "description1"
         const val DESCRIPTION2 = "description2"
-        const val ITEM_TYPE = "T"
+        const val ITEM_TYPE = "R"
         const val IS_MULTI = true
 
         const val UPDATE_NAME = "전공 상담 수정"
         const val UPDATE_ORDER_IDX = 2
         const val UPDATE_DESCRIPTION1 = "description1 수정"
         const val UPDATE_DESCRIPTION2 = "description2 수정"
-        const val UPDATE_ITEM_TYPE = "D"
+        const val UPDATE_ITEM_TYPE = "R"
         const val UPDATE_IS_MULTI = false
 
         const val DEFAULT_ORDER_IDX = 0

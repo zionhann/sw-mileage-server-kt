@@ -46,7 +46,7 @@ class MileageItemIntegrationTests @Autowired constructor(
         const val NAME = "전공 상담"
         const val DESCRIPTION1 = "description1"
         const val DESCRIPTION2 = "description2"
-        const val STU_TYPE = "R"
+        const val STU_TYPE = "C"
         const val IS_VISIBLE = "N"
         const val IS_PORTFOLIO = true
         const val IS_STUDENT_VISIBLE = "Y"
@@ -56,7 +56,7 @@ class MileageItemIntegrationTests @Autowired constructor(
         const val UPDATE_NAME = "전공 상담 수정"
         const val UPDATE_DESCRIPTION1 = "description1 수정"
         const val UPDATE_DESCRIPTION2 = "description2 수정"
-        const val UPDATE_STU_TYPE = "T"
+        const val UPDATE_STU_TYPE = "F"
         const val UPDATE_IS_VISIBLE = "Y"
         const val UPDATE_IS_PORTFOLIO = false
         const val UPDATE_IS_STUDENT_VISIBLE = "N"

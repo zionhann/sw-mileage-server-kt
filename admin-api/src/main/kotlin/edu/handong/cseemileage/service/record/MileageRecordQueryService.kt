@@ -109,6 +109,8 @@ class MileageRecordQueryService(
                 studentName = it.name,
                 sid = it.sid,
                 points = it.points,
+                extraPoints = it.extraPoints,
+                description1 = it.description1,
                 modDate = it.modDate
             )
         }
