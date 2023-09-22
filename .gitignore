@@ -38,3 +38,6 @@ out/
 
 ### Custom ###
 application.yml
+logs/
+admin-api/logs/
+student-api/logs/

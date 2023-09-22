@@ -33,7 +33,7 @@ jobs:
 
       - name: Configure the properties
         run: |
-          echo "${{ secrets.APP_CONFIG }}" > ./src/main/resources/application.yml
+          echo "${{ secrets.APP_CONFIG }}" > ./student-api/src/main/resources/application.yml
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
@@ -47,5 +47,5 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SW_MILEAGE_PRIV_KEY }}
-          source: "./build/libs/*.war"
-          target: "~/webapps/${{ secrets.APP_NAME }}.war"
+          source: "./student-api/build/libs/*.war"
+          target: "webapps/${{ secrets.APP_NAME }}.war"
