@@ -32,7 +32,6 @@ class ExceptionMessage {
         const val SEMESTER_ITEM_DUPLICATE = "해당 학기에 이미 등록된 항목입니다."
         const val SEMESTER_NAME_NOT_FOUND = "수정 시 학기 이름은 필수 요청 항목입니다."
         const val SEMESTER_ITEM_POINTS_IS_NEGATIVE = "학기별 항목 인정 마일리지가 음수입니다. 0 이상의 값을 넣어주세요."
-        const val SEMESTER_ITEM_INVALID_SEMESTER_NAME = "학기 형식이 잘못되었습니다. (YYYY-01 / YYYY-02)"
 
         const val STUDENT_NOT_FOUND = "해당 학생이 존재하지 않습니다."
         const val STUDENT_DUPLICATE = "이미 존재하는 학생 입니다."
@@ -40,6 +39,7 @@ class ExceptionMessage {
         const val STUDENT_CANNOT_DELETE = "이미 마일리지가 등록된 학생은 삭제할 수 없습니다."
         const val STUDENT_ID_IS_NOT_POSITIVE = "학생 ID 양수가 아닙니다."
         const val STUDENT_INVALID_SID = "학번 형식이 잘못되었습니다. (8자리 숫자)"
+        const val STUDENT_NAME_IS_EMPTY = "학생 이름은 필수 입력 항목입니다."
 
         const val ADMIN_NAME_IS_EMPTY = "관리자 이름이 없습니다."
         const val ADMIN_EMAIL_IS_EMPTY = "관리자 이메일이 없습니다."
@@ -51,5 +51,6 @@ class ExceptionMessage {
         const val APPLY_NOT_FOUND_EXCEPTION = "해당 신청 정보가 존재하지 않습니다."
 
         const val INVALID_EMAIL = "이메일 형식이 잘못되었습니다."
+        const val INVALID_SEMESTER_NAME = "학기 형식이 잘못되었습니다. (YYYY-01 / YYYY-02)"
     }
 }

@@ -37,7 +37,12 @@ class SemesterItemService(
     fun createSemesterItemMultiple(form: SemesterItemMultipleForm, semesterName: String): MutableList<SemesterItem> {
         val semesterItemList = mutableListOf<SemesterItem>()
         form.semesterItemList.forEach {
-            semesterItemList.add(createOneSemesterItem(it, semesterName))
+            try {
+                // 중복되는 학기별 항목만 list에서 제외
+                semesterItemList.add(createOneSemesterItem(it, semesterName))
+            } catch (e: DuplicateSemesterItemException) {
+                // ignore
+            }
         }
         return semesterItemList
     }
@@ -67,7 +72,11 @@ class SemesterItemService(
     }
 
     fun deleteSemesterItem(semesterItemId: Int): Int {
-        repository.deleteById(semesterItemId)
+        try {
+            repository.deleteById(semesterItemId)
+        } catch (e: Exception) {
+            throw SemesterItemNotFoundException()
+        }
         return semesterItemId
     }
 

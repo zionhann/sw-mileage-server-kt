@@ -64,7 +64,11 @@ class CategoryQueryService(
 
         // 반환 데이터 조립
         val categoryInfos = distinctCategories.map { category ->
-            val itemInfos = category.items.map { item ->
+            val itemInfos = category.items.filter {
+                    // 해당 학기에 사용된 항목만 필터링
+                    item ->
+                semesterList.any { it.item == item }
+            }.map { item ->
                 val semesterInfos = item.semesterItems.filter { semesterItem ->
                     // 해당 학기에 사용된 항목만 필터링
                     semesterItem.semesterName == semesterName

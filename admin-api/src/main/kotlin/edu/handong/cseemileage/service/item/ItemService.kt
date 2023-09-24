@@ -49,7 +49,11 @@ class ItemService(
     }
 
     fun deleteItem(itemId: Int): Int {
-        repository.deleteById(itemId)
+        try {
+            repository.deleteById(itemId)
+        } catch (e: Exception) {
+            throw ItemNotFoundException()
+        }
         return itemId
     }
 }

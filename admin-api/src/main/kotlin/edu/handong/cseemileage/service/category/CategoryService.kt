@@ -45,7 +45,11 @@ class CategoryService(val repository: CategoryRepository) {
     }
 
     fun remove(savedId: Int): Int {
-        repository.deleteById(savedId)
+        try {
+            repository.deleteById(savedId)
+        } catch (e: Exception) {
+            throw CategoryNotFoundException()
+        }
         return savedId
     }
 }

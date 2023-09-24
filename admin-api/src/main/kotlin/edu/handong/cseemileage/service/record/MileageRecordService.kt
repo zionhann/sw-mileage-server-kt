@@ -42,7 +42,11 @@ class MileageRecordService(
     }
 
     fun deleteMileageRecord(mileageRecordId: Int): Int {
-        mileageRecordRepository.deleteById(mileageRecordId)
+        try {
+            mileageRecordRepository.deleteById(mileageRecordId)
+        } catch (e: Exception) {
+            throw MileageRecordNotFoundException()
+        }
         return mileageRecordId
     }
 }

@@ -16,7 +16,7 @@ class SemesterItemJdbcRepository(private val jdbcTemplate: JdbcTemplate) {
      * */
     fun insertSemesterList(semesterList: List<SemesterItem>) {
         jdbcTemplate.batchUpdate(
-            "insert into _sw_mileage_semester_item (point_value, item_max_points, semester_name, item_id, category_id, mod_date, reg_date) values (?, ?, ?, ?, ?, ?, ?, ?)",
+            "insert into _sw_mileage_semester_item (point_value, item_max_points, semester_name, item_id, category_id, mod_date, reg_date) values (?, ?, ?, ?, ?, ?, ?)",
             object : BatchPreparedStatementSetter {
                 override fun setValues(ps: PreparedStatement, i: Int) {
                     ps.setString(1, semesterList[i].pointValue.toString())
@@ -26,8 +26,8 @@ class SemesterItemJdbcRepository(private val jdbcTemplate: JdbcTemplate) {
                     ps.setString(5, semesterList[i].category.id.toString())
 
                     val now = LocalDateTime.now()
+                    ps.setTimestamp(6, Timestamp.valueOf(now))
                     ps.setTimestamp(7, Timestamp.valueOf(now))
-                    ps.setTimestamp(8, Timestamp.valueOf(now))
                 }
 
                 override fun getBatchSize(): Int {

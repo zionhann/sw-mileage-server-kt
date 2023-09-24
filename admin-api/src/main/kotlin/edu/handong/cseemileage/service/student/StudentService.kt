@@ -43,7 +43,11 @@ class StudentService(
     }
 
     fun deleteStudent(studentId: Int): Int {
-        studentRepository.deleteById(studentId)
+        try {
+            studentRepository.deleteById(studentId)
+        } catch (e: Exception) {
+            throw StudentNotFoundException()
+        }
         return studentId
     }
 }
