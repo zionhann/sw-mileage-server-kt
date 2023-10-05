@@ -25,5 +25,8 @@ data class SemesterItemForm(
     // update 폼에서만 사용. create: PathVariable 사용
     @Schema(description = "등록 학기 변경", example = "2023-02")
     @field:Pattern(regexp = "^(\\d{4}-(01|02))$", message = ExceptionMessage.INVALID_SEMESTER_NAME)
-    val semesterName: String?
+    val semesterName: String?,
+
+    @Schema(description = "한 학생의 중복 적립 가능 여부", example = "true")
+    val isMulti: Boolean?
 )

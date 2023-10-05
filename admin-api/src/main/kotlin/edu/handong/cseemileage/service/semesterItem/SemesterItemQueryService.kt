@@ -1,5 +1,8 @@
 package edu.handong.cseemileage.service.semesterItem
 
+import edu.handong.cseemileage.domain.mileage.Category
+import edu.handong.cseemileage.domain.mileage.Item
+import edu.handong.cseemileage.domain.mileage.SemesterItem
 import edu.handong.cseemileage.dto.mileage.category.CategoryDto
 import edu.handong.cseemileage.dto.mileage.item.ItemDto
 import edu.handong.cseemileage.dto.mileage.record.MileageRecordDto
@@ -7,6 +10,7 @@ import edu.handong.cseemileage.dto.mileage.semesterItem.SemesterItemDto
 import edu.handong.cseemileage.repository.mileage.CategoryRepository
 import edu.handong.cseemileage.repository.mileage.MileageRecordRepository
 import edu.handong.cseemileage.repository.mileage.SemesterItemRepository
+import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,26 +20,36 @@ class SemesterItemQueryService(
     val recordRepository: MileageRecordRepository
 ) {
     fun getSemesterItemsV1(semesterItems: String): List<SemesterItemDto.Info> {
-        val semesterItems = repository.findAllBySemesterName(semesterItems)
-        return semesterItems.map {
+        val results = repository.findAllWithItemAndCategoryAndRecordCount(semesterItems)
+        var item: Item
+        var category: Category
+        var recordCount: Long
+        var semesterItem: SemesterItem
+        return results.map { result ->
+            item = result.item
+            category = result.category
+            recordCount = result.recordCount
+            semesterItem = result.semesterItem
             SemesterItemDto.Info(
-                id = it.id,
+                id = semesterItem.id,
                 item = ItemDto.Info(
-                    id = it.item.id,
-                    name = it.item.name,
-                    description1 = it.item.description1,
-                    modDate = it.item.modDate
+                    id = item.id,
+                    name = item.name,
+                    description1 = item.description1,
+                    modDate = item.modDate
                 ),
                 category = CategoryDto.Info(
-                    id = it.category.id,
-                    name = it.category.name,
-                    categoryMaxPoints = it.category.categoryMaxPoints,
-                    modDate = it.category.modDate
+                    id = category.id,
+                    name = category.name,
+                    categoryMaxPoints = category.categoryMaxPoints,
+                    modDate = category.modDate
                 ),
-                semesterName = it.semesterName,
-                points = it.pointValue,
-                itemMaxPoints = it.itemMaxPoints,
-                modDate = it.modDate
+                semesterName = semesterItem.semesterName,
+                points = semesterItem.pointValue,
+                itemMaxPoints = semesterItem.itemMaxPoints,
+                isMulti = stringToBoolean(semesterItem.isMulti),
+                modDate = semesterItem.modDate,
+                recordCount = recordCount.toInt()
             )
         }
     }
@@ -80,6 +94,7 @@ class SemesterItemQueryService(
                 semesterName = semesterItem.semesterName,
                 points = semesterItem.pointValue,
                 itemMaxPoints = semesterItem.itemMaxPoints,
+                isMulti = stringToBoolean(semesterItem.isMulti),
                 modDate = semesterItem.modDate,
                 records = recordInfos
             )
@@ -94,6 +109,7 @@ class SemesterItemQueryService(
                 semesterName = it.semesterName,
                 points = it.pointValue,
                 itemMaxPoints = it.itemMaxPoints,
+                isMulti = stringToBoolean(it.isMulti),
                 modDate = it.modDate
             )
         }

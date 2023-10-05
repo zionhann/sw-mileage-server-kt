@@ -92,7 +92,8 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
             itemId = itemId,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            semesterName = null
+            semesterName = null,
+            isMulti = true
         )
         val req = mapper.writeValueAsString(form)
 
@@ -131,7 +132,8 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null
+                        semesterName = null,
+                        isMulti = true
                     )
                 )
             }
@@ -143,7 +145,8 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE * 2,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null
+                        semesterName = null,
+                        isMulti = true
                     )
                 )
             }
@@ -174,7 +177,8 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
             itemId = -1,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            semesterName = SEMESTER_NAME
+            semesterName = SEMESTER_NAME,
+            isMulti = true
         )
         val req = mapper.writeValueAsString(form)
 

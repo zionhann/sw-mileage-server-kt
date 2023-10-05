@@ -2,6 +2,7 @@ package edu.handong.cseemileage.domain.mileage
 
 import edu.handong.cseemileage.domain.BaseEntity
 import edu.handong.cseemileage.dto.mileage.semesterItem.SemesterItemForm
+import edu.handong.cseemileage.utils.Utils
 import org.hibernate.annotations.ColumnDefault
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -44,6 +45,10 @@ class SemesterItem(
     @Column(name = "semester_name", nullable = false, columnDefinition = "char(7)")
     var semesterName: String = "2023-02"
 
+    @ColumnDefault("'N'")
+    @Column(columnDefinition = "char(1)", nullable = false, name = "is_multi")
+    var isMulti: String = "N"
+
     @OneToMany(mappedBy = "semesterItem")
     var records: MutableList<MileageRecord> = mutableListOf()
 
@@ -61,6 +66,7 @@ class SemesterItem(
                 pointValue = form.points ?: 0f
                 itemMaxPoints = form.itemMaxPoints ?: item.itemMaxPoints
                 semesterName = semester
+                isMulti = Utils.booleanToString(form.isMulti ?: false)
             }
             item.addSemesterItem(semesterItem)
             return semesterItem
@@ -74,6 +80,7 @@ class SemesterItem(
             pointValue = form.points ?: pointValue
             itemMaxPoints = form.itemMaxPoints ?: itemMaxPoints
             semesterName = form.semesterName ?: semesterName
+            isMulti = form.isMulti?.let { Utils.booleanToString(it) } ?: isMulti
         }
         return id!!
     }

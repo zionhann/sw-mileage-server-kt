@@ -59,7 +59,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = UPDATE_POINT_VALUE,
             itemMaxPoints = UPDATE_ITEM_MAX_POINTS,
-            semesterName = UPDATE_SEMESTER_NAME
+            semesterName = UPDATE_SEMESTER_NAME,
+            isMulti = true
         )
 
         // When
@@ -86,7 +87,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = semesterItem.item.id,
             points = null,
             itemMaxPoints = null,
-            semesterName = SEMESTER_NAME
+            semesterName = SEMESTER_NAME,
+            isMulti = true
         )
 
         // When
@@ -113,7 +115,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = null,
             itemMaxPoints = null,
-            semesterName = null
+            semesterName = null,
+            isMulti = true
         )
 
         // When
@@ -135,7 +138,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = item2.id,
             points = null,
             itemMaxPoints = null,
-            semesterName = semesterItem.semesterName
+            semesterName = semesterItem.semesterName,
+            isMulti = true
         )
 
         // When
@@ -155,7 +159,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = semesterItem.item.id,
             points = null,
             itemMaxPoints = null,
-            semesterName = semesterItem.semesterName
+            semesterName = semesterItem.semesterName,
+            isMulti = true
         )
 
         // When
@@ -190,7 +195,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
             itemId = itemId,
             points = POINT_VALUE,
             itemMaxPoints = ITEM_MAX_POINTS,
-            semesterName = null
+            semesterName = null,
+            isMulti = true
         )
 
         // When
@@ -217,7 +223,8 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
                         itemId = it,
                         points = POINT_VALUE,
                         itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null
+                        semesterName = null,
+                        isMulti = true
                     )
                 )
         }

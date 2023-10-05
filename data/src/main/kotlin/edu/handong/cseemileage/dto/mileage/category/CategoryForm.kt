@@ -3,7 +3,6 @@ package edu.handong.cseemileage.dto.mileage.category
 import edu.handong.cseemileage.exception.ExceptionMessage
 import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Pattern
 import javax.validation.constraints.PositiveOrZero
 
 class CategoryForm(
@@ -15,11 +14,9 @@ class CategoryForm(
     // nullable = false, default (O)
     @Schema(description = "카테고리 보여주는 순서", example = "4")
     val orderIdx: Int?,
-    @Schema(description = "카테고리 하위에 올 수 있는 item 유형", example = "R")
-    @field:Pattern(regexp = "^[R]$", message = ExceptionMessage.CATEGORY_INVALID_ITEM_TYPE)
-    val itemType: String?,
-    @Schema(description = "카테고리 하위에 여러 item을 가질 수 있는지 여부", example = "true")
-    val isMulti: Boolean?,
+    @Schema(description = "카테고리의 타입 - 5가지 역량 척도", example = "A")
+    @field:NotBlank(message = ExceptionMessage.CATEGORY_TYPE_IS_EMPTY)
+    val type: String?,
     @Schema(description = "카테고리 최대 인정 마일리지", example = "20")
     @field:PositiveOrZero(message = ExceptionMessage.CATEGORY_MAX_POINTS_IS_NEGATIVE)
     val categoryMaxPoints: Float?,

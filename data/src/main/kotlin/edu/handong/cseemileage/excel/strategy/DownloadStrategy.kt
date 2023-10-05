@@ -24,8 +24,7 @@ interface DownloadStrategy {
             list.add(ExcelDto("name", "카테고리 이름", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description1", "카테고리 설명1", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("description2", "카테고리 설명2", EXCEL_DTO_CATEGORY))
-            list.add(ExcelDto("isMulti", "다중 하위 항목 여부", EXCEL_DTO_CATEGORY))
-            list.add(ExcelDto("itemType", "하위 항목 유형", EXCEL_DTO_CATEGORY))
+            list.add(ExcelDto("type", "카테고리 타입", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("modDate", "카테고리 마지막 수정일", EXCEL_DTO_CATEGORY))
             list.add(ExcelDto("regDate", "카테고리 등록일", EXCEL_DTO_CATEGORY))
         }
@@ -41,7 +40,6 @@ interface DownloadStrategy {
             list.add(ExcelDto("isVisible", "보이기 여부", EXCEL_DTO_ITEM))
             list.add(ExcelDto("isStudentVisible", "학생 보이기 여부", EXCEL_DTO_ITEM))
             list.add(ExcelDto("isStudentInput", "학생 입력 여부", EXCEL_DTO_ITEM))
-            list.add(ExcelDto("isMulti", "다중 학기별 항목 여부", EXCEL_DTO_ITEM))
             list.add(ExcelDto("hasFileDescription", "파일 설명 여부", EXCEL_DTO_ITEM))
             list.add(ExcelDto("fileDescription", "파일 설명", EXCEL_DTO_ITEM))
             list.add(ExcelDto("modDate", "세부 항목 마지막 수정일", EXCEL_DTO_ITEM))
@@ -53,6 +51,7 @@ interface DownloadStrategy {
             list.add(ExcelDto("semesterName", "학기", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("pointValue", "가중치", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("itemMaxPoints", "학기별 항목 최대 마일리지", EXCEL_DTO_SEMESTER))
+            list.add(ExcelDto("isMulti", "다중 적립 허용 여부", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("modDate", "학기별 항목 마지막 수정일", EXCEL_DTO_SEMESTER))
             list.add(ExcelDto("regDate", "학기별 항목 등록일", EXCEL_DTO_SEMESTER))
         }

@@ -20,8 +20,7 @@ class CategoryService(val repository: CategoryRepository) {
             description1 = form.description1
             description2 = form.description2
             orderIdx = form.orderIdx ?: 0
-            itemType = form.itemType ?: "R"
-            isMulti = form.isMulti ?: false
+            type = form.type ?: "A"
         }
 
         val result = repository.save(category)

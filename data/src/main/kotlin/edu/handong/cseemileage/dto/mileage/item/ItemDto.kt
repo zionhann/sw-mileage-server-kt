@@ -25,7 +25,6 @@ class ItemDto(
         val isVisible: Boolean? = null,
         val isStudentVisible: Boolean? = null,
         val isStudentInput: Boolean? = null,
-        val isMulti: Boolean? = null,
         val modDate: LocalDateTime? = null,
         val semesterItems: List<SemesterItemDto.Info>? = null
     )

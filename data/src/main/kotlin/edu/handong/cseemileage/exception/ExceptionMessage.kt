@@ -8,7 +8,7 @@ class ExceptionMessage {
         const val CATEGORY_NOT_FOUND = "카테고리를 찾을 수 없습니다."
         const val CATEGORY_DUPLICATE = "이미 존재하는 카테고리 입니다."
         const val CATEGORY_CANNOT_DELETE = "하위 항목이 존재하는 카테고리는 삭제할 수 없습니다."
-        const val CATEGORY_INVALID_ITEM_TYPE = "항목 타입이 잘못되었습니다.(char(1), R)"
+        const val CATEGORY_TYPE_IS_EMPTY = "카테고리의 타입이 없습니다."
         const val CATEGORY_MAX_POINTS_IS_NEGATIVE = "마일리지 인정 최댓값이 음수입니다. 0 이상의 값을 넣어주세요."
 
         const val ITEM_NOT_FOUND = "항목을 찾을 수 없습니다."
@@ -25,6 +25,8 @@ class ExceptionMessage {
         const val RECORD_NOT_FOUND = "해당하는 마일리지 기록을 찾을 수 없습니다."
         const val RECORD_SEMESTER_IS_NOT_POSITIVE = "학기 ID가 양수가 아닙니다."
         const val RECORD_INVALID_EXTRA_POINTS = "가산점이 음수입니다. 0 이상의 값을 넣어주세요."
+        const val INVALID_MILEAGE_RECORD = "중복 적립이 불가한 항목입니다. (count = 1만 허용)"
+        const val INVALID_DUPLICATE_MILEAGE_RECORD = "중복 적립이 불가한 항목입니다. 해당 학생은 이미 등록되었습니다."
 
         const val SEMESTER_ITEM_NOT_FOUND = "해당 학기가 존재하지 않습니다."
         const val SEMESTER_ITEM_ID_IS_NOT_POSITIVE = "글로벌 항목 ID가 양수가 아닙니다."

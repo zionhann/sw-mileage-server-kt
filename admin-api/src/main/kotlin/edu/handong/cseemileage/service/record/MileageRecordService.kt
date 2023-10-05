@@ -3,6 +3,8 @@ package edu.handong.cseemileage.service.record
 import edu.handong.cseemileage.domain.mileage.MileageRecord
 import edu.handong.cseemileage.domain.mileage.SemesterItem
 import edu.handong.cseemileage.dto.mileage.record.MileageRecordForm
+import edu.handong.cseemileage.exception.mileage.record.InvalidDuplicateMileageRecordException
+import edu.handong.cseemileage.exception.mileage.record.InvalidMileageRecordException
 import edu.handong.cseemileage.exception.mileage.record.MileageRecordNotFoundException
 import edu.handong.cseemileage.exception.mileage.semesterItem.SemesterItemNotFoundException
 import edu.handong.cseemileage.repository.mileage.MileageRecordRepository
@@ -18,10 +20,19 @@ class MileageRecordService(
 ) {
     fun add(form: MileageRecordForm): Int {
         val semesterItem = findSemesterItem(form)
+        validateMileageRecord(form, semesterItem)
         val record = MileageRecord.createMileageRecord(form, semesterItem, form.studentName!!, form.sid!!)
         val saved = mileageRecordRepository.save(record)
 
         return saved.id
+    }
+
+    private fun validateMileageRecord(form: MileageRecordForm, semesterItem: SemesterItem) {
+        if (semesterItem.isMulti == "N") {
+            if (form.counts!! > 1) {
+                throw InvalidMileageRecordException()
+            } else if (mileageRecordRepository.findBySidAndSemesterItem(form.sid!!, semesterItem) != null) throw InvalidDuplicateMileageRecordException()
+        }
     }
 
     fun modifyMileageRecord(mileageRecordId: Int, form: MileageRecordForm): Int {

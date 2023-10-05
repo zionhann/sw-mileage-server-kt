@@ -2,12 +2,10 @@ package edu.handong.cseemileage.service
 
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.DESCRIPTION1
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.DESCRIPTION2
-import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.IS_MULTI
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.ITEM_TYPE
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.ORDER_IDX
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_DESCRIPTION1
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_DESCRIPTION2
-import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_IS_MULTI
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_ITEM_TYPE
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_NAME
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.UPDATE_ORDER_IDX
@@ -44,8 +42,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         val form = CategoryForm(
             title = "중복방지1",
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -65,8 +62,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         val form = CategoryForm(
             title = "중복 방지2",
             orderIdx = null,
-            itemType = null,
-            isMulti = null,
+            type = null,
             description1 = null,
             description2 = null,
             categoryMaxPoints = null
@@ -86,8 +82,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         val form = CategoryForm(
             title = "중복 방지3",
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -114,8 +109,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         val form = CategoryForm(
             title = "중복 방지4",
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -141,14 +135,12 @@ class MileageCategoryServiceTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val updateForm = CategoryForm(
             title = UPDATE_NAME,
             orderIdx = UPDATE_ORDER_IDX,
-            itemType = UPDATE_ITEM_TYPE,
-            isMulti = UPDATE_IS_MULTI,
+            type = UPDATE_ITEM_TYPE,
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             categoryMaxPoints = 10f
@@ -163,8 +155,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         assertThat(updatedCategory.id).isEqualTo(category.id)
         assertThat(updatedCategory.name).isEqualTo(UPDATE_NAME)
         assertThat(updatedCategory.orderIdx).isEqualTo(UPDATE_ORDER_IDX)
-        assertThat(updatedCategory.itemType).isEqualTo(UPDATE_ITEM_TYPE)
-        assertThat(updatedCategory.isMulti).isEqualTo(UPDATE_IS_MULTI)
+        assertThat(updatedCategory.type).isEqualTo(UPDATE_ITEM_TYPE)
         assertThat(updatedCategory.description1).isEqualTo(UPDATE_DESCRIPTION1)
         assertThat(updatedCategory.description2).isEqualTo(UPDATE_DESCRIPTION2)
     }
@@ -177,14 +168,12 @@ class MileageCategoryServiceTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val updateForm = CategoryForm(
             title = UPDATE_NAME,
             orderIdx = null,
-            itemType = null,
-            isMulti = null,
+            type = null,
             description1 = null,
             description2 = null,
             categoryMaxPoints = null
@@ -199,8 +188,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         assertThat(updatedCategory.id).isEqualTo(category.id)
         assertThat(updatedCategory.name).isEqualTo(UPDATE_NAME)
         assertThat(updatedCategory.orderIdx).isEqualTo(ORDER_IDX)
-        assertThat(updatedCategory.itemType).isEqualTo(ITEM_TYPE)
-        assertThat(updatedCategory.isMulti).isEqualTo(IS_MULTI)
+        assertThat(updatedCategory.type).isEqualTo(ITEM_TYPE)
         assertThat(updatedCategory.description1).isEqualTo(DESCRIPTION1)
         assertThat(updatedCategory.description2).isEqualTo(DESCRIPTION2)
     }
@@ -212,8 +200,7 @@ class MileageCategoryServiceTests @Autowired constructor(
         val form = CategoryForm(
             title = "중복 방지7",
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -238,21 +225,18 @@ class MileageCategoryServiceTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val category2 = Category("중복 방지9").apply {
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val updateForm = CategoryForm(
             title = "중복 방지9",
             orderIdx = UPDATE_ORDER_IDX,
-            itemType = UPDATE_ITEM_TYPE,
-            isMulti = UPDATE_IS_MULTI,
+            type = UPDATE_ITEM_TYPE,
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             categoryMaxPoints = 10f
@@ -275,14 +259,12 @@ class MileageCategoryServiceTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val updateForm = CategoryForm(
             title = "중복 방지10",
             orderIdx = UPDATE_ORDER_IDX,
-            itemType = UPDATE_ITEM_TYPE,
-            isMulti = UPDATE_IS_MULTI,
+            type = UPDATE_ITEM_TYPE,
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             categoryMaxPoints = 10f

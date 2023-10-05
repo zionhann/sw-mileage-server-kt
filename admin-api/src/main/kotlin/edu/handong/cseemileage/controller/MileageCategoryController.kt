@@ -39,7 +39,7 @@ class MileageCategoryController(
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "카테고리 생성 성공"),
-            ApiResponse(responseCode = "400", description = "카테고리 title 누락, itemType 형식 오류, categoryMaxPoints 범위 초과 등 카테고리 생성 실패"),
+            ApiResponse(responseCode = "400", description = "카테고리 title/type 누락, categoryMaxPoints 범위 초과 등 카테고리 생성 실패"),
             ApiResponse(responseCode = "500", description = "카테고리 name 중복으로 인해 카테고리 생성 실패")
         ]
     )

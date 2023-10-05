@@ -39,8 +39,6 @@ data class ItemForm(
         val isStudentVisible: Boolean?,
         @Schema(description = "학생 주도 등록 여부", example = "true")
         val isStudentEditable: Boolean?,
-        @Schema(description = "학기별 항목 multiple 생성 가능 여부", example = "true")
-        val isMultiple: Boolean?,
         @Schema(description = "포트폴리오 포함 여부", example = "true")
         val isPortfolio: Boolean?
     )

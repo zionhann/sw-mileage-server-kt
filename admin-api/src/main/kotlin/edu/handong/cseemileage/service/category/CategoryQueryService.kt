@@ -25,8 +25,7 @@ class CategoryQueryService(
                     description2 = it.description2,
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
-                    itemType = it.itemType,
-                    isMulti = it.isMulti,
+                    type = it.type,
                     modDate = it.modDate
                 )
             }
@@ -44,8 +43,7 @@ class CategoryQueryService(
                     description2 = it.description2,
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
-                    itemType = it.itemType,
-                    isMulti = it.isMulti,
+                    type = it.type,
                     modDate = it.modDate
                 )
             }
@@ -77,7 +75,8 @@ class CategoryQueryService(
                         id = semesterItem.id,
                         semesterName = semesterItem.semesterName,
                         points = semesterItem.pointValue,
-                        itemMaxPoints = semesterItem.itemMaxPoints
+                        itemMaxPoints = semesterItem.itemMaxPoints,
+                        isMulti = stringToBoolean(semesterItem.isMulti)
                     )
                 }
                 ItemDto.Info(
@@ -90,7 +89,6 @@ class CategoryQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    isMulti = stringToBoolean(item.isMulti),
                     semesterItems = semesterInfos
                 )
             }
@@ -101,8 +99,7 @@ class CategoryQueryService(
                 description2 = category.description2,
                 categoryMaxPoints = category.categoryMaxPoints,
                 orderIdx = category.orderIdx,
-                itemType = category.itemType,
-                isMulti = category.isMulti,
+                type = category.type,
                 modDate = category.modDate,
                 items = itemInfos
             )

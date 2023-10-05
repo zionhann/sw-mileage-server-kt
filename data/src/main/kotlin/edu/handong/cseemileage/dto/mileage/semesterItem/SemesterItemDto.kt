@@ -21,7 +21,9 @@ class SemesterItemDto(
         val semesterName: String? = null,
         val points: Float? = null,
         val itemMaxPoints: Float? = null,
+        val isMulti: Boolean? = null,
         val modDate: LocalDateTime? = null,
-        val records: List<MileageRecordDto.Info>? = null
+        val records: List<MileageRecordDto.Info>? = null,
+        val recordCount: Int? = null
     )
 }

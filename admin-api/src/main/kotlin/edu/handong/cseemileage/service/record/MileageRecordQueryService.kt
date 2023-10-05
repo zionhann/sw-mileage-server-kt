@@ -8,6 +8,7 @@ import edu.handong.cseemileage.dto.mileage.semesterItem.SemesterItemDto
 import edu.handong.cseemileage.exception.mileage.record.MileageRecordNotFoundException
 import edu.handong.cseemileage.repository.mileage.MileageRecordRepository
 import edu.handong.cseemileage.repository.mileage.SemesterItemRepository
+import edu.handong.cseemileage.utils.Utils.Companion.stringToBoolean
 import org.springframework.stereotype.Service
 
 @Service
@@ -63,6 +64,7 @@ class MileageRecordQueryService(
                 semesterName = it.semesterItem.semesterName,
                 points = it.semesterItem.pointValue,
                 itemMaxPoints = it.semesterItem.itemMaxPoints,
+                isMulti = stringToBoolean(it.semesterItem.isMulti),
                 modDate = it.semesterItem.modDate
             ),
             category = CategoryDto.Info(
