@@ -13,7 +13,6 @@ import edu.handong.cseemileage.domain.mileage.Category
 import edu.handong.cseemileage.domain.mileage.Item
 import edu.handong.cseemileage.domain.mileage.SemesterItem
 import edu.handong.cseemileage.dto.mileage.semesterItem.SemesterItemForm
-import edu.handong.cseemileage.dto.mileage.semesterItem.SemesterItemMultipleForm
 import edu.handong.cseemileage.exception.mileage.semesterItem.DuplicateSemesterItemException
 import edu.handong.cseemileage.exception.mileage.semesterItem.SemesterNameNotFoundException
 import edu.handong.cseemileage.repository.account.StudentRepository
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional
 import org.testng.Assert.assertThrows
 import org.testng.Assert.fail
 import javax.annotation.PostConstruct
-import kotlin.system.measureTimeMillis
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest
@@ -209,46 +207,45 @@ class MileageSemesterItemServiceTestsItem @Autowired constructor(
         }
     }
 
-    // 검증 완료. 시간이 오래 걸리는 관계로 @Test 주석 처리
+    // 검증 완료. 시간이 오래 걸리는 관계로 주석 처리
     // @Test
-    @DisplayName("integration: bulk insert 성능 테스트 - 학기별 마일리지 항목 생성(multiple)")
-    fun createSemesterMultipleBulkInsert() {
-        // Given
-        val item1 = itemRepository.findAllByName("전공 항목1").get(0)
-        val semesterList = mutableListOf<SemesterItemForm>()
-        item1.id?.let {
-            for (i: Int in 1..1000)
-                semesterList.add(
-                    SemesterItemForm(
-                        itemId = it,
-                        points = POINT_VALUE,
-                        itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null,
-                        isMulti = true
-                    )
-                )
-        }
-        val form = SemesterItemMultipleForm(semesterList)
-
-        // When
-        val elapsed1: Long = measureTimeMillis {
-            semesterItemService.saveSemesterItemMultipleBulkInsert(form, SEMESTER_NAME)
-        }
-        val elapsed2: Long = measureTimeMillis {
-            semesterItemService.saveSemesterItemMultiple(form, SEMESTER_NAME)
-        }
-        println("Bulk insert 경과 시간: $elapsed1 ms")
-        println("None Bulk insert 경과 시간: $elapsed2 ms")
-
-        /*
-        * 출력 예시
-        * Bulk insert 경과 시간: 121 ms
-        * None Bulk insert 경과 시간: 3746 ms
-        * */
-
-        // Then
-        Assertions.assertThat(elapsed1).isLessThan(elapsed2)
-    }
+//    @DisplayName("integration: bulk insert 성능 테스트 - 학기별 마일리지 항목 생성(multiple)")
+//    fun createSemesterMultipleBulkInsert() {
+//        // Given
+//        val item1 = itemRepository.findAllByName("전공 항목1").get(0)
+//        val semesterList = mutableListOf<SemesterItemForm>()
+//        item1.id?.let {
+//            for (i: Int in 1..1000)
+//                semesterList.add(
+//                    SemesterItemForm(
+//                        itemId = it,
+//                        points = POINT_VALUE,
+//                        itemMaxPoints = ITEM_MAX_POINTS,
+//                        semesterName = null,
+//                        isMulti = true
+//                    )
+//                )
+//        }
+//
+//        // When
+//        val elapsed1: Long = measureTimeMillis {
+//            semesterItemService.saveSemesterItemMultipleBulkInsert(form, SEMESTER_NAME)
+//        }
+//        val elapsed2: Long = measureTimeMillis {
+//            semesterItemService.saveSemesterItemMultiple(form, SEMESTER_NAME)
+//        }
+//        println("Bulk insert 경과 시간: $elapsed1 ms")
+//        println("None Bulk insert 경과 시간: $elapsed2 ms")
+//
+//        /*
+//        * 출력 예시
+//        * Bulk insert 경과 시간: 121 ms
+//        * None Bulk insert 경과 시간: 3746 ms
+//        * */
+//
+//        // Then
+//        Assertions.assertThat(elapsed1).isLessThan(elapsed2)
+//    }
 
     fun createDefaultSemesterItem(item: Item): SemesterItem {
         return SemesterItem(

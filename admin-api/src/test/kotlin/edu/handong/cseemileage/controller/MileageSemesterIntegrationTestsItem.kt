@@ -124,39 +124,20 @@ class MileageSemesterIntegrationTestsItem @Autowired constructor(
         // Given
         val item1 = itemRepository.findByName("전공 항목1")
         val item2 = itemRepository.findByName("캠프 항목1")
-        val semesterList = mutableListOf<SemesterItemForm>()
-        if (item1 != null) {
-            item1.id?.let {
-                semesterList.add(
-                    SemesterItemForm(
-                        itemId = it,
-                        points = POINT_VALUE,
-                        itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null,
-                        isMulti = true
-                    )
-                )
-            }
-        }
-        if (item2 != null) {
-            item2.id?.let {
-                semesterList.add(
-                    SemesterItemForm(
-                        itemId = it,
-                        points = POINT_VALUE * 2,
-                        itemMaxPoints = ITEM_MAX_POINTS,
-                        semesterName = null,
-                        isMulti = true
-                    )
-                )
-            }
-        }
-        val form = SemesterItemMultipleForm(semesterList)
+
+        val semesterList = mutableListOf<Int>()
+        if (item1 != null) item1.id?.let { semesterList.add(it) }
+        if (item2 != null) item2.id?.let { semesterList.add(it) }
+
+        val form = SemesterItemMultipleForm(
+            copyFrom = semesterList,
+            copyTo = "2019-01"
+        )
         val req = mapper.writeValueAsString(form)
 
         // When
         val mvcResult = mockMvc
-            .post("$API_URI/{SEMESTER_NAME}/multiple", SEMESTER_NAME) {
+            .post("$API_URI/multiple", SEMESTER_NAME) {
                 contentType = MediaType.APPLICATION_JSON
                 content = req
             }

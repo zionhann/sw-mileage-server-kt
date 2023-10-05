@@ -60,18 +60,21 @@ class MileageSemesterItemController(
     }
 
     @Operation(summary = "학기별 항목 다중 생성", description = "관리자 사이트에서 학기별 항목을 다중 생성합니다.")
-    @Parameter(name = "semesterName", description = "등록할 학기", required = true, example = "2023-02")
     @ApiResponse(responseCode = "201", description = "학기별 항목 다중 생성 성공")
-    @PostMapping("/{semesterName}/multiple")
+    @PostMapping("/multiple")
     fun createSemesterMultiple(
         @RequestBody @Valid
-        form: SemesterItemMultipleForm,
-        @PathVariable semesterName: String
+        form: SemesterItemMultipleForm
     ): ResponseEntity<String> {
-        semesterItemService.saveSemesterItemMultipleBulkInsert(form, semesterName)
+        val map = semesterItemService.saveSemesterItemMultipleBulkInsert(form)
         return ResponseEntity.created(
-            URI.create("$API_URI/$semesterName/items/multiple")
-        ).body("학기별 항목 생성(multiple) 완료")
+            URI.create("$API_URI/multiple")
+        ).body(
+            "학기별 항목 생성(multiple) 완료" +
+                "\n복사 성공: ${map["복사 성공"]}" +
+                "\n복사 실패 - 중복 항목: ${map["복사 실패 - 중복 항목"]}" +
+                "\n복사 실패 - 존재하지 않는 항목: ${map["복사 실패 - 학기별 항목을 찾지 못함"]}"
+        )
     }
 
     @Operation(summary = "학기별 항목 조회 by semesterName", description = "관리자 사이트에서 학기로 필터링해서 항목을 조회합니다. list{학기별 항목 {항목, 카테고리} 리스트} 형식으로 반환됩니다")
