@@ -87,7 +87,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @DisplayName("service: 마일리지 값이 음수인 경우")
     fun mileageCategoryIntegrationTests_54() {
         // Given
-        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
@@ -112,7 +112,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @DisplayName("service: 마일리지 값이 없는 경우")
     fun mileageCategoryIntegrationTests_82() {
         // Given
-        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
