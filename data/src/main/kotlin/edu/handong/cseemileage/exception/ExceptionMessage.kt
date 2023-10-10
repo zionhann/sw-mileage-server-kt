@@ -55,5 +55,7 @@ class ExceptionMessage {
 
         const val INVALID_EMAIL = "이메일 형식이 잘못되었습니다."
         const val INVALID_SEMESTER_NAME = "학기 형식이 잘못되었습니다. (YYYY-01 / YYYY-02)"
+
+        const val NOT_SUPPORTED_FILE_TYPE = "지원하지 않는 파일 형식입니다."
     }
 }

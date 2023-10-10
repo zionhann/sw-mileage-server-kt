@@ -31,4 +31,13 @@ interface SemesterItemRepository : JpaRepository<SemesterItem, Int> {
             "GROUP BY s"
     )
     fun findAllWithItemAndCategoryAndRecordCount(name: String): List<SemesterItemQueryDto>
+
+    @Query(
+        "SELECT s " +
+            "FROM SemesterItem s " +
+            "JOIN FETCH s.item i " +
+            "JOIN FETCH i.category c " +
+            "WHERE s.semesterName = :semester AND i.name = :itemName"
+    )
+    fun findBySemesterNameAndItemName(semester: String, itemName: String): SemesterItem?
 }
