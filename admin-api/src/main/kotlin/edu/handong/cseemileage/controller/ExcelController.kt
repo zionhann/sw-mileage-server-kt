@@ -71,7 +71,7 @@ class ExcelController @Autowired constructor(
         @PathVariable("excelType") excelType: String,
         @RequestParam(defaultValue = "", required = false) semester: String
     ) {
-        if (!semester.matches("^(\\d{4}-(01|02))$".toRegex())) {
+        if (semester != "" && !semester.matches("^(\\d{4}-(01|02))$".toRegex())) {
             throw SemesterPatternException()
         }
         response.contentType = "application/octet-stream"
