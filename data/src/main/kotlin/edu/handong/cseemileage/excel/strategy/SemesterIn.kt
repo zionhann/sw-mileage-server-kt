@@ -31,7 +31,6 @@ class SemesterIn(
 
     override fun getList(): List<*>? {
         return semesterItemRepository.findAllWithItemAndCategory(semester)
-        return null
     }
 
     override fun getValue(obj: Any, fieldName: String, excelDtoType: String): Any {

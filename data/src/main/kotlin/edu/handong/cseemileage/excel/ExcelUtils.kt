@@ -8,6 +8,8 @@ import edu.handong.cseemileage.utils.Utils
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.BorderStyle
 import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DataFormatter
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.Row
@@ -127,4 +129,12 @@ class ExcelUtils(
         outputStream.flush()
         return ByteArrayInputStream(outputStream.toByteArray())
     }
+}
+
+fun numericToString(cell: Cell): String {
+    if (cell.cellType == CellType.NUMERIC) {
+        val df = DataFormatter()
+        return df.formatCellValue(cell)
+    }
+    return cell.stringCellValue
 }

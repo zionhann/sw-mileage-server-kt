@@ -3,7 +3,6 @@ package edu.handong.cseemileage.service
 import edu.handong.cseemileage.controller.MileageCategoryIntegrationTests.Companion.NAME
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.DESCRIPTION1
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.DESCRIPTION2
-import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.IS_MULTI
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.IS_PORTFOLIO
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.IS_STUDENT_INPUT
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.IS_STUDENT_VISIBLE
@@ -11,7 +10,6 @@ import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.STU_TYPE
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_DESCRIPTION1
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_DESCRIPTION2
-import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_IS_MULTI
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_IS_PORTFOLIO
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_IS_STUDENT_INPUT
 import edu.handong.cseemileage.controller.MileageItemIntegrationTests.Companion.UPDATE_IS_STUDENT_VISIBLE
@@ -63,8 +61,7 @@ class MileageItemServiceTests @Autowired constructor(
                 isPortfolio = UPDATE_IS_PORTFOLIO,
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
                 isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
-                isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT),
-                isMultiple = stringToBoolean(UPDATE_IS_MULTI)
+                isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
             )
         )
         itemRepository.save(item)
@@ -83,7 +80,6 @@ class MileageItemServiceTests @Autowired constructor(
         assertThat(updatedItem.isVisible).isEqualTo(UPDATE_IS_VISIBLE)
         assertThat(updatedItem.isStudentVisible).isEqualTo(UPDATE_IS_STUDENT_VISIBLE)
         assertThat(updatedItem.isStudentInput).isEqualTo(UPDATE_IS_STUDENT_INPUT)
-        assertThat(updatedItem.isMulti).isEqualTo(UPDATE_IS_MULTI)
     }
 
     @DisplayName("service: 마일리지 항목 수정 - 존재하지 않는 값은 원래의 값")
@@ -120,7 +116,6 @@ class MileageItemServiceTests @Autowired constructor(
         assertThat(updatedItem.isVisible).isEqualTo(IS_VISIBLE)
         assertThat(updatedItem.isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
         assertThat(updatedItem.isStudentInput).isEqualTo(IS_STUDENT_INPUT)
-        assertThat(updatedItem.isMulti).isEqualTo(IS_MULTI)
     }
 
     @DisplayName("수정 시 중복된 이름이 있으면 예외 발생")
@@ -204,7 +199,6 @@ class MileageItemServiceTests @Autowired constructor(
                 isVisible = IS_VISIBLE
                 isStudentVisible = IS_STUDENT_VISIBLE
                 isStudentInput = IS_STUDENT_INPUT
-                isMulti = IS_MULTI
             }
         }
     }

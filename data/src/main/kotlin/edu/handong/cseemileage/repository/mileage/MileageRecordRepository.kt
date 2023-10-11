@@ -1,6 +1,7 @@
 package edu.handong.cseemileage.repository.mileage
 
 import edu.handong.cseemileage.domain.mileage.MileageRecord
+import edu.handong.cseemileage.domain.mileage.SemesterItem
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -21,4 +22,6 @@ interface MileageRecordRepository : JpaRepository<MileageRecord, Int> {
 
     @Query("SELECT r FROM MileageRecord r WHERE r.semesterItem.id = :semesterItemId")
     fun findAllBySemesterItemIdWithStudent(semesterItemId: Int): List<MileageRecord>
+
+    fun findBySidAndSemesterItem(sid: String, semesterItem: SemesterItem): MileageRecord?
 }

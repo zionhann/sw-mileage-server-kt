@@ -39,7 +39,11 @@ class AdminService(
     }
 
     fun deleteAdmin(adminId: Int): Int {
-        repository.deleteById(adminId)
+        try {
+            repository.deleteById(adminId)
+        } catch (e: Exception) {
+            throw AdminNotFoundException()
+        }
         return adminId
     }
 }

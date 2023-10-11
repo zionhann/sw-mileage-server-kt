@@ -21,8 +21,7 @@ class ItemQueryService(
                     id = item.category.id,
                     name = item.category.name,
                     categoryMaxPoints = item.category.categoryMaxPoints,
-                    itemType = item.category.itemType,
-                    isMulti = item.category.isMulti,
+                    type = item.category.type,
                     modDate = item.category.modDate
                 ),
                 name = item.name,
@@ -34,7 +33,6 @@ class ItemQueryService(
                 isVisible = stringToBoolean(item.isVisible),
                 isStudentVisible = stringToBoolean(item.isStudentVisible),
                 isStudentInput = stringToBoolean(item.isStudentInput),
-                isMulti = stringToBoolean(item.isMulti),
                 modDate = item.modDate
             )
         }
@@ -69,7 +67,6 @@ class ItemQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    isMulti = stringToBoolean(item.isMulti),
                     modDate = item.modDate
                 )
             }
@@ -80,8 +77,7 @@ class ItemQueryService(
                 description2 = category.description2,
                 categoryMaxPoints = category.categoryMaxPoints,
                 orderIdx = category.orderIdx,
-                itemType = category.itemType,
-                isMulti = category.isMulti,
+                type = category.type,
                 modDate = category.modDate,
                 items = itemInfos
             )

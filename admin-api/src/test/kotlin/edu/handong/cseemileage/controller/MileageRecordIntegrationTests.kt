@@ -72,8 +72,7 @@ class MileageRecordIntegrationTests @Autowired constructor(
                 description1 = null,
                 description2 = null,
                 orderIdx = null,
-                itemType = null,
-                isMulti = null,
+                type = null,
                 categoryMaxPoints = null
             )
         )
@@ -89,7 +88,6 @@ class MileageRecordIntegrationTests @Autowired constructor(
                 ItemForm.Flag(
                     isVisible = true,
                     isPortfolio = false,
-                    isMultiple = false,
                     isStudentVisible = false,
                     isStudentEditable = false
                 )
@@ -101,7 +99,8 @@ class MileageRecordIntegrationTests @Autowired constructor(
                 itemId = savedItem,
                 points = 1.0f,
                 itemMaxPoints = 1.0f,
-                semesterName = null
+                semesterName = null,
+                isMulti = true
             ),
             "2023-02"
         )

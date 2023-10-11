@@ -67,7 +67,6 @@ class MileageItemRepositoryTests @Autowired constructor(
             isPortfolio = IS_PORTFOLIO
             isStudentVisible = IS_STUDENT_VISIBLE
             isStudentInput = IS_STUDENT_INPUT
-            isMulti = IS_MULTI
         }
 
         // when
@@ -86,7 +85,6 @@ class MileageItemRepositoryTests @Autowired constructor(
         Assertions.assertThat(savedItem.get().isPortfolio).isEqualTo(IS_PORTFOLIO)
         Assertions.assertThat(savedItem.get().isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
         Assertions.assertThat(savedItem.get().isStudentInput).isEqualTo(IS_STUDENT_INPUT)
-        Assertions.assertThat(savedItem.get().isMulti).isEqualTo(IS_MULTI)
     }
 
     @DisplayName("모든 값을 지정하지 않아도 @ColumnDefault 값이 들어가야 한다")
@@ -116,7 +114,6 @@ class MileageItemRepositoryTests @Autowired constructor(
         Assertions.assertThat(savedItem.get().isPortfolio).isEqualTo(DEFAULT_IS_PORTFOLIO)
         Assertions.assertThat(savedItem.get().isStudentVisible).isEqualTo(DEFAULT_IS_STUDENT_VISIBLE)
         Assertions.assertThat(savedItem.get().isStudentInput).isEqualTo(DEFAULT_IS_STUDENT_INPUT)
-        Assertions.assertThat(savedItem.get().isMulti).isEqualTo(DEFAULT_IS_MULTI)
     }
 
     @DisplayName("repository: 마일리지 항목 전체 조회")
@@ -136,7 +133,6 @@ class MileageItemRepositoryTests @Autowired constructor(
             isPortfolio = IS_PORTFOLIO
             isStudentVisible = IS_STUDENT_VISIBLE
             isStudentInput = IS_STUDENT_INPUT
-            isMulti = IS_MULTI
         }
         val item2 = Item(
             category = savedCategory,
@@ -149,7 +145,6 @@ class MileageItemRepositoryTests @Autowired constructor(
             isPortfolio = IS_PORTFOLIO
             isStudentVisible = IS_STUDENT_VISIBLE
             isStudentInput = IS_STUDENT_INPUT
-            isMulti = IS_MULTI
         }
 
         // when
@@ -179,7 +174,6 @@ class MileageItemRepositoryTests @Autowired constructor(
             isPortfolio = IS_PORTFOLIO
             isStudentVisible = IS_STUDENT_VISIBLE
             isStudentInput = IS_STUDENT_INPUT
-            isMulti = IS_MULTI
         }
 
         // when

@@ -308,7 +308,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,
-                isMultiple = stringToBoolean(IS_MULTI),
                 isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
             )
@@ -327,7 +326,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             ItemForm.Flag(
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
                 isPortfolio = UPDATE_IS_PORTFOLIO,
-                isMultiple = stringToBoolean(UPDATE_IS_MULTI),
                 isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
             )
@@ -345,7 +343,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             ItemForm.Flag(
                 isVisible = stringToBoolean(UPDATE_IS_VISIBLE),
                 isPortfolio = UPDATE_IS_PORTFOLIO,
-                isMultiple = stringToBoolean(UPDATE_IS_MULTI),
                 isStudentVisible = stringToBoolean(UPDATE_IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(UPDATE_IS_STUDENT_INPUT)
             )
@@ -364,7 +361,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,
-                isMultiple = stringToBoolean(IS_MULTI),
                 isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
             )
@@ -383,7 +379,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             ItemForm.Flag(
                 isVisible = stringToBoolean(IS_VISIBLE),
                 isPortfolio = IS_PORTFOLIO,
-                isMultiple = stringToBoolean(IS_MULTI),
                 isStudentVisible = stringToBoolean(IS_STUDENT_VISIBLE),
                 isStudentEditable = stringToBoolean(IS_STUDENT_INPUT)
             )
@@ -398,7 +393,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             assertThat(it.description2).isEqualTo(DESCRIPTION2)
             assertThat(it.stuType).isEqualTo(STU_TYPE)
             assertThat(it.isVisible).isEqualTo(IS_VISIBLE)
-            assertThat(it.isMulti).isEqualTo(IS_MULTI)
             assertThat(it.isStudentVisible).isEqualTo(IS_STUDENT_VISIBLE)
             assertThat(it.isStudentInput).isEqualTo(IS_STUDENT_INPUT)
         }
@@ -412,7 +406,6 @@ class MileageItemIntegrationTests @Autowired constructor(
             assertThat(it.description2).isEqualTo(UPDATE_DESCRIPTION2)
             assertThat(it.stuType).isEqualTo(UPDATE_STU_TYPE)
             assertThat(it.isVisible).isEqualTo(UPDATE_IS_VISIBLE)
-            assertThat(it.isMulti).isEqualTo(UPDATE_IS_MULTI)
             assertThat(it.isStudentVisible).isEqualTo(UPDATE_IS_STUDENT_VISIBLE)
             assertThat(it.isStudentInput).isEqualTo(UPDATE_IS_STUDENT_INPUT)
         }

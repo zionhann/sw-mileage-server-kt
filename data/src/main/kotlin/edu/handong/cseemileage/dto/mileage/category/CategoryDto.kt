@@ -19,8 +19,7 @@ class CategoryDto(
         val description1: String? = null,
         val description2: String? = null,
         val orderIdx: Int? = null,
-        val itemType: String? = null,
-        val isMulti: Boolean? = null,
+        val type: String? = null,
         val modDate: LocalDateTime? = null,
         val items: List<ItemDto.Info>? = null
     )

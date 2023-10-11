@@ -37,13 +37,9 @@ class Category(
     @Column(name = "order_idx", nullable = false, length = 11)
     var orderIdx: Int = 0
 
-    @ColumnDefault("'R'")
-    @Column(name = "item_type", nullable = false, columnDefinition = "char(1)")
-    var itemType: String = "R"
-
-    @ColumnDefault("0")
-    @Column(columnDefinition = "tinyint(1)", nullable = false, name = "is_multi")
-    var isMulti: Boolean = false
+    @ColumnDefault("'A'")
+    @Column(name = "type", nullable = false)
+    var type: String = "A"
 
     @OneToMany(mappedBy = "category")
     var items: MutableList<Item> = mutableListOf()
@@ -55,8 +51,7 @@ class Category(
             categoryMaxPoints = form.categoryMaxPoints ?: categoryMaxPoints
             description1 = form.description1 ?: description1
             description2 = form.description2 ?: description2
-            itemType = form.itemType ?: itemType
-            isMulti = form.isMulti ?: isMulti
+            type = form.type ?: type
         }
         return id!!
     }

@@ -18,11 +18,7 @@ class ApplyService(
 ) {
     fun saveApply(form: ApplyForm): Int {
         validateDuplicateApply(form, 0)
-        val student = form.studentId?.let {
-            studentRepository
-                .findById(it)
-                .orElseThrow { StudentNotFoundException() }
-        }
+        val student = studentRepository.findById(form.studentId).get()
         val apply = Apply.createApply(form, student!!)
         repository.save(apply)
         return apply.id!!
@@ -39,11 +35,7 @@ class ApplyService(
 
     fun modifyApply(applyId: Int, form: ApplyForm): Int {
         validateDuplicateApply(form, applyId)
-        val student = form.studentId?.let {
-            studentRepository
-                .findById(it)
-                .orElseThrow { StudentNotFoundException() }
-        }
+        val student = studentRepository.findById(form.studentId).get()
         return repository
             .findById(applyId)
             .orElseThrow { ApplyNotFoundException() }
@@ -51,7 +43,11 @@ class ApplyService(
     }
 
     fun deleteApply(applyId: Int): Int {
-        repository.deleteById(applyId)
+        try {
+            repository.findById(applyId).get()
+        } catch (e: Exception) {
+            throw ApplyNotFoundException()
+        }
         return applyId
     }
 }

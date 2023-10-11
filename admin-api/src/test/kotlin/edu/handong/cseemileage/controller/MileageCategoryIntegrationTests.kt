@@ -66,8 +66,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form = CategoryForm(
             title = NAME,
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -88,7 +87,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @DisplayName("service: 마일리지 값이 음수인 경우")
     fun mileageCategoryIntegrationTests_54() {
         // Given
-        val form = CategoryForm("전공 마일리지", null, null, null, null, null, null)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
@@ -113,7 +112,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
     @DisplayName("service: 마일리지 값이 없는 경우")
     fun mileageCategoryIntegrationTests_82() {
         // Given
-        val form = CategoryForm("전공 마일리지", null, null, null, null, null, null)
+        val form = CategoryForm("전공 마일리지", null, null, null, null, null)
 
         // When
         val mvcResults = mockMvc
@@ -141,8 +140,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form = CategoryForm(
             title = null,
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -174,8 +172,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form1 = CategoryForm(
             title = NAME,
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -183,8 +180,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form2 = CategoryForm(
             title = "category2",
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -214,8 +210,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form = CategoryForm(
             title = NAME,
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f
@@ -225,8 +220,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val updateForm = CategoryForm(
             title = UPDATE_NAME,
             orderIdx = UPDATE_ORDER_IDX,
-            itemType = UPDATE_ITEM_TYPE,
-            isMulti = UPDATE_IS_MULTI,
+            type = UPDATE_ITEM_TYPE,
             description1 = UPDATE_DESCRIPTION1,
             description2 = UPDATE_DESCRIPTION2,
             categoryMaxPoints = 10f
@@ -254,8 +248,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         assertThat(id).isEqualTo(initialId)
         assertThat(found.name).isEqualTo(UPDATE_NAME)
         assertThat(found.orderIdx).isEqualTo(UPDATE_ORDER_IDX)
-        assertThat(found.itemType).isEqualTo(UPDATE_ITEM_TYPE)
-        assertThat(found.isMulti).isEqualTo(UPDATE_IS_MULTI)
+        assertThat(found.type).isEqualTo(UPDATE_ITEM_TYPE)
         assertThat(found.description1).isEqualTo(UPDATE_DESCRIPTION1)
         assertThat(found.description2).isEqualTo(UPDATE_DESCRIPTION2)
     }
@@ -267,8 +260,7 @@ class MileageCategoryIntegrationTests @Autowired constructor(
         val form = CategoryForm(
             title = NAME,
             orderIdx = ORDER_IDX,
-            itemType = ITEM_TYPE,
-            isMulti = IS_MULTI,
+            type = ITEM_TYPE,
             description1 = DESCRIPTION1,
             description2 = DESCRIPTION2,
             categoryMaxPoints = 20f

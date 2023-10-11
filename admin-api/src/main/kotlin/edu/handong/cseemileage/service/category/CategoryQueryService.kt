@@ -25,8 +25,7 @@ class CategoryQueryService(
                     description2 = it.description2,
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
-                    itemType = it.itemType,
-                    isMulti = it.isMulti,
+                    type = it.type,
                     modDate = it.modDate
                 )
             }
@@ -44,8 +43,7 @@ class CategoryQueryService(
                     description2 = it.description2,
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
-                    itemType = it.itemType,
-                    isMulti = it.isMulti,
+                    type = it.type,
                     modDate = it.modDate
                 )
             }
@@ -64,7 +62,11 @@ class CategoryQueryService(
 
         // 반환 데이터 조립
         val categoryInfos = distinctCategories.map { category ->
-            val itemInfos = category.items.map { item ->
+            val itemInfos = category.items.filter {
+                    // 해당 학기에 사용된 항목만 필터링
+                    item ->
+                semesterList.any { it.item == item }
+            }.map { item ->
                 val semesterInfos = item.semesterItems.filter { semesterItem ->
                     // 해당 학기에 사용된 항목만 필터링
                     semesterItem.semesterName == semesterName
@@ -73,7 +75,8 @@ class CategoryQueryService(
                         id = semesterItem.id,
                         semesterName = semesterItem.semesterName,
                         points = semesterItem.pointValue,
-                        itemMaxPoints = semesterItem.itemMaxPoints
+                        itemMaxPoints = semesterItem.itemMaxPoints,
+                        isMulti = stringToBoolean(semesterItem.isMulti)
                     )
                 }
                 ItemDto.Info(
@@ -86,7 +89,6 @@ class CategoryQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    isMulti = stringToBoolean(item.isMulti),
                     semesterItems = semesterInfos
                 )
             }
@@ -97,8 +99,7 @@ class CategoryQueryService(
                 description2 = category.description2,
                 categoryMaxPoints = category.categoryMaxPoints,
                 orderIdx = category.orderIdx,
-                itemType = category.itemType,
-                isMulti = category.isMulti,
+                type = category.type,
                 modDate = category.modDate,
                 items = itemInfos
             )

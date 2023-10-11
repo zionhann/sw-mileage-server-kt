@@ -16,7 +16,7 @@ class SemesterItemJdbcRepository(private val jdbcTemplate: JdbcTemplate) {
      * */
     fun insertSemesterList(semesterList: List<SemesterItem>) {
         jdbcTemplate.batchUpdate(
-            "insert into _sw_mileage_semester_item (point_value, item_max_points, semester_name, item_id, category_id, mod_date, reg_date) values (?, ?, ?, ?, ?, ?, ?, ?)",
+            "insert into _sw_mileage_semester_item (point_value, item_max_points, semester_name, item_id, category_id, is_multi, mod_date, reg_date) values (?, ?, ?, ?, ?, ?, ?, ?)",
             object : BatchPreparedStatementSetter {
                 override fun setValues(ps: PreparedStatement, i: Int) {
                     ps.setString(1, semesterList[i].pointValue.toString())
@@ -24,6 +24,7 @@ class SemesterItemJdbcRepository(private val jdbcTemplate: JdbcTemplate) {
                     ps.setString(3, semesterList[i].semesterName)
                     ps.setString(4, semesterList[i].item.id.toString())
                     ps.setString(5, semesterList[i].category.id.toString())
+                    ps.setString(6, semesterList[i].isMulti)
 
                     val now = LocalDateTime.now()
                     ps.setTimestamp(7, Timestamp.valueOf(now))

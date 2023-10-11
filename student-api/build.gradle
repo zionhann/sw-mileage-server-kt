@@ -1,4 +1,5 @@
 plugins {
+    id 'war'
     id 'org.springframework.boot' version '2.7.14'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'

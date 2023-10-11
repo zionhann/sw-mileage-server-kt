@@ -59,10 +59,6 @@ class Item(
     @Column(columnDefinition = "char(1)", nullable = false, name = "is_student_input")
     var isStudentInput: String = "N"
 
-    @ColumnDefault("'N'")
-    @Column(columnDefinition = "char(1)", nullable = false, name = "is_multi")
-    var isMulti: String = "N"
-
     @Transient
     @ColumnDefault("'N'")
     @Column(columnDefinition = "char(1)", nullable = false, name = "has_file_description")
@@ -89,7 +85,6 @@ class Item(
                 isVisible = booleanToString(form.flags?.isVisible ?: true)
                 isStudentVisible = booleanToString(form.flags?.isStudentVisible ?: false)
                 isStudentInput = booleanToString(form.flags?.isStudentEditable ?: false)
-                isMulti = booleanToString(form.flags?.isMultiple ?: false)
             }
             category.addItem(item)
             return item
@@ -112,7 +107,6 @@ class Item(
             isVisible = form.flags?.isVisible?.let { booleanToString(it) } ?: isVisible
             isStudentVisible = form.flags?.isStudentVisible?.let { booleanToString(it) } ?: isStudentVisible
             isStudentInput = form.flags?.isStudentEditable?.let { booleanToString(it) } ?: isStudentInput
-            isMulti = form.flags?.isMultiple?.let { booleanToString(it) } ?: isMulti
         }
         return id!!
     }

@@ -8,7 +8,7 @@ class ExceptionMessage {
         const val CATEGORY_NOT_FOUND = "카테고리를 찾을 수 없습니다."
         const val CATEGORY_DUPLICATE = "이미 존재하는 카테고리 입니다."
         const val CATEGORY_CANNOT_DELETE = "하위 항목이 존재하는 카테고리는 삭제할 수 없습니다."
-        const val CATEGORY_INVALID_ITEM_TYPE = "항목 타입이 잘못되었습니다.(char(1), R)"
+        const val CATEGORY_TYPE_IS_EMPTY = "카테고리의 타입이 없습니다."
         const val CATEGORY_MAX_POINTS_IS_NEGATIVE = "마일리지 인정 최댓값이 음수입니다. 0 이상의 값을 넣어주세요."
 
         const val ITEM_NOT_FOUND = "항목을 찾을 수 없습니다."
@@ -25,14 +25,16 @@ class ExceptionMessage {
         const val RECORD_NOT_FOUND = "해당하는 마일리지 기록을 찾을 수 없습니다."
         const val RECORD_SEMESTER_IS_NOT_POSITIVE = "학기 ID가 양수가 아닙니다."
         const val RECORD_INVALID_EXTRA_POINTS = "가산점이 음수입니다. 0 이상의 값을 넣어주세요."
+        const val INVALID_MILEAGE_RECORD = "중복 적립이 불가한 항목입니다. (count = 1만 허용)"
+        const val INVALID_DUPLICATE_MILEAGE_RECORD = "중복 적립이 불가한 항목입니다. 해당 학생은 이미 등록되었습니다."
 
         const val SEMESTER_ITEM_NOT_FOUND = "해당 학기가 존재하지 않습니다."
         const val SEMESTER_ITEM_ID_IS_NOT_POSITIVE = "글로벌 항목 ID가 양수가 아닙니다."
         const val SEMESTER_ITEM_CANNOT_DELETE = "이미 마일리지가 등록된 항목은 삭제할 수 없습니다."
         const val SEMESTER_ITEM_DUPLICATE = "해당 학기에 이미 등록된 항목입니다."
         const val SEMESTER_NAME_NOT_FOUND = "수정 시 학기 이름은 필수 요청 항목입니다."
+        const val SEMESTER_NAME_COPY_TO_NOT_FOUND = "복사할 학기(copy to)를 입력하세요."
         const val SEMESTER_ITEM_POINTS_IS_NEGATIVE = "학기별 항목 인정 마일리지가 음수입니다. 0 이상의 값을 넣어주세요."
-        const val SEMESTER_ITEM_INVALID_SEMESTER_NAME = "학기 형식이 잘못되었습니다. (YYYY-01 / YYYY-02)"
 
         const val STUDENT_NOT_FOUND = "해당 학생이 존재하지 않습니다."
         const val STUDENT_DUPLICATE = "이미 존재하는 학생 입니다."
@@ -40,6 +42,7 @@ class ExceptionMessage {
         const val STUDENT_CANNOT_DELETE = "이미 마일리지가 등록된 학생은 삭제할 수 없습니다."
         const val STUDENT_ID_IS_NOT_POSITIVE = "학생 ID 양수가 아닙니다."
         const val STUDENT_INVALID_SID = "학번 형식이 잘못되었습니다. (8자리 숫자)"
+        const val STUDENT_NAME_IS_EMPTY = "학생 이름은 필수 입력 항목입니다."
 
         const val ADMIN_NAME_IS_EMPTY = "관리자 이름이 없습니다."
         const val ADMIN_EMAIL_IS_EMPTY = "관리자 이메일이 없습니다."
@@ -51,5 +54,8 @@ class ExceptionMessage {
         const val APPLY_NOT_FOUND_EXCEPTION = "해당 신청 정보가 존재하지 않습니다."
 
         const val INVALID_EMAIL = "이메일 형식이 잘못되었습니다."
+        const val INVALID_SEMESTER_NAME = "학기 형식이 잘못되었습니다. (YYYY-01 / YYYY-02)"
+
+        const val NOT_SUPPORTED_FILE_TYPE = "지원하지 않는 파일 형식입니다."
     }
 }

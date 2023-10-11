@@ -32,7 +32,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
         const val UPDATE_IS_MULTI = false
 
         const val DEFAULT_ORDER_IDX = 0
-        const val DEFAULT_ITEM_TYPE = "R"
+        const val DEFAULT_ITEM_TYPE = "A"
         const val DEFAULT_IS_MULTI = false
     }
 
@@ -44,8 +44,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
 
         // when
@@ -56,8 +55,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
         assertThat(foundCategory).isEqualTo(category)
         assertThat(foundCategory.name).isEqualTo(NAME)
         assertThat(foundCategory.orderIdx).isEqualTo(ORDER_IDX)
-        assertThat(foundCategory.itemType).isEqualTo(ITEM_TYPE)
-        assertThat(foundCategory.isMulti).isEqualTo(IS_MULTI)
+        assertThat(foundCategory.type).isEqualTo(ITEM_TYPE)
         assertThat(foundCategory.description1).isEqualTo(DESCRIPTION1)
         assertThat(foundCategory.description2).isEqualTo(DESCRIPTION2)
     }
@@ -77,8 +75,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
         assertThat(foundCategory.description1).isNull()
         assertThat(foundCategory.description2).isNull()
         assertThat(foundCategory.orderIdx).isEqualTo(DEFAULT_ORDER_IDX)
-        assertThat(foundCategory.itemType).isEqualTo(DEFAULT_ITEM_TYPE)
-        assertThat(foundCategory.isMulti).isEqualTo(DEFAULT_IS_MULTI)
+        assertThat(foundCategory.type).isEqualTo(DEFAULT_ITEM_TYPE)
     }
 
     @DisplayName("repository: 마일리지 카테고리 find")
@@ -89,8 +86,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val savedId = categoryRepository.save(category).id!!
 
@@ -109,8 +105,7 @@ class MileageCategoryRepositoryTests @Autowired constructor(
             description1 = DESCRIPTION1
             description2 = DESCRIPTION2
             orderIdx = ORDER_IDX
-            itemType = ITEM_TYPE
-            isMulti = IS_MULTI
+            type = ITEM_TYPE
         }
         val saved = categoryRepository.save(category)
 

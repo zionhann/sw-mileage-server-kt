@@ -34,20 +34,56 @@ class SemesterItemService(
         return saved.id!!
     }
 
-    fun createSemesterItemMultiple(form: SemesterItemMultipleForm, semesterName: String): MutableList<SemesterItem> {
-        val semesterItemList = mutableListOf<SemesterItem>()
-        form.semesterItemList.forEach {
-            semesterItemList.add(createOneSemesterItem(it, semesterName))
+    fun createSemesterItemMultiple(form: SemesterItemMultipleForm): MutableMap<String, MutableList<Any>> {
+//        val semesterItemList = mutableListOf<SemesterItem>()
+        // 정상 처리된 항목, 중복 발생으로 실패한 항목, 학기별 항목을 찾지 못해 실패한 항목을 map으로 반환할 예정이다.
+        val map = mutableMapOf<String, MutableList<Any>>()
+        map["semesterItemList"] = mutableListOf<SemesterItem>().toMutableList()
+        map["복사 성공"] = mutableListOf<String>().toMutableList()
+        map["복사 실패 - 중복 항목"] = mutableListOf<String>().toMutableList()
+        map["복사 실패 - 학기별 항목을 찾지 못함"] = mutableListOf<Int>().toMutableList()
+        form.copyFrom.forEach {
+            try {
+                // 중복되는 학기별 항목만 list에서 제외
+                map["semesterItemList"]?.add(findOneSemesterItem(it, form.copyTo!!))
+                map["복사 성공"]?.add(repository.findById(it).get().item.name)
+            } catch (e: DuplicateSemesterItemException) {
+                // ignore. 예외가 발생한 항목을 제외하고 정상적으로 진행한다
+                map["복사 실패 - 중복 항목"]?.add(repository.findById(it).get().item.name)
+            } catch (e: SemesterItemNotFoundException) {
+                // ignore. 예외가 발생한 항목을 제외하고 정상적으로 진행한다
+                map["복사 실패 - 학기별 항목을 찾지 못함"]?.add(it)
+            }
         }
-        return semesterItemList
+        return map
     }
 
-    fun saveSemesterItemMultiple(form: SemesterItemMultipleForm, semesterName: String) {
-        repository.saveAll(createSemesterItemMultiple(form, semesterName))
+    private fun findOneSemesterItem(copyFrom: Int, copyTo: String): SemesterItem {
+        val semesterItemFrom = repository.findById(copyFrom)
+            .orElseThrow { throw SemesterItemNotFoundException() }
+        validateDuplicateSemesterItem(copyTo, semesterItemFrom.item.id, 0)
+
+        return SemesterItem(
+            item = semesterItemFrom.item,
+            category = semesterItemFrom.category
+        ).apply {
+            this.semesterName = copyTo
+            this.pointValue = semesterItemFrom.pointValue
+            this.itemMaxPoints = semesterItemFrom.itemMaxPoints
+            this.isMulti = semesterItemFrom.isMulti
+        }
     }
 
-    fun saveSemesterItemMultipleBulkInsert(form: SemesterItemMultipleForm, semesterName: String) {
-        jdbcRepository.insertSemesterList(createSemesterItemMultiple(form, semesterName))
+    fun saveSemesterItemMultiple(form: SemesterItemMultipleForm, semesterName: String): MutableMap<String, MutableList<Any>> {
+        val map = createSemesterItemMultiple(form)
+        repository.saveAll(map["semesterItemList"] as MutableList<SemesterItem>)
+        return map
+    }
+
+    fun saveSemesterItemMultipleBulkInsert(form: SemesterItemMultipleForm): MutableMap<String, MutableList<Any>> {
+        val map = createSemesterItemMultiple(form)
+        jdbcRepository.insertSemesterList(map["semesterItemList"] as MutableList<SemesterItem>)
+        return map
     }
 
     fun modifySemesterItem(semesterItemId: Int, form: SemesterItemForm): Int {
@@ -67,7 +103,11 @@ class SemesterItemService(
     }
 
     fun deleteSemesterItem(semesterItemId: Int): Int {
-        repository.deleteById(semesterItemId)
+        try {
+            repository.deleteById(semesterItemId)
+        } catch (e: Exception) {
+            throw SemesterItemNotFoundException()
+        }
         return semesterItemId
     }
 

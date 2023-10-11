@@ -162,7 +162,6 @@ class SemesterItemRepositoryTests @Autowired constructor(
             isPortfolio = MileageItemRepositoryTests.IS_PORTFOLIO
             isStudentVisible = MileageItemRepositoryTests.IS_STUDENT_VISIBLE
             isStudentInput = MileageItemRepositoryTests.IS_STUDENT_INPUT
-            isMulti = MileageItemRepositoryTests.IS_MULTI
             itemMaxPoints = 20f
         }
         val savedItem = itemRepository.save(item)
