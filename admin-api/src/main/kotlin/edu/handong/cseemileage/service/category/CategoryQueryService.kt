@@ -26,7 +26,8 @@ class CategoryQueryService(
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     type = it.type,
-                    modDate = it.modDate
+                    modDate = it.modDate,
+                    itemCount = it.items.size
                 )
             }
     }
@@ -44,7 +45,8 @@ class CategoryQueryService(
                     categoryMaxPoints = it.categoryMaxPoints,
                     orderIdx = it.orderIdx,
                     type = it.type,
-                    modDate = it.modDate
+                    modDate = it.modDate,
+                    itemCount = it.items.size
                 )
             }
     }
@@ -89,7 +91,8 @@ class CategoryQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    semesterItems = semesterInfos
+                    semesterItems = semesterInfos,
+                    semesterItemCount = item.semesterItems.size
                 )
             }
             CategoryDto.Info(
@@ -101,7 +104,8 @@ class CategoryQueryService(
                 orderIdx = category.orderIdx,
                 type = category.type,
                 modDate = category.modDate,
-                items = itemInfos
+                items = itemInfos,
+                itemCount = category.items.size
             )
         }
 

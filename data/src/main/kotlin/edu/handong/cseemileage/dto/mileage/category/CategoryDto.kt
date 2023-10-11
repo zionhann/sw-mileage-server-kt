@@ -21,6 +21,7 @@ class CategoryDto(
         val orderIdx: Int? = null,
         val type: String? = null,
         val modDate: LocalDateTime? = null,
-        val items: List<ItemDto.Info>? = null
+        val items: List<ItemDto.Info>? = null,
+        val itemCount: Int? = null
     )
 }

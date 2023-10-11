@@ -36,7 +36,8 @@ class SemesterItemQueryService(
                     id = item.id,
                     name = item.name,
                     description1 = item.description1,
-                    modDate = item.modDate
+                    modDate = item.modDate,
+                    semesterItemCount = item.semesterItems.size
                 ),
                 category = CategoryDto.Info(
                     id = category.id,
@@ -83,7 +84,8 @@ class SemesterItemQueryService(
                 item = ItemDto.Info(
                     id = semesterItem.item.id,
                     name = semesterItem.item.name,
-                    modDate = semesterItem.item.modDate
+                    modDate = semesterItem.item.modDate,
+                    semesterItemCount = semesterItems.size
                 ),
                 category = CategoryDto.Info(
                     id = semesterItem.category.id,

@@ -33,7 +33,8 @@ class ItemQueryService(
                 isVisible = stringToBoolean(item.isVisible),
                 isStudentVisible = stringToBoolean(item.isStudentVisible),
                 isStudentInput = stringToBoolean(item.isStudentInput),
-                modDate = item.modDate
+                modDate = item.modDate,
+                semesterItemCount = item.semesterItems.size
             )
         }
     }
@@ -44,7 +45,8 @@ class ItemQueryService(
             ItemDto.Info(
                 id = it.id,
                 name = it.name,
-                modDate = it.modDate
+                modDate = it.modDate,
+                semesterItemCount = it.semesterItems.size
             )
         }
     }
@@ -67,7 +69,8 @@ class ItemQueryService(
                     isVisible = stringToBoolean(item.isVisible),
                     isStudentVisible = stringToBoolean(item.isStudentVisible),
                     isStudentInput = stringToBoolean(item.isStudentInput),
-                    modDate = item.modDate
+                    modDate = item.modDate,
+                    semesterItemCount = item.semesterItems.size
                 )
             }
             CategoryDto.Info(
