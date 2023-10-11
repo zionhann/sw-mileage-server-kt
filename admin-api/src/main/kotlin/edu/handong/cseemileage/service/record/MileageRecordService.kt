@@ -18,9 +18,13 @@ class MileageRecordService(
     val semesterItemRepository: SemesterItemRepository,
     val mileageRecordRepository: MileageRecordRepository
 ) {
+    /**
+     * 마일리지 중첩 등록에 대한 정책:
+     *  적립은 isMulti 값과 관계 없이 우선 허용하되,
+     *  추후 마일리지 정산시 isMulti 값이 거짓인 항목은 중복 적립된 마일리지를 제외한다.
+     */
     fun add(form: MileageRecordForm): Int {
         val semesterItem = findSemesterItem(form)
-        validateMileageRecord(form, semesterItem)
         val record = MileageRecord.createMileageRecord(form, semesterItem, form.studentName!!, form.sid!!)
         val saved = mileageRecordRepository.save(record)
 
