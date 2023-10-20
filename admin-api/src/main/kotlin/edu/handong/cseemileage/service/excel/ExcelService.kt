@@ -70,18 +70,24 @@ class ExcelService(
         return results
     }
 
-    fun <T> download(classType: Class<T>, required: Boolean = false): DownloadStrategy? {
+    /**
+     * 마일리지 관련 데이터를 엑셀 파일로 다운로드
+     *
+     * @param classType: 다운로드할 데이터 종류
+     * @param isUploadForm : 업로드용 양식인지 여부
+     */
+    fun <T> download(classType: Class<T>, isUploadForm: Boolean = false): DownloadStrategy? {
         return when (classType.simpleName) {
-            "SemesterItem" -> {
-                return if (required) SemesterIn(semesterItemRepository) else SemesterItemFormat()
+            SemesterItem::class.simpleName -> {
+                return if (isUploadForm) SemesterItemFormat() else SemesterIn(semesterItemRepository)
             }
 
             MileageRecord::class.simpleName -> {
-                if (required) {
-                    // 학생 마일리지 기록 다운로드가 필요한 경우 구현하기
-                    return null
+                if (isUploadForm) {
+                    return MileageRecordFormat()
                 }
-                return MileageRecordFormat()
+                // 학생 마일리지 기록 다운로드가 필요한 경우 구현하기
+                return null
             }
 
             else -> null

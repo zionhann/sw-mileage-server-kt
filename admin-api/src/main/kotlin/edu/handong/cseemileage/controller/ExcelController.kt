@@ -107,8 +107,8 @@ class ExcelController @Autowired constructor(
             EXCEL_TYPE_SEMESTER_ONLY -> SemesterOnly(semesterItemRepository)
             EXCEL_TYPE_GLOBAL -> Global(itemRepository)
             EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterItemRepository)
-            EXCEL_TYPE_SEMESTER_IN_FORMAT -> excelService.download(SemesterItem::class.java)
-            EXCEL_TYPE_MILEAGE_RECORD_FORMAT -> excelService.download(MileageRecord::class.java)
+            EXCEL_TYPE_SEMESTER_IN_FORMAT -> excelService.download(SemesterItem::class.java, true)
+            EXCEL_TYPE_MILEAGE_RECORD_FORMAT -> excelService.download(MileageRecord::class.java, true)
             else -> null
         }
         if (downloadStrategy != null) {
