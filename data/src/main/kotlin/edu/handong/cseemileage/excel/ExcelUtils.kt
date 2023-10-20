@@ -100,8 +100,8 @@ class ExcelUtils(
                     val value: Any? = o?.let {
                         downloadStrategy.getValue(
                             it,
-                            excelDtoList[columnIndex].columnId,
-                            excelDtoList[columnIndex].type
+                            excelDtoList[columnIndex].columnId!!,
+                            excelDtoList[columnIndex].type!!
                         )
                     }
                     cell.cellStyle = basicStyle

@@ -5,6 +5,9 @@ import edu.handong.cseemileage.domain.mileage.SemesterItem
 import edu.handong.cseemileage.excel.format.MileageRecordTable
 import edu.handong.cseemileage.excel.format.SemesterItemTable
 import edu.handong.cseemileage.excel.numericToString
+import edu.handong.cseemileage.excel.strategy.DownloadStrategy
+import edu.handong.cseemileage.excel.strategy.SemesterIn
+import edu.handong.cseemileage.excel.strategy.SemesterItemFormat
 import edu.handong.cseemileage.exception.mileage.excel.NotSupportedFileTypeException
 import edu.handong.cseemileage.repository.mileage.ItemRepository
 import edu.handong.cseemileage.repository.mileage.MileageRecordRepository
@@ -64,5 +67,15 @@ class ExcelService(
             else -> throw NotSupportedFileTypeException()
         }
         return results
+    }
+
+    fun <T> download(classType: Class<T>, required: Boolean = false): DownloadStrategy? {
+        return when (classType.simpleName) {
+            "SemesterItem" -> {
+                return if (required) SemesterIn(semesterItemRepository) else SemesterItemFormat()
+            }
+
+            else -> null
+        }
     }
 }

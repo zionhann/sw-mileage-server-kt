@@ -54,6 +54,7 @@ class ExcelController @Autowired constructor(
         const val EXCEL_TYPE_GLOBAL = "global"
         const val EXCEL_TYPE_SEMESTER_IN = "semesterIn"
         const val EXCEL_TYPE_MILEAGE_RECORD = "mileageRecord"
+        const val EXCEL_TYPE_SEMESTER_IN_FORMAT = "semesterItemFormat"
     }
 
     /**
@@ -99,12 +100,13 @@ class ExcelController @Autowired constructor(
         response.contentType = "application/octet-stream"
         response.setHeader("Content-Disposition", "attachment;filename=$excelType$semester.xls")
 
-        var downloadStrategy: DownloadStrategy? = when (excelType) {
+        val downloadStrategy: DownloadStrategy? = when (excelType) {
             EXCEL_TYPE_CATEGORY_ONLY -> CategoryOnly(categoryRepository)
             EXCEL_TYPE_ITEM_ONLY -> ItemOnly(itemRepository)
             EXCEL_TYPE_SEMESTER_ONLY -> SemesterOnly(semesterItemRepository)
             EXCEL_TYPE_GLOBAL -> Global(itemRepository)
             EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterItemRepository)
+            EXCEL_TYPE_SEMESTER_IN_FORMAT -> excelService.download(SemesterItem::class.java)
             else -> null
         }
         if (downloadStrategy != null) {
