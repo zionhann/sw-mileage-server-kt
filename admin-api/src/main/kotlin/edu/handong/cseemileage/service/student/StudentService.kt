@@ -23,8 +23,11 @@ class StudentService(
 
     private fun validateDuplicateStudent(sid: String, id: Int) {
         if (id > 0) {
-            val findStudents = studentRepository.findById(id).orElseThrow { StudentNotFoundException() }
-            if (findStudents.sid == sid) {
+            val studentById = studentRepository.findById(id).orElseThrow { StudentNotFoundException() }
+            val studentBySid = studentRepository.findBySid(sid)
+            if (studentBySid.isPresent && studentById.id != studentBySid.get().id) {
+                throw DuplicateStudentException()
+            } else {
                 return
             }
         }

@@ -15,23 +15,23 @@ class AdminService(
 ) {
 
     fun saveAdmin(form: AdminForm): Int {
-        validateDuplicateAdmin(form.email!!, 0)
+        validateDuplicateAdmin(form.aid!!, 0)
         val admin = Admin.createAdmin(form)
         repository.save(admin)
         return admin.id!!
     }
 
-    private fun validateDuplicateAdmin(email: String, id: Int) {
+    private fun validateDuplicateAdmin(aid: String, id: Int) {
         if (id > 0) {
             val findAdmin = repository.findById(id).orElseThrow() { AdminNotFoundException() }
-            if (findAdmin.email == email) return
+            if (findAdmin.aid == aid) return
         }
-        val findAdmin = repository.findByEmail(email)
+        val findAdmin = repository.findByAid(aid)
         if (findAdmin.isPresent) throw DuplicateAdminException()
     }
 
     fun modifyAdmin(adminId: Int, form: AdminForm): Int {
-        validateDuplicateAdmin(form.email!!, adminId)
+        validateDuplicateAdmin(form.aid!!, adminId)
         return repository
             .findById(adminId)
             .orElseThrow { AdminNotFoundException() }

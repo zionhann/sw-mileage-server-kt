@@ -3,6 +3,7 @@ package edu.handong.cseemileage.controller
 import ExceptionMessage.Companion.CATEGORY_INVALID_POINTS
 import ExceptionMessage.Companion.CATEGORY_POINTS_IS_EMPTY
 import ExceptionMessage.Companion.CATEGORY_TITLE_IS_EMPTY
+import TestSecurityConfig
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.dto.mileage.category.CategoryDto
 import edu.handong.cseemileage.dto.mileage.category.CategoryForm
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
+@Import(TestSecurityConfig::class)
 class MileageCategoryIntegrationTests @Autowired constructor(
     val restTemplate: TestRestTemplate,
     val mockMvc: MockMvc,

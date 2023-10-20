@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
@@ -28,6 +29,7 @@ import javax.validation.Valid
 @RequestMapping("/api/mileage/students")
 @CrossOrigin(origins = ["*"])
 @Tag(name = "학생 API")
+@SecurityRequirement(name = "Bearer Authentication")
 class StudentController(
     val studentService: StudentService,
     val studentQueryService: StudentQueryService

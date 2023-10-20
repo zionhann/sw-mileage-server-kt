@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
@@ -29,6 +30,7 @@ import javax.validation.Valid
 @RequestMapping("/api/mileage/items")
 @CrossOrigin(origins = ["*"])
 @Tag(name = "항목 API")
+@SecurityRequirement(name = "Bearer Authentication")
 class MileageItemController(
     val itemService: ItemService,
     val itemQueryService: ItemQueryService

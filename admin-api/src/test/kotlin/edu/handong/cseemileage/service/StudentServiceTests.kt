@@ -13,7 +13,6 @@ import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDA
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDATE_MAJOR2
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDATE_NAME
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDATE_SEMESTER_COUNT
-import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDATE_SID
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.UPDATE_YEAR
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.YEAR
 import edu.handong.cseemileage.domain.acount.Student
@@ -44,7 +43,7 @@ class StudentServiceTests @Autowired constructor(
         val student = createDefaultStudent(SID)
         val updateForm = StudentForm(
             name = UPDATE_NAME,
-            sid = UPDATE_SID,
+            sid = "45645645",
             department = UPDATE_DEPARTMENT,
             major1 = UPDATE_MAJOR1,
             major2 = UPDATE_MAJOR2,
@@ -60,7 +59,7 @@ class StudentServiceTests @Autowired constructor(
 
         // Then
         assertThat(updatedStudent.name).isEqualTo(UPDATE_NAME)
-        assertThat(updatedStudent.sid).isEqualTo(UPDATE_SID)
+        assertThat(updatedStudent.sid).isEqualTo("45645645")
         assertThat(updatedStudent.department).isEqualTo(UPDATE_DEPARTMENT)
         assertThat(updatedStudent.major1).isEqualTo(UPDATE_MAJOR1)
         assertThat(updatedStudent.major2).isEqualTo(UPDATE_MAJOR2)

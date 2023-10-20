@@ -18,8 +18,8 @@ class Admin(
     @Column(name = "name", nullable = false, length = 20)
     var name: String,
 
-    @Column(name = "email", nullable = false, length = 30)
-    var email: String
+    @Column(name = "aid", nullable = false, length = 30)
+    var aid: String
 
 ) : BaseEntity() {
     @Id
@@ -43,7 +43,7 @@ class Admin(
         fun createAdmin(form: AdminForm): Admin {
             val admin = Admin(
                 name = form.name!!,
-                email = form.email!!
+                aid = form.aid!!
             ).apply {
                 level = form.level
             }
@@ -54,7 +54,7 @@ class Admin(
     fun update(form: AdminForm): Int {
         this.apply {
             name = form.name ?: name
-            email = form.email ?: email
+            aid = form.aid ?: aid
             level = form.level ?: level
         }
         return id!!

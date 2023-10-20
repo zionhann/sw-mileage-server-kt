@@ -33,6 +33,7 @@ repositories {
 dependencies {
     implementation project(':data')
     implementation project(':admin-api')
+    implementation project(':security')
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.springdoc:springdoc-openapi-kotlin:1.7.0'

@@ -86,7 +86,7 @@ class MileageRecordServiceTests @Autowired constructor(
         studentId1 = studentService.register(
             StudentForm(
                 name = "홍길동",
-                sid = "21800123",
+                sid = "00000001",
                 department = "",
                 major1 = "",
                 major2 = "",
@@ -99,7 +99,7 @@ class MileageRecordServiceTests @Autowired constructor(
         studentId2 = studentService.register(
             StudentForm(
                 name = "동길홍",
-                sid = "21800456",
+                sid = "42642642",
                 department = "",
                 major1 = "",
                 major2 = "",
@@ -116,7 +116,7 @@ class MileageRecordServiceTests @Autowired constructor(
         // Given
         val form = MileageRecordForm(
             semesterItemId = semesterId!!,
-            sid = SID,
+            sid = "78978978",
             studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,
@@ -138,7 +138,7 @@ class MileageRecordServiceTests @Autowired constructor(
         // Given
         val record1 = MileageRecordForm(
             semesterItemId = semesterId!!,
-            sid = SID,
+            sid = "48648648",
             studentName = NAME,
             counts = COUNTS,
             extraPoints = EXTRA_POINTS,

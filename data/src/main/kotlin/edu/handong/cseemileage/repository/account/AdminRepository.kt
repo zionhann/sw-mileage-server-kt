@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface AdminRepository : JpaRepository<Admin, Int> {
-    fun findByEmail(email: String): Optional<Admin>
+    fun findByAid(aid: String): Optional<Admin>
 }

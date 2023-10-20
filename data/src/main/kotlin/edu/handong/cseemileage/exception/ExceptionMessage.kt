@@ -45,7 +45,7 @@ class ExceptionMessage {
         const val STUDENT_NAME_IS_EMPTY = "학생 이름은 필수 입력 항목입니다."
 
         const val ADMIN_NAME_IS_EMPTY = "관리자 이름이 없습니다."
-        const val ADMIN_EMAIL_IS_EMPTY = "관리자 이메일이 없습니다."
+        const val ADMIN_ID_IS_EMPTY = "관리자 직번이 없습니다."
         const val ADMIN_NOT_FOUND_EXCEPTION = "해당 관리자가 존재하지 않습니다."
         const val DUPLICATE_ADMIN_EXCEPTION = "해당 관리자가 이미 존재합니다."
         const val ADMIN_INVALID_LEVEL = "관리자 권한이 잘못되었습니다. (-127 ~ 127)"

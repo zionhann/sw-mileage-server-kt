@@ -33,6 +33,7 @@ repositories {
 dependencies {
     implementation project(':data')
     testImplementation project(':data')
+    implementation project(':security')
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
     implementation 'org.springdoc:springdoc-openapi-kotlin:1.7.0'
@@ -61,6 +62,7 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 test {

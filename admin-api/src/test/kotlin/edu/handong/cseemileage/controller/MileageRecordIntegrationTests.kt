@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.controller
 
+import TestSecurityConfig
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.NAME
 import edu.handong.cseemileage.controller.StudentIntegrationTests.Companion.SID
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -35,6 +37,7 @@ import javax.transaction.Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Import(TestSecurityConfig::class)
 class MileageRecordIntegrationTests @Autowired constructor(
     private val mockMvc: MockMvc,
     private val mileageRecordService: MileageRecordService,

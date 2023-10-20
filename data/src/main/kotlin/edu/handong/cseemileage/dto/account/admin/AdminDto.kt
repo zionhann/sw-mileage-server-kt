@@ -14,7 +14,7 @@ class AdminDto(
     class Info(
         val id: Int? = null,
         val name: String? = null,
-        val email: String? = null,
+        val aid: String? = null,
         val level: Int? = null,
         val loginCount: Int? = null,
         val lastLoginDate: LocalDateTime? = null,

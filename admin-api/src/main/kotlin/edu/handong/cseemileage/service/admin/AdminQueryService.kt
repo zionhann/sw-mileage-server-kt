@@ -28,7 +28,7 @@ class AdminQueryService(
         return AdminDto.Info(
             id = admin.id,
             name = admin.name,
-            email = admin.email,
+            aid = admin.aid,
             level = admin.level,
             loginCount = admin.loginCount,
             lastLoginDate = admin.lastLoginDate,

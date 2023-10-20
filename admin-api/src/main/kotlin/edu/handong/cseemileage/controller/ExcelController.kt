@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.tomcat.util.http.fileupload.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 @RequestMapping("/api/excel")
 @Tag(name = "엑셀 API")
+@SecurityRequirement(name = "Bearer Authentication")
 class ExcelController @Autowired constructor(
     val categoryRepository: CategoryRepository,
     val itemRepository: ItemRepository,

@@ -1,5 +1,6 @@
 package edu.handong.cseemileage.controller
 
+import TestSecurityConfig
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.handong.cseemileage.domain.mileage.Category
 import edu.handong.cseemileage.domain.mileage.Item
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -31,6 +33,7 @@ import javax.annotation.PostConstruct
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
+@Import(TestSecurityConfig::class)
 class MileageSemesterIntegrationTestsItem @Autowired constructor(
     val mapper: ObjectMapper,
     val semesterItemRepository: SemesterItemRepository,

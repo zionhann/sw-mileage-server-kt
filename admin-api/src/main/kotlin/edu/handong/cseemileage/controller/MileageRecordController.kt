@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -27,6 +28,7 @@ import javax.validation.Valid
 @RequestMapping("/api/mileage/records")
 @CrossOrigin(origins = ["*"])
 @Tag(name = "마일리지 기록 API")
+@SecurityRequirement(name = "Bearer Authentication")
 class MileageRecordController(
     private val mileageRecordService: MileageRecordService,
     private val mileageRecordQueryService: MileageRecordQueryService
