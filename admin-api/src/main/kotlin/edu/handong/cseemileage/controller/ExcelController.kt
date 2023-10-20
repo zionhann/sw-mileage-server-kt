@@ -55,6 +55,7 @@ class ExcelController @Autowired constructor(
         const val EXCEL_TYPE_SEMESTER_IN = "semesterIn"
         const val EXCEL_TYPE_MILEAGE_RECORD = "mileageRecord"
         const val EXCEL_TYPE_SEMESTER_IN_FORMAT = "semesterItemFormat"
+        const val EXCEL_TYPE_MILEAGE_RECORD_FORMAT = "mileageRecordFormat"
     }
 
     /**
@@ -107,6 +108,7 @@ class ExcelController @Autowired constructor(
             EXCEL_TYPE_GLOBAL -> Global(itemRepository)
             EXCEL_TYPE_SEMESTER_IN -> SemesterIn(semesterItemRepository)
             EXCEL_TYPE_SEMESTER_IN_FORMAT -> excelService.download(SemesterItem::class.java)
+            EXCEL_TYPE_MILEAGE_RECORD_FORMAT -> excelService.download(MileageRecord::class.java)
             else -> null
         }
         if (downloadStrategy != null) {

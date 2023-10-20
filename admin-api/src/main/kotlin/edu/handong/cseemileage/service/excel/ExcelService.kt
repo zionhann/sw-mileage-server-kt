@@ -6,6 +6,7 @@ import edu.handong.cseemileage.excel.format.MileageRecordTable
 import edu.handong.cseemileage.excel.format.SemesterItemTable
 import edu.handong.cseemileage.excel.numericToString
 import edu.handong.cseemileage.excel.strategy.DownloadStrategy
+import edu.handong.cseemileage.excel.strategy.MileageRecordFormat
 import edu.handong.cseemileage.excel.strategy.SemesterIn
 import edu.handong.cseemileage.excel.strategy.SemesterItemFormat
 import edu.handong.cseemileage.exception.mileage.excel.NotSupportedFileTypeException
@@ -73,6 +74,14 @@ class ExcelService(
         return when (classType.simpleName) {
             "SemesterItem" -> {
                 return if (required) SemesterIn(semesterItemRepository) else SemesterItemFormat()
+            }
+
+            MileageRecord::class.simpleName -> {
+                if (required) {
+                    // 학생 마일리지 기록 다운로드가 필요한 경우 구현하기
+                    return null
+                }
+                return MileageRecordFormat()
             }
 
             else -> null
