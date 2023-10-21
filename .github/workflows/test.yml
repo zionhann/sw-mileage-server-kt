@@ -40,7 +40,7 @@ jobs:
           echo "${{ secrets.APP_CONFIG_TEST }}" > ./data/src/test/resources/application.yml
 
       - name: Test with Gradle
-        run: ./gradlew test
+        run: ./gradlew test -i
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2.9.0
